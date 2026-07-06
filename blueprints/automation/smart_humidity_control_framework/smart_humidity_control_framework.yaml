@@ -1,0 +1,355 @@
+blueprint:
+  name: Smart Humidity Control Framework
+  description: >
+    Generic humidity control framework for Home Assistant.
+    Supports automatic mode, continuous mode, timed mode,
+    hysteresis-based control and immediate activation after target changes.
+  domain: automation
+  author: Frank Wilhelm
+
+  input:
+    dehumidifier_switch:
+      name: Actuator switch
+      description: Switch entity controlling the dehumidifier or actuator.
+      selector:
+        entity:
+          domain: switch
+
+    humidity_sensor:
+      name: Current humidity sensor
+      description: Sensor providing the current relative humidity.
+      selector:
+        entity:
+          domain: sensor
+
+    target_humidity_sensor:
+      name: Target humidity sensor
+      description: Sensor providing the calculated target humidity.
+      selector:
+        entity:
+          domain: sensor
+
+    switch_on_threshold_sensor:
+      name: Switch-on threshold sensor
+      description: Sensor providing the humidity threshold for switching on.
+      selector:
+        entity:
+          domain: sensor
+
+    operating_mode_select:
+      name: Operating mode selector
+      description: Input select defining off, automatic, continuous and timed mode.
+      selector:
+        entity:
+          domain: input_select
+
+    humidity_profile_select:
+      name: Humidity profile selector
+      description: Input select for the humidity profile.
+      selector:
+        entity:
+          domain: input_select
+
+    protection_level_select:
+      name: Protection level selector
+      description: Input select for the protection level.
+      selector:
+        entity:
+          domain: input_select
+
+    target_mode_select:
+      name: Target mode selector
+      description: Input select defining whether profile or custom target is used.
+      selector:
+        entity:
+          domain: input_select
+
+    custom_target_number:
+      name: Custom target humidity
+      description: Input number used when custom target mode is active.
+      selector:
+        entity:
+          domain: input_number
+
+    timed_mode_timer:
+      name: Timed mode timer
+      description: Timer entity used for timed operation.
+      selector:
+        entity:
+          domain: timer
+
+    timed_mode_duration_number:
+      name: Timed mode duration
+      description: Input number defining the timed mode duration in minutes.
+      selector:
+        entity:
+          domain: input_number
+
+    timed_mode_behavior_select:
+      name: Timed mode behavior on target reached
+      description: Input select defining what happens when the target is reached during timed mode.
+      selector:
+        entity:
+          domain: input_select
+
+    option_off:
+      name: Operating mode value - Off
+      default: "Aus"
+      selector:
+        text:
+
+    option_automatic:
+      name: Operating mode value - Automatic
+      default: "Automatik"
+      selector:
+        text:
+
+    option_continuous:
+      name: Operating mode value - Continuous
+      default: "Dauerbetrieb"
+      selector:
+        text:
+
+    option_timed:
+      name: Operating mode value - Timed
+      default: "Zeitbetrieb"
+      selector:
+        text:
+
+    timed_behavior_turn_off:
+      name: Timed behavior value - Turn off
+      default: "Ausschalten"
+      selector:
+        text:
+
+    timed_behavior_return_to_automatic:
+      name: Timed behavior value - Return to automatic
+      default: "Auf Automatik wechseln"
+      selector:
+        text:
+
+trigger:
+  - platform: time_pattern
+    minutes: "/5"
+
+  - platform: state
+    entity_id:
+      - !input humidity_sensor
+      - !input target_humidity_sensor
+      - !input switch_on_threshold_sensor
+      - !input operating_mode_select
+      - !input humidity_profile_select
+      - !input protection_level_select
+      - !input target_mode_select
+      - !input custom_target_number
+      - !input timed_mode_behavior_select
+      - !input timed_mode_timer
+
+  - platform: event
+    event_type: timer.finished
+    event_data:
+      entity_id: !input timed_mode_timer
+
+variables:
+  dehumidifier_switch: !input dehumidifier_switch
+  humidity_sensor: !input humidity_sensor
+  target_humidity_sensor: !input target_humidity_sensor
+  switch_on_threshold_sensor: !input switch_on_threshold_sensor
+  operating_mode_select: !input operating_mode_select
+  humidity_profile_select: !input humidity_profile_select
+  protection_level_select: !input protection_level_select
+  target_mode_select: !input target_mode_select
+  custom_target_number: !input custom_target_number
+  timed_mode_timer: !input timed_mode_timer
+  timed_mode_duration_number: !input timed_mode_duration_number
+  timed_mode_behavior_select: !input timed_mode_behavior_select
+
+  option_off: !input option_off
+  option_automatic: !input option_automatic
+  option_continuous: !input option_continuous
+  option_timed: !input option_timed
+  timed_behavior_turn_off: !input timed_behavior_turn_off
+  timed_behavior_return_to_automatic: !input timed_behavior_return_to_automatic
+
+  current_humidity: "{{ states(humidity_sensor) | float(999) }}"
+  target_humidity: "{{ states(target_humidity_sensor) | float(0) }}"
+  switch_on_threshold: "{{ states(switch_on_threshold_sensor) | float(0) }}"
+  operating_mode: "{{ states(operating_mode_select) }}"
+  timed_mode_active: "{{ is_state(timed_mode_timer, 'active') }}"
+  timed_mode_behavior: "{{ states(timed_mode_behavior_select) }}"
+
+  timer_finished: >
+    {{ trigger.platform == 'event'
+       and trigger.event.event_type == 'timer.finished' }}
+
+  timed_mode_activated: >
+    {{ trigger.platform == 'state'
+       and trigger.entity_id == operating_mode_select
+       and trigger.to_state is not none
+       and trigger.to_state.state == option_timed }}
+
+  timed_mode_left: >
+    {{ trigger.platform == 'state'
+       and trigger.entity_id == operating_mode_select
+       and trigger.from_state is not none
+       and trigger.from_state.state == option_timed
+       and trigger.to_state is not none
+       and trigger.to_state.state != option_timed }}
+
+  target_changed: >
+    {{ trigger.platform == 'state'
+       and trigger.entity_id in [
+         target_humidity_sensor,
+         humidity_profile_select,
+         protection_level_select,
+         target_mode_select,
+         custom_target_number
+       ] }}
+
+  automatic_mode_activated: >
+    {{ trigger.platform == 'state'
+       and trigger.entity_id == operating_mode_select
+       and trigger.to_state is not none
+       and trigger.to_state.state == option_automatic }}
+
+action:
+  - choose:
+      - alias: "Timed mode finished - return to automatic"
+        conditions:
+          - condition: template
+            value_template: "{{ timer_finished and operating_mode == option_timed }}"
+        sequence:
+          - service: input_select.select_option
+            target:
+              entity_id: !input operating_mode_select
+            data:
+              option: !input option_automatic
+
+      - alias: "Timed mode left - cancel timer"
+        conditions:
+          - condition: template
+            value_template: "{{ timed_mode_left and timed_mode_active }}"
+        sequence:
+          - service: timer.cancel
+            target:
+              entity_id: !input timed_mode_timer
+
+      - alias: "Timed mode activated - start timer"
+        conditions:
+          - condition: template
+            value_template: "{{ timed_mode_activated }}"
+        sequence:
+          - service: timer.start
+            target:
+              entity_id: !input timed_mode_timer
+            data:
+              duration: >
+                {% set minutes = states(timed_mode_duration_number) | int(60) %}
+                {{ '%02d:%02d:%02d' | format(minutes // 60, minutes % 60, 0) }}
+          - service: switch.turn_on
+            target:
+              entity_id: !input dehumidifier_switch
+
+      - alias: "Off mode"
+        conditions:
+          - condition: template
+            value_template: "{{ operating_mode == option_off }}"
+        sequence:
+          - service: switch.turn_off
+            target:
+              entity_id: !input dehumidifier_switch
+
+      - alias: "Continuous mode"
+        conditions:
+          - condition: template
+            value_template: "{{ operating_mode == option_continuous }}"
+        sequence:
+          - service: switch.turn_on
+            target:
+              entity_id: !input dehumidifier_switch
+
+      - alias: "Timed mode - target reached - turn off"
+        conditions:
+          - condition: template
+            value_template: >
+              {{ operating_mode == option_timed
+                 and timed_mode_active
+                 and current_humidity <= target_humidity
+                 and timed_mode_behavior == timed_behavior_turn_off }}
+        sequence:
+          - service: switch.turn_off
+            target:
+              entity_id: !input dehumidifier_switch
+          - service: timer.cancel
+            target:
+              entity_id: !input timed_mode_timer
+          - service: input_select.select_option
+            target:
+              entity_id: !input operating_mode_select
+            data:
+              option: !input option_off
+
+      - alias: "Timed mode - target reached - return to automatic"
+        conditions:
+          - condition: template
+            value_template: >
+              {{ operating_mode == option_timed
+                 and timed_mode_active
+                 and current_humidity <= target_humidity
+                 and timed_mode_behavior == timed_behavior_return_to_automatic }}
+        sequence:
+          - service: timer.cancel
+            target:
+              entity_id: !input timed_mode_timer
+          - service: input_select.select_option
+            target:
+              entity_id: !input operating_mode_select
+            data:
+              option: !input option_automatic
+
+      - alias: "Timed mode - keep running"
+        conditions:
+          - condition: template
+            value_template: >
+              {{ operating_mode == option_timed
+                 and timed_mode_active }}
+        sequence:
+          - service: switch.turn_on
+            target:
+              entity_id: !input dehumidifier_switch
+
+      - alias: "Automatic mode - immediate activation after target change"
+        conditions:
+          - condition: template
+            value_template: >
+              {{ operating_mode == option_automatic
+                 and (target_changed or automatic_mode_activated)
+                 and current_humidity > target_humidity }}
+        sequence:
+          - service: switch.turn_on
+            target:
+              entity_id: !input dehumidifier_switch
+
+      - alias: "Automatic mode - switch on by hysteresis"
+        conditions:
+          - condition: template
+            value_template: >
+              {{ operating_mode == option_automatic
+                 and current_humidity > switch_on_threshold }}
+        sequence:
+          - service: switch.turn_on
+            target:
+              entity_id: !input dehumidifier_switch
+
+      - alias: "Automatic mode - target reached"
+        conditions:
+          - condition: template
+            value_template: >
+              {{ operating_mode == option_automatic
+                 and current_humidity <= target_humidity }}
+        sequence:
+          - service: switch.turn_off
+            target:
+              entity_id: !input dehumidifier_switch
+
+mode: single
