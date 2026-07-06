@@ -1,77 +1,59 @@
 # Feuchteprofile
 
-## Zweck
+Dieses Dokument beschreibt die im **Smart Humidity Control Framework** verwendeten Feuchteprofile.
 
-Dieses Dokument beschreibt das Profilsystem des Smart Humidity Control Framework.
+Feuchteprofile definieren empfohlene Ziel-Luftfeuchtigkeiten für typische Raumtypen und Anwendungsfälle. Sie bilden die Grundlage der automatischen Feuchteregelung und ermöglichen eine einfache, nachvollziehbare Konfiguration des Controllers.
 
-Feuchteprofile definieren empfohlene Zielwerte der **relativen Luftfeuchtigkeit** für typische Nutzungsarten von Räumen.
-
-Sie bilden die fachliche Grundlage für die automatische Berechnung der Ziel-Luftfeuchtigkeit und stellen das im Framework hinterlegte Fachwissen bereit.
+Die Feuchteprofile sind vollständig unabhängig von der verwendeten Hardware und können sowohl in der Referenzimplementierung als auch im Automation Blueprint und der zukünftigen nativen Home Assistant Integration verwendet werden.
 
 ---
 
-# Ziel
+# Zielsetzung
 
-Das Profilsystem verfolgt folgende Ziele.
+Das Ziel der Feuchteprofile besteht darin,
 
-- Einfache Konfiguration
-- Nachvollziehbare Zielwerte
-- Bewährte Standardwerte
-- Flexible Anpassbarkeit
-- Unterstützung benutzerdefinierter Profile
-- Klare Trennung zwischen Raumklima und Regelstrategie
+- typische Anwendungsfälle bereits vorkonfiguriert bereitzustellen,
+- sinnvolle Ziel-Luftfeuchtigkeiten vorzuschlagen,
+- eine konsistente Regelung unterschiedlicher Räume zu ermöglichen,
+- den Benutzer von bauphysikalischen Detailkenntnissen zu entlasten.
+
+Ein Feuchteprofil beschreibt ausschließlich die gewünschte Ziel-Luftfeuchtigkeit.
+
+Es beschreibt **nicht**, wie eng oder großzügig diese Ziel-Luftfeuchtigkeit geregelt wird. Dieses Verhalten wird durch die **Regelcharakteristik** festgelegt.
 
 ---
 
 # Grundprinzip
 
-Ein Feuchteprofil beschreibt den langfristig gewünschten Zustand des Raumklimas.
+Jedes Feuchteprofil definiert mindestens folgende Eigenschaften:
 
-Es definiert einen empfohlenen Basiswert der **relativen Luftfeuchtigkeit**.
+- Profilname
+- Beschreibung
+- empfohlene Ziel-Luftfeuchtigkeit
+- empfohlene Regelcharakteristik
 
-Die eigentliche Regelung erfolgt anschließend durch die gewählte Regelcharakteristik.
+Die empfohlene Regelcharakteristik dient als sinnvolle Voreinstellung und kann vom Benutzer jederzeit geändert werden.
 
-```text
-Feuchteprofil
-        │
-        ▼
-Basiswert
-        │
-        ▼
-Regelcharakteristik
-        │
-        ▼
-Regelverhalten
-```
+Dadurch bleiben Feuchteprofil und Regelcharakteristik unabhängig voneinander, bilden jedoch gemeinsam die Grundlage der automatischen Regelung.
 
 ---
 
 # Standardprofile
 
-Die Referenzimplementierung enthält folgende Standardprofile.
+Das Framework stellt folgende Standardprofile bereit.
 
-Jedes Feuchteprofil definiert
-
-- einen empfohlenen Basiswert der relativen Luftfeuchtigkeit und
-- eine empfohlene Regelcharakteristik.
-
-Die Regelcharakteristik dient als Empfehlung und kann vom Benutzer jederzeit geändert werden.
-
-| Feuchteprofil | Basiswert | Empfohlene Regelcharakteristik |
-|---------------|----------:|-------------------------------|
-| Wohnraum | 50 % | Standard |
-| Schlafzimmer | 50 % | Großzügig |
-| Badezimmer | 55 % | Standard |
-| Innenliegendes Bad | 50 % | Streng |
-| Arbeitsraum | 50 % | Standard |
-| Technikraum | 50 % | Streng |
-| Lagerraum | 50 % | Standard |
-| Keller beheizt | 55 % | Standard |
-| Keller unbeheizt | 60 % | Streng |
-| Garage | 60 % | Großzügig |
-| Hauswirtschaftsraum | 55 % | Streng |
-
-Die angegebenen Werte stellen empfohlene Ausgangswerte dar und können zukünftig angepasst werden.
+| Feuchteprofil | Ziel-Luftfeuchtigkeit | Empfohlene Regelcharakteristik | Beschreibung |
+|---------------|----------------------:|--------------------------------|--------------|
+| Wohnraum | 55 % | Standard | Beheizte Wohnräume mit normaler Nutzung |
+| Schlafzimmer | 50 % | Standard | Schlafräume mit geringerer gewünschter Luftfeuchtigkeit |
+| Badezimmer | 60 % | Großzügig | Räume mit regelmäßig hoher Feuchtelast |
+| Waschküche | 60 % | Großzügig | Räume zum Waschen und gelegentlichen Trocknen von Wäsche |
+| Wäschetrocknungsraum | 50 % | Streng | Räume mit regelmäßigem Wäschetrocknen |
+| Arbeitsraum | 50 % | Standard | Büro-, Hobby- und Arbeitsräume |
+| Technikraum | 50 % | Standard | Heizungs-, Hausanschluss- und Technikräume |
+| Keller beheizt | 55 % | Standard | Beheizte Kellerräume |
+| Keller unbeheizt | 55 % | Großzügig | Unbeheizte Keller mit saisonal erhöhter Luftfeuchtigkeit |
+| Garage | 60 % | Großzügig | Garagen und vergleichbare Nebenräume |
 
 ---
 
@@ -79,260 +61,248 @@ Die angegebenen Werte stellen empfohlene Ausgangswerte dar und können zukünfti
 
 ## Wohnraum
 
-Für Wohn-, Ess- und Hobbyräume mit dauerhaftem Aufenthalt.
+Empfohlen für typische beheizte Wohnräume.
+
+Beispiele:
+
+- Wohnzimmer
+- Esszimmer
+- Gästezimmer
+
+Empfohlene Ziel-Luftfeuchtigkeit:
+
+**55 %**
+
+Empfohlene Regelcharakteristik:
+
+**Standard**
 
 ---
 
 ## Schlafzimmer
 
-Für Schlafräume mit dauerhaftem Aufenthalt.
+Empfohlen für Schlafräume.
+
+Eine etwas niedrigere Luftfeuchtigkeit wird häufig als angenehmer empfunden und reduziert das Risiko von Kondensationsfeuchte.
+
+Empfohlene Ziel-Luftfeuchtigkeit:
+
+**50 %**
+
+Empfohlene Regelcharakteristik:
+
+**Standard**
 
 ---
 
 ## Badezimmer
 
-Für regelmäßig gelüftete Badezimmer mit Fenster.
+Empfohlen für Badezimmer und Duschbäder.
+
+Durch regelmäßig auftretende hohe Feuchtigkeitsspitzen eignet sich eine etwas großzügigere Regelcharakteristik.
+
+Empfohlene Ziel-Luftfeuchtigkeit:
+
+**60 %**
+
+Empfohlene Regelcharakteristik:
+
+**Großzügig**
 
 ---
 
-## Innenliegendes Bad
+## Waschküche
 
-Für Badezimmer ohne Fenster oder mit eingeschränkter natürlicher Lüftung.
+Empfohlen für Räume, in denen Wäsche gewaschen wird.
+
+Kurzzeitig erhöhte Luftfeuchtigkeit ist normal und wird durch eine großzügigere Regelung berücksichtigt.
+
+Empfohlene Ziel-Luftfeuchtigkeit:
+
+**60 %**
+
+Empfohlene Regelcharakteristik:
+
+**Großzügig**
+
+---
+
+## Wäschetrocknungsraum
+
+Empfohlen für Räume, in denen regelmäßig Wäsche getrocknet wird.
+
+Dieses Profil hält die Luftfeuchtigkeit bewusst niedriger und regelt enger, um den Trocknungsvorgang zu unterstützen.
+
+Empfohlene Ziel-Luftfeuchtigkeit:
+
+**50 %**
+
+Empfohlene Regelcharakteristik:
+
+**Streng**
 
 ---
 
 ## Arbeitsraum
 
-Für Büros, Arbeitszimmer, Hobbyräume oder Werkstätten.
+Empfohlen für Büro-, Hobby- und Arbeitsräume.
+
+Dieses Profil bietet ein ausgewogenes Raumklima für längere Aufenthalte und elektronische Geräte.
+
+Empfohlene Ziel-Luftfeuchtigkeit:
+
+**50 %**
+
+Empfohlene Regelcharakteristik:
+
+**Standard**
 
 ---
 
 ## Technikraum
 
-Für Räume mit technischer Gebäudeausrüstung.
+Empfohlen für Heizungsräume, Hausanschlussräume sowie sonstige Technikräume.
 
----
+Das Profil unterstützt den Schutz technischer Einrichtungen vor dauerhaft erhöhter Luftfeuchtigkeit.
 
-## Lagerraum
+Empfohlene Ziel-Luftfeuchtigkeit:
 
-Für Archiv-, Vorrats- und Lagerräume.
+**50 %**
+
+Empfohlene Regelcharakteristik:
+
+**Standard**
 
 ---
 
 ## Keller beheizt
 
-Für beheizte Kellerräume mit regelmäßiger Nutzung.
+Empfohlen für beheizte Kellerräume.
+
+Da diese Räume häufig ähnlich wie Wohnräume genutzt werden, eignet sich eine ausgewogene Regelung.
+
+Empfohlene Ziel-Luftfeuchtigkeit:
+
+**55 %**
+
+Empfohlene Regelcharakteristik:
+
+**Standard**
 
 ---
 
 ## Keller unbeheizt
 
-Für unbeheizte Kellerräume mit erhöhter Feuchtebelastung.
+Empfohlen für unbeheizte Keller.
+
+Hier treten häufig saisonale Schwankungen der Luftfeuchtigkeit auf. Eine etwas großzügigere Regelung verhindert unnötige Schaltvorgänge.
+
+Empfohlene Ziel-Luftfeuchtigkeit:
+
+**55 %**
+
+Empfohlene Regelcharakteristik:
+
+**Großzügig**
 
 ---
 
 ## Garage
 
-Für Garagen und vergleichbare unbeheizte Nebenräume.
+Empfohlen für Garagen sowie vergleichbare Nebenräume.
+
+Die Luftfeuchtigkeit kann durch Fahrzeuge oder Witterungseinflüsse kurzfristig ansteigen. Das Profil berücksichtigt diese typischen Schwankungen.
+
+Empfohlene Ziel-Luftfeuchtigkeit:
+
+**60 %**
+
+Empfohlene Regelcharakteristik:
+
+**Großzügig**
 
 ---
 
-## Hauswirtschaftsraum
+# Benutzerdefinierte Feuchteprofile
 
-Für Räume mit Waschmaschine, Trockner, Wäscheständern oder vergleichbarer Nutzung.
+Neben den Standardprofilen können Benutzer eigene Feuchteprofile erstellen.
 
----
-
-# Regelcharakteristik
-
-Die Regelcharakteristik beschreibt, wie präzise der Controller den gewünschten Zielwert der relativen Luftfeuchtigkeit einhält.
-
-Sie beeinflusst insbesondere die verwendete Hysterese.
-
-Die Regelcharakteristik ist unabhängig vom gewählten Feuchteprofil.
-
-Jedes Standardprofil besitzt eine empfohlene Regelcharakteristik.
-
-Diese wird beim Auswählen eines Feuchteprofils automatisch vorgeschlagen.
-
-Der Benutzer kann die Regelcharakteristik jederzeit unabhängig vom Feuchteprofil ändern.
-
-## Streng
-
-**Code**
-
-```text
-strict
-```
-
-Eine enge Regelung mit kleiner Hysterese.
-
-Geeignet für empfindliche Anwendungen oder Räume mit erhöhten Anforderungen an eine konstante Luftfeuchtigkeit.
-
----
-
-## Standard
-
-**Code**
-
-```text
-standard
-```
-
-Ausgewogene Regelung für die meisten Anwendungen.
-
-Dies ist die empfohlene Voreinstellung.
-
----
-
-## Großzügig
-
-**Code**
-
-```text
-flexible
-```
-
-Größere Hysterese mit weniger Schaltvorgängen.
-
-Geeignet für Räume mit geringeren Anforderungen an eine konstante Luftfeuchtigkeit.
-
----
-
-# Benutzerdefinierte Profile
-
-Neben den Standardprofilen sollen Benutzer zukünftig beliebige eigene Feuchteprofile erstellen können.
-
-Ein benutzerdefiniertes Profil besitzt mindestens
+Ein benutzerdefiniertes Feuchteprofil besteht mindestens aus
 
 - Profilname
-- Basiswert
-- empfohlene Regelcharakteristik
-- Beschreibung (optional)
+- Ziel-Luftfeuchtigkeit
+- empfohlener Regelcharakteristik
+- optionaler Beschreibung
 
-Dadurch kann das Framework flexibel an individuelle Anforderungen angepasst werden.
+Dadurch lassen sich individuelle Anforderungen oder besondere Räume einfach abbilden.
 
----
-
-# Ziel-Luftfeuchtigkeit
-
-Die Ziel-Luftfeuchtigkeit ergibt sich grundsätzlich aus dem gewählten Feuchteprofil.
-
-Die Regelcharakteristik beeinflusst anschließend die Art der Regelung, insbesondere die verwendete Hysterese.
-
-```text
-Feuchteprofil
-        │
-        ▼
-Ziel-Luftfeuchtigkeit
-
-Regelcharakteristik
-        │
-        ▼
-Regelverhalten
-```
-
-Alternativ kann der Benutzer einen festen Zielwert vorgeben.
-
-In diesem Fall wird das Feuchteprofil nicht verwendet.
+Die empfohlene Regelcharakteristik dient dabei lediglich als Voreinstellung und kann jederzeit unabhängig vom Feuchteprofil geändert werden.
 
 ---
 
-# Auswahl eines Feuchteprofils
+# Zusammenhang zwischen Feuchteprofil und Regelcharakteristik
 
-Ein Feuchteprofil beschreibt die Nutzung eines Raumes.
+Feuchteprofil und Regelcharakteristik sind zwei voneinander unabhängige Konzepte.
 
-Entscheidend ist nicht die tatsächliche Raumbezeichnung, sondern das gewünschte Raumklima.
+Das Feuchteprofil beantwortet die Frage:
 
-Beispiele
+> **Welche Ziel-Luftfeuchtigkeit soll erreicht werden?**
 
-- Ein Archiv verwendet das Profil **Lagerraum**.
-- Ein Hobbyraum verwendet das Profil **Wohnraum**.
-- Ein Kellerbüro verwendet das Profil **Arbeitsraum**.
+Die Regelcharakteristik beantwortet die Frage:
+
+> **Wie eng oder großzügig soll diese Ziel-Luftfeuchtigkeit eingehalten werden?**
+
+Diese Trennung ermöglicht eine deutlich flexiblere Regelung.
+
+Beispielsweise kann ein Keller sowohl mit einer **Standard-** als auch mit einer **Großzügigen Regelcharakteristik** betrieben werden, ohne dass sich das eigentliche Feuchteprofil ändert.
+
+Für alle Standardprofile schlägt das Framework eine geeignete Regelcharakteristik vor.
+
+Der Benutzer kann diese Empfehlung jederzeit übernehmen oder individuell anpassen.
 
 ---
 
-# Abgrenzung
+# Erweiterbarkeit
 
-Feuchteprofile beschreiben ausschließlich den langfristig gewünschten Zustand des Raumklimas.
+Die Feuchteprofile sind bewusst unabhängig von konkreten Geräten oder Sensoren definiert.
 
-Sie beschreiben ausdrücklich keine
+Dadurch können zukünftige Versionen des Frameworks zusätzliche Eigenschaften ergänzen, beispielsweise
 
-- Betriebsmodi
-- Regelcharakteristiken
-- Sonderprogramme
+- adaptive Ziel-Luftfeuchtigkeiten
+- saisonale Anpassungen
+- lernfähige Feuchteprofile
+- standortabhängige Empfehlungen
+- bauphysikalische Bewertungen
+- Taupunktregelung
+
+ohne die bestehende Architektur zu verändern.
 
 ---
 
 # Sonderprogramme
 
-Temporäre Spezialanwendungen gehören nicht zum Profilsystem.
+Bestimmte Anwendungsfälle unterscheiden sich grundlegend von der normalen Raumregelung.
+
+Sie werden daher **nicht** als Standard-Feuchteprofile bereitgestellt.
 
 Hierzu zählen beispielsweise
 
-- Wasserschaden
-- Trocknungsprogramm
-- Neubautrocknung
-- Estrichtrocknung
+- Gebäudetrocknung nach Wasserschäden
 - Bautrocknung
+- Sanierungsmaßnahmen
 
-Diese Anwendungen werden zukünftig als eigenständige Sonderprogramme umgesetzt.
+Diese Anwendungen erfordern meist eine möglichst starke Entfeuchtung über einen begrenzten Zeitraum sowie zusätzliche Warnhinweise hinsichtlich Energieverbrauch, Materialbeanspruchung und Kondensat.
 
----
-
-# Entwurfsprinzipien
-
-## Nutzung statt Raumname
-
-Feuchteprofile beschreiben die Nutzung eines Raumes und nicht dessen Bezeichnung.
-
----
-
-## Herstellerunabhängig
-
-Feuchteprofile sind vollständig unabhängig vom verwendeten Luftentfeuchter.
-
----
-
-## Wiederverwendbar
-
-Dieselben Profile können sowohl im Blueprint als auch in der nativen Home Assistant Integration verwendet werden.
-
----
-
-## Erweiterbar
-
-Neue Standardprofile können jederzeit ergänzt werden.
-
-Benutzerdefinierte Profile bleiben hiervon unberührt.
-
----
-
-## Trennung der Verantwortlichkeiten
-
-Feuchteprofile definieren den gewünschten Zustand des Raumklimas.
-
-Die Regelcharakteristik beschreibt die Art der Regelung.
-
-Der Controller entscheidet über das Schalten des Luftentfeuchters.
-
----
-
-# Zukunft
-
-Geplante Erweiterungen umfassen unter anderem
-
-- frei definierbare Profile
-- Import und Export von Profilen
-- adaptive Profile
-- lernfähige Zielwerte
-- regionale Empfehlungen
-- automatische Profilvorschläge
+Sie sind daher als zukünftige Sonderprogramme vorgesehen.
 
 ---
 
 # Zusammenfassung
 
-Feuchteprofile bilden das fachliche Fundament des Smart Humidity Control Framework.
+Feuchteprofile bilden die Grundlage der automatischen Feuchteregelung.
 
-Sie definieren den langfristig gewünschten Zustand der **relativen Luftfeuchtigkeit** eines Raumes und bilden gemeinsam mit der Regelcharakteristik die Grundlage für eine nachvollziehbare und flexible Regelung des Raumklimas.
+Sie definieren die empfohlene Ziel-Luftfeuchtigkeit typischer Räume und Anwendungsfälle.
+
+Die eigentliche Regelstrategie wird durch die unabhängig konfigurierbare Regelcharakteristik bestimmt.
+
+Diese Trennung sorgt für eine flexible, nachvollziehbare und langfristig erweiterbare Architektur des Smart Humidity Control Framework.

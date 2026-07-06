@@ -6,7 +6,7 @@ Das **Home Assistant Smart Humidity Control Framework** ist ein universelles und
 
 Im Gegensatz zu klassischen Luftentfeuchter-Automationen schaltet das Framework nicht lediglich einen Luftentfeuchter anhand einer festen Luftfeuchtigkeitsschwelle.
 
-Stattdessen kombiniert es Feuchteprofile, Zielwerte, Schutzniveaus, Geräteparameter und Sensorinformationen zu einer intelligenten Regelstrategie.
+Stattdessen kombiniert es Feuchteprofile, Zielwerte, Regelcharakteristiken, Geräteparameter und Sensorinformationen zu einer intelligenten Regelstrategie.
 
 Das Framework ist herstellerunabhängig und soll mit möglichst vielen Luftentfeuchtern kompatibel sein.
 
@@ -136,7 +136,7 @@ Jede Ebene besitzt eine klar definierte Aufgabe und kann unabhängig von den and
 │                                                            │
 │ Betriebsmodus                                              │
 │ Feuchteprofil                                              │
-│ Schutzniveau                                               │
+│ Regelcharakteristik                                               │
 │ Zielwertmodus                                              │
 │ Zielwert                                                   │
 │ Hysterese                                                  │

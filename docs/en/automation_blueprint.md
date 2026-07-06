@@ -2,19 +2,19 @@
 
 ## Purpose
 
-This document describes the Home Assistant blueprint of the Smart Humidity Control Framework.
+This document describes the Home Assistant Automation Blueprint of the Smart Humidity Control Framework.
 
-The blueprint provides the complete reference implementation of the framework within Home Assistant.
+The Automation Blueprint provides the complete reference implementation of the framework within Home Assistant.
 
 It enables users to deploy an intelligent dehumidifier control system without manually creating the complete automation logic.
 
-The blueprint serves as the bridge between the reference implementation and a future native Home Assistant integration.
+The Automation Blueprint serves as the bridge between the reference implementation and a future native Home Assistant integration.
 
 ---
 
 # Objectives
 
-The blueprint pursues the following goals.
+The Automation Blueprint pursues the following goals.
 
 - Easy installation
 - Manufacturer independence
@@ -28,10 +28,10 @@ After setup, users should have a fully functional framework ready for operation.
 
 # Architecture
 
-The blueprint represents all framework components within Home Assistant.
+The Automation Blueprint represents all framework components within Home Assistant.
 
 ```text
-Blueprint
+Automation Blueprint
 
         │
 
@@ -55,16 +55,22 @@ Controller
 
         ▼
 
-Dehumidifier
+Switching Device
+
+        │
+
+        ▼
+
+Reference Device
 ```
 
-The blueprint implements the same architecture as the reference implementation.
+The Automation Blueprint implements the same architecture as the reference implementation.
 
 ---
 
 # User Input
 
-During setup, the blueprint requests all required information.
+During setup, the Automation Blueprint requests all required information.
 
 ## Devices
 
@@ -90,19 +96,19 @@ Recommended properties
 
 ## Basic Settings
 
-- Humidity profile
-- Control characteristic
-- Target mode
+- Humidity Profile
+- Control Characteristic
+- Target Mode
 
 Optional
 
-- Custom target humidity
+- Custom Target Humidity
 
 ---
 
 # Components Provided by the Blueprint
 
-The blueprint provides all components of the reference implementation.
+The Automation Blueprint provides all components of the reference implementation.
 
 ## Helpers
 
@@ -112,7 +118,7 @@ All required Home Assistant helper entities.
 
 ## Template Sensors
 
-All calculated sensors of the framework.
+All calculated framework sensors.
 
 ---
 
@@ -130,19 +136,21 @@ All automations required to operate the framework.
 
 ## Dashboard
 
-Optionally, a dashboard template may be provided based on the reference dashboard.
+Optionally, a reference dashboard template may be provided based on the reference dashboard of the reference implementation.
 
 ---
 
 # Supported Devices
 
-The blueprint is completely manufacturer independent.
+The Automation Blueprint is completely manufacturer independent.
 
-It supports any dehumidifier that
+It supports any dehumidifier used as a reference device that
 
 - supports continuous operation,
 - automatically resumes operation after power is restored,
 - and can be controlled through a smart plug or relay.
+
+Future framework versions may support additional types of reference devices.
 
 ---
 
@@ -150,7 +158,7 @@ It supports any dehumidifier that
 
 Users should not need to edit YAML files manually.
 
-All required configuration should be performed through the blueprint interface.
+All required configuration should be performed through the Automation Blueprint.
 
 After setup, the framework should be immediately ready for use.
 
@@ -158,17 +166,17 @@ After setup, the framework should be immediately ready for use.
 
 # Reference Implementation
 
-The blueprint follows the reference implementation of the Smart Humidity Control Framework.
+The Automation Blueprint follows the reference implementation of the Smart Humidity Control Framework.
 
-Dashboard, controller, template sensors, and helper entities should behave identically.
+Reference dashboard, controller, template sensors, and helper entities should behave identically.
 
-This allows the blueprint and the reference implementation to be compared at any time.
+This allows the Automation Blueprint and the reference implementation to be compared at any time.
 
 ---
 
 # Extensibility
 
-The blueprint is designed to support future extensions.
+The Automation Blueprint is designed to support future extensions.
 
 Examples include
 
@@ -187,11 +195,11 @@ Existing installations should continue to work whenever possible.
 
 # Transition to the Native Integration
 
-The blueprint represents the first complete implementation of the framework.
+The Automation Blueprint represents the first complete implementation of the framework.
 
 A future native Home Assistant integration should provide the same functionality.
 
-Migration from the blueprint to the native integration should be as simple as possible for existing users.
+Migration from the Automation Blueprint to the native integration should be as simple as possible for existing users.
 
 ---
 
@@ -199,7 +207,7 @@ Migration from the blueprint to the native integration should be as simple as po
 
 ## Manufacturer Independent
 
-The blueprint must not depend on features of any specific manufacturer.
+The Automation Blueprint must not depend on features of any specific manufacturer.
 
 ---
 
@@ -211,19 +219,19 @@ New components should be added without affecting existing installations.
 
 ## Reusable
 
-A single blueprint should support any number of dehumidifier installations.
+A single Automation Blueprint should support any number of dehumidifier installations.
 
 ---
 
 ## Consistent
 
-The blueprint and the reference implementation should always behave identically.
+The Automation Blueprint and the reference implementation should always behave identically.
 
 ---
 
 ## Future-Proof
 
-The blueprint serves as the foundation for the future native Home Assistant integration.
+The Automation Blueprint serves as the foundation for the future native Home Assistant integration.
 
 ---
 
@@ -245,8 +253,8 @@ Planned future extensions include
 
 # Summary
 
-The blueprint provides the complete reference implementation of the Smart Humidity Control Framework within Home Assistant.
+The Automation Blueprint provides the complete reference implementation of the Smart Humidity Control Framework within Home Assistant.
 
 It enables users to deploy an intelligent dehumidifier control system while also serving as the foundation for the future native Home Assistant integration.
 
-The blueprint is therefore much more than a simple automation—it is the first installable implementation of the complete framework.
+The Automation Blueprint represents the first installable implementation of the Smart Humidity Control Framework within Home Assistant and forms the foundation for the future native Home Assistant integration.

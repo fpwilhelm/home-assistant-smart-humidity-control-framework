@@ -50,9 +50,9 @@ blueprint:
         entity:
           domain: input_select
 
-    protection_level_select:
-      name: Protection level selector
-      description: Input select for the protection level.
+    control_characteristic_select:
+      name: Control Characteristic selector
+      description: Input select for the control characteristic.
       selector:
         entity:
           domain: input_select
@@ -139,7 +139,7 @@ trigger:
       - !input switch_on_threshold_sensor
       - !input operating_mode_select
       - !input humidity_profile_select
-      - !input protection_level_select
+      - !input control_characteristic_select
       - !input target_mode_select
       - !input custom_target_number
       - !input timed_mode_behavior_select
@@ -157,7 +157,7 @@ variables:
   switch_on_threshold_sensor: !input switch_on_threshold_sensor
   operating_mode_select: !input operating_mode_select
   humidity_profile_select: !input humidity_profile_select
-  protection_level_select: !input protection_level_select
+  control_characteristic_select: !input control_characteristic_select
   target_mode_select: !input target_mode_select
   custom_target_number: !input custom_target_number
   timed_mode_timer: !input timed_mode_timer
@@ -201,7 +201,7 @@ variables:
        and trigger.entity_id in [
          target_humidity_sensor,
          humidity_profile_select,
-         protection_level_select,
+         control_characteristic_select,
          target_mode_select,
          custom_target_number
        ] }}

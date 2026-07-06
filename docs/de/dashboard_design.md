@@ -4,9 +4,11 @@
 
 Dieses Dokument beschreibt die Benutzeroberfläche der Referenzimplementierung des Smart Humidity Control Framework.
 
-Das Dashboard ermöglicht die Überwachung und Steuerung des Frameworks sowie die Darstellung aller relevanten Informationen zum aktuellen Raumklima und zum Luftentfeuchter.
+Das Dashboard ermöglicht die Überwachung und Steuerung des Frameworks sowie die Darstellung aller relevanten Informationen zum aktuellen Raumklima und zum Referenzgerät.
 
-Das aktuelle Dashboard dient als Referenzimplementierung für den ersten Blueprint. Zukünftige Versionen können erweitert werden, ohne die grundlegende Struktur zu verändern.
+In der aktuellen Referenzimplementierung ist das Referenzgerät ein Luftentfeuchter.
+
+Das aktuelle Referenzdashboard dient als Referenzimplementierung für den ersten Automation Blueprint. Zukünftige Versionen können erweitert werden, ohne die grundlegende Struktur zu verändern.
 
 ---
 
@@ -61,7 +63,7 @@ Der Statusbereich zeigt den aktuellen Betriebszustand des Frameworks.
 - Zeitbetrieb aktiv
 - Restlaufzeit des Zeitbetriebs
 
-Der Benutzer soll jederzeit erkennen können, warum der Luftentfeuchter momentan ein- oder ausgeschaltet ist.
+Der Benutzer soll jederzeit erkennen können, welche Entscheidung der Controller aktuell getroffen hat und warum sich das Referenzgerät im aktuellen Betriebszustand befindet.
 
 ---
 
@@ -93,6 +95,10 @@ Dieser Bereich visualisiert den aktuellen Zustand des Raumklimas.
 - Zielbereich
 - Raumtemperatur
 
+Der Zielbereich visualisiert den empfohlenen Feuchtebereich zwischen Ziel-Luftfeuchtigkeit und Einschaltgrenze.
+
+Er dient ausschließlich der Visualisierung und besitzt keine eigene regelungstechnische Funktion.
+
 ## Geplante Erweiterungen
 
 - Taupunkt
@@ -104,7 +110,7 @@ Dieser Bereich visualisiert den aktuellen Zustand des Raumklimas.
 
 # Leistung & Energie
 
-Dieser Bereich zeigt den aktuellen Betriebszustand des Luftentfeuchters.
+Dieser Bereich zeigt den aktuellen Betriebszustand des Referenzgeräts.
 
 ## Informationen
 
@@ -187,13 +193,13 @@ Warnungen können sowohl auf berechneten Werten als auch auf zusätzlichen Senso
 
 # Referenzimplementierung
 
-Das aktuelle Home-Assistant-Dashboard bildet die Referenzimplementierung des Frameworks.
+Das aktuelle Home-Assistant-Referenzdashboard bildet die Referenzimplementierung des Frameworks.
 
 Es verwendet die in der Referenzimplementierung vorhandenen Home-Assistant-Entitäten.
 
-Der erste Blueprint orientiert sich an diesem Dashboard und soll dessen grundlegendes Bedienkonzept übernehmen.
+Der erste Automation Blueprint orientiert sich an diesem Dashboard und soll dessen grundlegendes Bedienkonzept übernehmen.
 
-Eine spätere native Home-Assistant-Integration kann zusätzliche Informationen und Komfortfunktionen bereitstellen, ohne die grundlegende Struktur zu verändern.
+Eine spätere native Home Assistant Integration kann zusätzliche Informationen und Komfortfunktionen bereitstellen, ohne die grundlegende Struktur zu verändern.
 
 ---
 
@@ -240,12 +246,14 @@ Geplante Erweiterungen umfassen unter anderem
 - Langzeitstatistiken
 - Unterstützung mehrerer Luftentfeuchter
 
+Zukünftige Dashboard-Implementierungen können sich vom aktuellen Referenzdashboard unterscheiden, stellen jedoch dieselben fachlichen Framework-Werte dar.
+
 ---
 
 # Zusammenfassung
 
-Das Dashboard bildet die zentrale Benutzeroberfläche des Smart Humidity Control Framework.
+Das Referenzdashboard bildet die zentrale Benutzeroberfläche der aktuellen Referenzimplementierung des Smart Humidity Control Framework.
 
 Es stellt sämtliche relevanten Informationen übersichtlich dar, ermöglicht eine intuitive Bedienung und unterstützt den Benutzer durch Warnungen sowie zukünftige Diagnose- und Analysefunktionen.
 
-Das aktuelle Dashboard dient als Referenzimplementierung für den ersten Blueprint und entwickelt sich gemeinsam mit dem Framework kontinuierlich weiter.
+Das aktuelle Referenzdashboard dient als Grundlage für den ersten Automation Blueprint und entwickelt sich gemeinsam mit dem Framework kontinuierlich weiter.

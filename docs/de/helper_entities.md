@@ -125,7 +125,7 @@ Perspektivisch sollen Benutzer eigene Feuchteprofile erstellen, bearbeiten und l
 
 ---
 
-## Schutzniveau
+## Regelcharakteristik
 
 **Aktuelle Referenzimplementierung**
 
@@ -145,7 +145,7 @@ input_select.trotec_ttk_171_eco_schutzniveau
 
 **Beschreibung**
 
-Das Schutzniveau verschiebt den Basiswert des Feuchteprofils.
+Das Regelcharakteristik verschiebt den Basiswert des Feuchteprofils.
 
 Zusätzlich kann es die verwendete Hysterese beeinflussen.
 

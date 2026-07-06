@@ -1,274 +1,234 @@
 # Integration Design
 
-## Purpose
+This document describes the long-term architecture of the native **Smart Humidity Control Framework** integration for Home Assistant.
 
-This document describes the planned architecture of the future **Smart Humidity Control** integration for Home Assistant.
+It defines how the framework will evolve from the current reference implementation into a fully integrated Home Assistant component.
 
-It defines the overall architecture, major components, data flow, and responsibilities of each module.
-
-This document describes the target architecture and is independent of the current blueprint implementation.
+The document describes the conceptual architecture only and is intentionally independent of implementation details.
 
 ---
 
-# Goals
+# Objective
 
-The integration is designed to
+The native integration shall provide the complete functionality of the Smart Humidity Control Framework without requiring users to manually create helpers, template sensors, automations, or dashboards.
 
-- support multiple dehumidifiers
-- manage an unlimited number of rooms
-- be fully configurable through the Home Assistant user interface
-- require no YAML configuration
-- automatically create all required entities
-- be easy to extend
-- provide comprehensive documentation
-
----
-
-# Integration Overview
-
-The integration consists of several logically separated components.
-
-```text
-Smart Humidity Control
-
-├── Configuration
-├── Device Management
-├── Controller
-├── Profile Management
-├── Runtime Data
-├── Entities
-├── Dashboard
-└── Diagnostics
-```
-
-Each component has clearly defined responsibilities and interfaces.
-
----
-
-# Configuration
-
-Configuration is performed entirely through Home Assistant Config Entries.
-
-Among other things, the user selects
-
-- Dehumidifier
-- Smart switch
-- Humidity sensor
-- Temperature sensor
-- Energy meter
-- Power sensor
-- Default room profile
-- Default protection level
-
-The integration automatically creates all required entities.
-
----
-
-# Device Management
-
-The device management component is responsible for all physical devices.
-
-This includes, for example,
-
-- dehumidifiers
-- smart switches
-- sensors
-- power monitoring
-- energy monitoring
-
-It provides all required hardware information to the controller.
-
----
-
-# Controller
-
-The controller is the core of the integration.
-
-It is responsible for all control decisions.
-
-These include
-
-- target humidity calculation
-- hysteresis control
-- switching logic
-- operating mode handling
-- timed operation
-- minimum runtime
-- minimum idle time
-- safety functions
-
-The controller performs logical decisions only.
-
-Communication with Home Assistant is handled through the entity layer.
-
----
-
-# Profile Management
-
-The profile management component maintains all room profiles.
-
-Each profile defines, among other things,
-
-- base humidity
-- recommended humidity range
-- recommended hysteresis
-- description
-
-The integration provides a set of predefined standard profiles.
-
-Users will also be able to create custom profiles in the future.
-
----
-
-# Runtime Data
-
-During operation, the integration stores various runtime values.
-
-Examples include
-
-- current target humidity
-- operating mode
-- operating status
-- active hysteresis
-- remaining timer
-- last switching event
-- runtime statistics
-
-These values are used both for control decisions and visualization.
-
----
-
-# Entities
-
-The integration automatically creates all required Home Assistant entities.
-
-Examples include
-
-## Sensors
-
-- current humidity
-- temperature
-- target humidity
-- target range
-- operating status
-- power consumption
-- energy consumption
-
-## Select Entities
-
-- room profile
-- protection level
-- operating mode
-
-## Number Entities
-
-- target humidity
-- hysteresis
-- timed operation duration
-
-## Switch Entities
-
-- automatic control enabled
-- controller enabled
-
-## Button Entities
-
-- start timed operation
-- stop timed operation
-- reset statistics
-
-## Binary Sensor Entities
-
-- dehumidifier running
-- target range reached
-- timed operation active
-- fault condition
-
----
-
-# Dashboard
-
-The integration provides all information required for dashboards.
-
-The dashboard itself is not part of the integration.
-
-It only uses the entities exposed by the integration.
-
-This allows users to build completely custom dashboards.
-
----
-
-# Diagnostics
-
-The integration provides extensive diagnostic information.
-
-Examples include
-
-- current control decision
-- last switching event
-- blocking reason
-- active operating mode
-- controller status
-- sensor status
-
-These diagnostics simplify troubleshooting and support.
-
----
-
-# Extensibility
-
-The architecture is designed to be modular.
-
-Future functionality can therefore be added without affecting existing installations.
-
-Planned extensions include
-
-- multiple dehumidifiers per room
-- dew point control
-- outdoor temperature support
-- window contact integration
-- ventilation control
-- weather forecast integration
-- energy optimization
-- scheduling
-- automatic profile recommendations
-
----
-
-# Relationship to the Blueprint
-
-The current blueprint represents the first implementation stage of the project.
-
-The future integration will adopt the proven control logic from the blueprint while extending it with
-
-- graphical configuration
-- automatic entity creation
-- improved diagnostics
-- greater extensibility
-- easier operation
-
-This approach allows existing users to migrate with minimal effort.
+The integration shall automatically create and manage all framework components.
 
 ---
 
 # Design Principles
 
-The integration follows these core principles.
+The integration follows the core principles of the Smart Humidity Control Framework.
 
-- Home Assistant compliant
-- clear separation of responsibilities
-- minimal user configuration
-- automatic setup
-- transparent control decisions
-- comprehensive diagnostics
-- high reusability
-- easy extensibility
-- long-term maintainability
+- Manufacturer independent
+- Modular
+- Transparent
+- Extensible
+- Reusable
+- Easy to configure
+
+The underlying control algorithm remains identical to the reference implementation.
+
+Only the implementation changes.
+
+---
+
+# Architecture
+
+The native integration represents one possible implementation of the framework architecture.
+
+```text
+Smart Humidity Control Framework
+                │
+                ▼
+Native Home Assistant Integration
+                │
+                ▼
+Configuration
+                │
+                ▼
+Framework Components
+                │
+                ▼
+Controller
+                │
+                ▼
+Switching Device
+                │
+                ▼
+Reference Device
+```
+
+The framework architecture remains independent of Home Assistant.
+
+---
+
+# Configuration
+
+The integration shall provide a graphical configuration interface.
+
+Users should not need to edit YAML files.
+
+The integration will use
+
+- Config Flow
+- Options Flow
+
+for all configuration tasks.
+
+---
+
+# Framework Components
+
+The integration automatically manages all required framework components.
+
+Examples include
+
+- Humidity Profiles
+- Control Characteristics
+- Target Modes
+- Operating Modes
+- Device Configuration
+- Template Sensors
+- Controller
+- Diagnostics
+
+Users should configure the framework rather than individual Home Assistant entities.
+
+---
+
+# Device Configuration
+
+Each managed device is described by its technical characteristics.
+
+Examples include
+
+- rated power
+- dehumidification capacity
+- tank capacity
+- condensate drain mode
+- supported operating modes
+- automatic restart capability
+
+The integration uses this information to optimize control behavior and future diagnostic functions.
+
+---
+
+# Controller
+
+The native controller implements the same logical behavior as the reference implementation.
+
+Its responsibilities include
+
+- operating mode handling
+- hysteresis control
+- timer management
+- immediate activation after target changes
+- controller state calculation
+- switching device control
+
+The control algorithm itself remains identical across all framework implementations.
+
+---
+
+# Diagnostics
+
+The integration shall provide built-in diagnostic functions.
+
+Examples include
+
+- sensor validation
+- configuration validation
+- device availability
+- controller status
+- operating statistics
+- warning messages
+
+Future versions may include
+
+- estimated tank filling level
+- maintenance reminders
+- efficiency analysis
+
+---
+
+# Dashboard Generation
+
+The integration should optionally generate a complete dashboard.
+
+The generated dashboard should include
+
+- operating controls
+- humidity gauge
+- target range visualization
+- operating status
+- power monitoring
+- energy monitoring
+- warning indicators
+- diagnostic information
+
+Users should be able to customize the generated dashboard afterwards.
+
+---
+
+# Device Support
+
+The framework is designed to support different switching devices.
+
+Examples include
+
+- smart plugs
+- relays
+- Shelly devices
+- contactors
+
+The reference device remains a dehumidifier.
+
+Future versions may additionally support other humidity reduction strategies.
+
+---
+
+# Future Extensions
+
+The architecture has been designed to support future framework capabilities without requiring fundamental architectural changes.
+
+Examples include
+
+- multiple dehumidifiers
+- ventilation systems
+- fans
+- automatic window control
+- adaptive control algorithms
+- learning humidity profiles
+- dew point control
+- mold risk assessment
+- building drying mode
+- multiple humidity reduction strategies
+
+---
+
+# Migration
+
+The reference implementation serves as the migration path towards the native integration.
+
+```text
+Reference Implementation
+            │
+            ▼
+Automation Blueprint
+            │
+            ▼
+Native Home Assistant Integration
+```
+
+Users should be able to migrate without changing the conceptual framework.
 
 ---
 
 # Summary
 
-The Smart Humidity Control integration provides a fully integrated solution for intelligent dehumidifier control within Home Assistant.
+The native Home Assistant integration is the long-term implementation target of the Smart Humidity Control Framework.
 
-It builds upon the control logic developed in the blueprint and extends it with a modern, modular, and fully configurable architecture.
+It preserves the conceptual architecture of the framework while replacing manual Home Assistant configuration with an integrated, user-friendly solution.
+
+The framework remains independent of manufacturers, devices, and future implementation technologies.

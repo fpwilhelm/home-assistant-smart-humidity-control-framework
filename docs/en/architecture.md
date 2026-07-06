@@ -95,7 +95,7 @@ The framework consists of four independent architectural layers.
 │                                                            │
 │ • Operating Modes                                          │
 │ • Humidity Profiles                                        │
-│ • Protection Levels                                        │
+│ • Control Characteristics                                        │
 │ • Target Modes                                             │
 │ • Target Humidity                                          │
 │ • Hysteresis                                               │
@@ -157,7 +157,7 @@ Examples include:
 ## User Configuration
 
 - humidity profiles
-- protection levels
+- control characteristics
 - operating mode
 - target mode
 

@@ -1,340 +1,308 @@
 # Humidity Profiles
 
-## Purpose
+This document describes the humidity profiles used by the **Smart Humidity Control Framework**.
 
-This document describes the humidity profile system of the Smart Humidity Control Framework.
+Humidity profiles define recommended target humidity values for typical room types and application scenarios. They form the basis of automatic humidity control and provide a simple, transparent, and consistent configuration of the controller.
 
-Humidity profiles define recommended **relative humidity** target values for common room types and usage scenarios.
-
-They provide the domain knowledge of the framework and form the foundation for calculating the target humidity automatically.
+Humidity profiles are completely independent of the underlying hardware and can be used by the reference implementation, the Automation Blueprint, and the future native Home Assistant integration.
 
 ---
 
-# Objectives
+# Objective
 
-The humidity profile system pursues the following goals.
+The objective of humidity profiles is to
 
-- Simple configuration
-- Transparent target values
-- Proven default recommendations
-- Flexible customization
-- Support for user-defined profiles
-- Clear separation between room climate and control strategy
+- provide predefined configurations for common use cases,
+- recommend appropriate target humidity values,
+- enable consistent humidity control across different room types,
+- relieve users from detailed knowledge of building physics.
+
+A humidity profile defines only the desired target humidity.
+
+It does **not** define how tightly or loosely the controller maintains this humidity. That behavior is determined by the **Control Characteristic**.
 
 ---
 
 # Basic Principle
 
-A humidity profile describes the desired long-term condition of the room climate.
+Each humidity profile defines at least the following properties:
 
-It defines a recommended base value for the **relative humidity**.
+- Profile name
+- Description
+- Recommended target humidity
+- Recommended control characteristic
 
-The actual control behavior is then determined by the selected control characteristic.
+The recommended control characteristic serves as the default recommendation and may be changed by the user at any time.
 
-```text
-Humidity Profile
-        │
-        ▼
-Base Value
-        │
-        ▼
-Control Characteristic
-        │
-        ▼
-Control Behavior
-```
+Humidity profiles and control characteristics therefore remain independent concepts while working together as the foundation of the automatic control strategy.
 
 ---
 
-# Default Profiles
+# Standard Profiles
 
-The reference implementation includes the following default profiles.
+The framework provides the following standard profiles.
 
-Each humidity profile defines
-
-- a recommended base value for the relative humidity, and
-- a recommended control characteristic.
-
-The control characteristic is provided as a recommendation and can always be changed by the user.
-
-| Humidity Profile | Base Value | Recommended Control Characteristic |
-|------------------|-----------:|------------------------------------|
-| Living Space | 50 % | Standard |
-| Bedroom | 50 % | Flexible |
-| Bathroom | 55 % | Standard |
-| Internal Bathroom | 50 % | Strict |
-| Workspace | 50 % | Standard |
-| Technical Room | 50 % | Strict |
-| Storage Room | 50 % | Standard |
-| Heated Basement | 55 % | Standard |
-| Unheated Basement | 60 % | Strict |
-| Garage | 60 % | Flexible |
-| Utility Room | 55 % | Strict |
-
-The listed values represent recommended defaults and may be refined in future versions.
+| Humidity Profile | Target Humidity | Recommended Control Characteristic | Description |
+|------------------|----------------:|------------------------------------|-------------|
+| Living Room | 55 % | Standard | Heated living areas with typical daily use |
+| Bedroom | 50 % | Standard | Sleeping areas requiring slightly lower humidity |
+| Bathroom | 60 % | Flexible | Rooms with regularly high humidity peaks |
+| Laundry Room | 60 % | Flexible | Rooms used primarily for washing clothes |
+| Drying Room | 50 % | Strict | Rooms primarily used for drying laundry |
+| Workspace | 50 % | Standard | Offices, hobby rooms, and workspaces |
+| Technical Room | 50 % | Standard | Utility rooms, heating rooms, and equipment rooms |
+| Heated Basement | 55 % | Standard | Heated basement rooms |
+| Unheated Basement | 55 % | Flexible | Unheated basements with seasonal humidity variations |
+| Garage | 60 % | Flexible | Garages and similar utility areas |
 
 ---
 
-# Description of the Default Profiles
+# Description of the Standard Profiles
 
-## Living Space
+## Living Room
 
-For living rooms, dining rooms, and hobby rooms with permanent occupancy.
+Recommended for typical heated living areas.
+
+Examples include
+
+- Living Room
+- Dining Room
+- Guest Room
+
+Recommended Target Humidity:
+
+**55 %**
+
+Recommended Control Characteristic:
+
+**Standard**
 
 ---
 
 ## Bedroom
 
-Optimized for sleeping environments with permanent occupancy.
+Recommended for sleeping areas.
+
+A slightly lower humidity level is often perceived as more comfortable and helps reduce the risk of condensation.
+
+Recommended Target Humidity:
+
+**50 %**
+
+Recommended Control Characteristic:
+
+**Standard**
 
 ---
 
 ## Bathroom
 
-For regularly ventilated bathrooms with windows.
+Recommended for bathrooms and shower rooms.
+
+Regular humidity peaks make a more flexible control characteristic appropriate.
+
+Recommended Target Humidity:
+
+**60 %**
+
+Recommended Control Characteristic:
+
+**Flexible**
 
 ---
 
-## Internal Bathroom
+## Laundry Room
 
-For bathrooms without windows or with limited natural ventilation.
+Recommended for rooms where clothes are washed.
+
+Short-term humidity increases are normal and are taken into account by using a more flexible control characteristic.
+
+Recommended Target Humidity:
+
+**60 %**
+
+Recommended Control Characteristic:
+
+**Flexible**
+
+---
+
+## Drying Room
+
+Recommended for rooms primarily used for drying laundry.
+
+This profile intentionally maintains a lower humidity level and uses a stricter control characteristic to support the drying process.
+
+Recommended Target Humidity:
+
+**50 %**
+
+Recommended Control Characteristic:
+
+**Strict**
 
 ---
 
 ## Workspace
 
-For offices, home offices, workshops, and hobby rooms.
+Recommended for offices, hobby rooms, and general workspaces.
+
+This profile provides a balanced indoor climate suitable for extended occupancy and electronic equipment.
+
+Recommended Target Humidity:
+
+**50 %**
+
+Recommended Control Characteristic:
+
+**Standard**
 
 ---
 
 ## Technical Room
 
-For rooms containing technical building equipment.
+Recommended for heating rooms, utility rooms, and other technical areas.
 
----
+This profile helps protect technical equipment from continuously elevated humidity.
 
-## Storage Room
+Recommended Target Humidity:
 
-For archives, storage areas, and utility storage.
+**50 %**
+
+Recommended Control Characteristic:
+
+**Standard**
 
 ---
 
 ## Heated Basement
 
-For heated basement rooms with regular use.
+Recommended for heated basement rooms.
+
+Since these rooms are often used similarly to living spaces, a balanced control strategy is appropriate.
+
+Recommended Target Humidity:
+
+**55 %**
+
+Recommended Control Characteristic:
+
+**Standard**
 
 ---
 
 ## Unheated Basement
 
-For unheated basement rooms with increased moisture exposure.
+Recommended for unheated basements.
+
+These rooms frequently experience seasonal humidity fluctuations. A more flexible control characteristic helps avoid unnecessary switching.
+
+Recommended Target Humidity:
+
+**55 %**
+
+Recommended Control Characteristic:
+
+**Flexible**
 
 ---
 
 ## Garage
 
-For garages and comparable unheated utility spaces.
+Recommended for garages and similar utility spaces.
+
+Humidity may temporarily increase due to vehicles or weather conditions. This profile takes these typical fluctuations into account.
+
+Recommended Target Humidity:
+
+**60 %**
+
+Recommended Control Characteristic:
+
+**Flexible**
 
 ---
 
-## Utility Room
+# Custom Humidity Profiles
 
-For rooms containing washing machines, dryers, laundry racks, or similar household activities.
+In addition to the standard profiles, users can create their own humidity profiles.
 
----
+A custom humidity profile consists of at least
 
-# Control Characteristic
+- Profile name
+- Target humidity
+- Recommended control characteristic
+- Optional description
 
-The control characteristic defines how precisely the controller maintains the target relative humidity.
+This allows individual requirements and special room types to be represented easily.
 
-It primarily influences the hysteresis used by the controller.
-
-The control characteristic is independent of the selected humidity profile.
-
-Each default profile includes a recommended control characteristic.
-
-This recommendation is automatically selected when a humidity profile is chosen.
-
-Users may change the control characteristic independently of the selected profile at any time.
-
-## Strict
-
-**Code**
-
-```text
-strict
-```
-
-A narrow control range with a small hysteresis.
-
-Suitable for sensitive applications or rooms requiring a stable humidity level.
+The recommended control characteristic serves only as a default recommendation and can always be changed independently of the humidity profile.
 
 ---
 
-## Standard
+# Relationship Between Humidity Profile and Control Characteristic
 
-**Code**
+Humidity profiles and control characteristics are two independent concepts.
 
-```text
-standard
-```
+The humidity profile answers the question:
 
-Balanced control behavior suitable for most applications.
+> **Which target humidity should be maintained?**
 
-This is the recommended default setting.
+The control characteristic answers the question:
 
----
+> **How tightly or loosely should that target humidity be maintained?**
 
-## Flexible
+Separating these concepts provides significantly greater flexibility.
 
-**Code**
+For example, an unheated basement may use either the **Standard** or **Flexible** control characteristic while keeping exactly the same humidity profile.
 
-```text
-flexible
-```
+For every standard profile, the framework recommends an appropriate control characteristic.
 
-A wider hysteresis resulting in fewer switching cycles.
-
-Suitable for rooms with less demanding humidity requirements.
+Users are always free to accept or modify this recommendation.
 
 ---
 
-# User-defined Profiles
+# Extensibility
 
-In addition to the default profiles, future versions will allow users to create their own humidity profiles.
+Humidity profiles are intentionally independent of specific hardware and sensors.
 
-A custom profile contains at least
+Future versions of the framework may therefore extend them with additional properties such as
 
-- Profile Name
-- Base Value
-- Recommended Control Characteristic
-- Description (optional)
+- adaptive target humidity
+- seasonal adjustments
+- learning humidity profiles
+- location-specific recommendations
+- building physics evaluation
+- dew point control
 
-This allows the framework to adapt to individual requirements.
-
----
-
-# Target Humidity
-
-The target humidity is determined by the selected humidity profile.
-
-The control characteristic then influences the control behavior, especially the applied hysteresis.
-
-```text
-Humidity Profile
-        │
-        ▼
-Target Humidity
-
-Control Characteristic
-        │
-        ▼
-Control Behavior
-```
-
-Alternatively, users may specify a fixed target humidity.
-
-In that case, the humidity profile is not used.
-
----
-
-# Selecting a Humidity Profile
-
-A humidity profile represents the intended use of a room.
-
-The actual room name is not important.
-
-Instead, the desired room climate determines the appropriate profile.
-
-Examples
-
-- An archive uses the **Storage Room** profile.
-- A hobby room uses the **Living Space** profile.
-- A basement office uses the **Workspace** profile.
-
----
-
-# Scope
-
-Humidity profiles describe only the desired long-term room climate.
-
-They explicitly do not define
-
-- Operating Modes
-- Control Characteristics
-- Special Programs
+without changing the underlying framework architecture.
 
 ---
 
 # Special Programs
 
-Temporary special-purpose scenarios are not part of the humidity profile system.
+Certain applications differ fundamentally from normal room humidity control.
+
+Therefore, they are **not** implemented as standard humidity profiles.
 
 Examples include
 
-- Water Damage Drying
-- Drying Program
-- New Construction Drying
-- Screed Drying
-- Building Drying
+- building drying after water damage
+- construction drying
+- restoration projects
 
-These applications will be implemented as independent special programs in future versions.
+These applications usually require maximum or sustained dehumidification for a limited period, together with additional warnings regarding energy consumption, material stress, and condensate handling.
 
----
-
-# Design Principles
-
-## Usage Instead of Room Name
-
-Humidity profiles describe the intended use of a room rather than its name.
-
----
-
-## Device Independent
-
-Humidity profiles are completely independent of the dehumidifier model used.
-
----
-
-## Reusable
-
-The same profiles can be used by both the Home Assistant blueprint and the future native integration.
-
----
-
-## Extensible
-
-New default profiles can be added at any time.
-
-User-defined profiles remain unaffected.
-
----
-
-## Separation of Responsibilities
-
-Humidity profiles define the desired room climate.
-
-The control characteristic defines how that climate is maintained.
-
-The controller decides when to switch the dehumidifier.
-
----
-
-# Future
-
-Planned extensions include
-
-- freely configurable profiles
-- profile import and export
-- adaptive profiles
-- self-learning target values
-- regional recommendations
-- automatic profile suggestions
+They are therefore planned as future special operating programs.
 
 ---
 
 # Summary
 
-Humidity profiles form the domain foundation of the Smart Humidity Control Framework.
+Humidity profiles form the foundation of automatic humidity control.
 
-They define the desired long-term **relative humidity** of a room and, together with the control characteristic, provide the basis for transparent, flexible, and maintainable room climate control.
+They define the recommended target humidity for typical rooms and application scenarios.
+
+The actual control behavior is determined independently by the selected control characteristic.
+
+This separation provides a flexible, transparent, and future-proof architecture for the Smart Humidity Control Framework.

@@ -142,7 +142,7 @@ Der Luftentfeuchter bleibt ausgeschaltet.
 
 - Feuchteprofil
 - Zielwert
-- Schutzniveau
+- Regelcharakteristik
 
 lösen keine automatische Aktivierung aus.
 

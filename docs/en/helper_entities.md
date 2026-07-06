@@ -125,7 +125,7 @@ Future versions will allow users to create, edit, and remove custom humidity pro
 
 ---
 
-## Protection Level
+## Control Characteristic
 
 **Current Reference Implementation**
 
@@ -145,7 +145,7 @@ input_select.trotec_ttk_171_eco_schutzniveau
 
 **Description**
 
-The protection level adjusts the base humidity defined by the selected humidity profile.
+The control characteristic adjusts the base humidity defined by the selected humidity profile.
 
 It may also influence the applied hysteresis.
 

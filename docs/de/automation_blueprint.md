@@ -2,13 +2,13 @@
 
 ## Zweck
 
-Dieses Dokument beschreibt den Home-Assistant-Blueprint des Smart Humidity Control Framework.
+Dieses Dokument beschreibt den Home-Assistant-Automation-Blueprint des Smart Humidity Control Framework.
 
-Der Blueprint stellt die vollständige Referenzimplementierung des Frameworks innerhalb von Home Assistant bereit.
+Der Automation Blueprint stellt die vollständige Referenzimplementierung des Frameworks innerhalb von Home Assistant bereit.
 
 Er ermöglicht die einfache Einrichtung eines intelligenten Luftentfeuchters, ohne dass Benutzer die komplette Logik selbst erstellen müssen.
 
-Der Blueprint bildet die Brücke zwischen der Referenzimplementierung und einer zukünftigen nativen Home-Assistant-Integration.
+Der Automation Blueprint bildet die Brücke zwischen der Referenzimplementierung und einer zukünftigen nativen Home-Assistant-Integration.
 
 ---
 
@@ -28,10 +28,10 @@ Nach der Einrichtung soll der Benutzer ein vollständig funktionsfähiges Framew
 
 # Architektur
 
-Der Blueprint bildet sämtliche Komponenten des Frameworks innerhalb von Home Assistant ab.
+Der Automation Blueprint bildet sämtliche Komponenten des Frameworks innerhalb von Home Assistant ab.
 
 ```text
-Blueprint
+Automation Blueprint
 
         │
 
@@ -55,16 +55,22 @@ Controller
 
         ▼
 
-Luftentfeuchter
+Schaltgerät
+
+        │
+
+        ▼
+
+Referenzgerät
 ```
 
-Der Blueprint implementiert dabei dieselbe Architektur wie die Referenzimplementierung.
+Der Automation Blueprint implementiert dabei dieselbe Architektur wie die Referenzimplementierung.
 
 ---
 
 # Benutzereingaben
 
-Während der Einrichtung fragt der Blueprint die benötigten Informationen ab.
+Während der Einrichtung fragt der Automation Blueprint die benötigten Informationen ab.
 
 ## Geräte
 
@@ -102,7 +108,7 @@ Optional
 
 # Vom Blueprint bereitgestellte Komponenten
 
-Der Blueprint stellt sämtliche Bestandteile der Referenzimplementierung bereit.
+Der Automation Blueprint stellt sämtliche Bestandteile der Referenzimplementierung bereit.
 
 ## Helfer
 
@@ -130,19 +136,21 @@ Alle zur Steuerung benötigten Automationen.
 
 ## Dashboard
 
-Optional kann eine Dashboard-Vorlage bereitgestellt werden, die sich am Referenzdashboard orientiert.
+Optional kann eine Referenzdashboard-Vorlage bereitgestellt werden, die sich am Referenzdashboard der Referenzimplementierung orientiert.
 
 ---
 
 # Unterstützte Geräte
 
-Der Blueprint arbeitet herstellerunabhängig.
+Der Automation Blueprint arbeitet herstellerunabhängig.
 
-Unterstützt werden grundsätzlich alle Luftentfeuchter,
+Unterstützt werden grundsätzlich alle Luftentfeuchter als Referenzgeräte,
 
 - die einen Dauerbetrieb unterstützen,
 - nach Spannungswiederkehr automatisch starten,
 - und über eine schaltbare Steckdose oder ein Relais betrieben werden können.
+
+Weitere Gerätetypen können in zukünftigen Framework-Versionen unterstützt werden.
 
 ---
 
@@ -150,7 +158,7 @@ Unterstützt werden grundsätzlich alle Luftentfeuchter,
 
 Der Benutzer soll möglichst keine YAML-Dateien bearbeiten müssen.
 
-Alle erforderlichen Einstellungen sollen über den Blueprint erfolgen.
+Alle erforderlichen Einstellungen sollen über den Automation Blueprint erfolgen.
 
 Nach Abschluss der Einrichtung soll das Framework unmittelbar einsatzbereit sein.
 
@@ -158,17 +166,17 @@ Nach Abschluss der Einrichtung soll das Framework unmittelbar einsatzbereit sein
 
 # Referenzimplementierung
 
-Der Blueprint orientiert sich vollständig an der Referenzimplementierung des Smart Humidity Control Framework.
+Der Automation Blueprint orientiert sich vollständig an der Referenzimplementierung des Smart Humidity Control Framework.
 
-Dashboard, Controller, Template-Sensoren und Helfer sollen sich identisch verhalten.
+Referenzdashboard, Controller, Template-Sensoren und Helfer sollen sich identisch verhalten.
 
-Dadurch können Blueprint und Referenzimplementierung jederzeit miteinander verglichen werden.
+Dadurch können Automation Blueprint und Referenzimplementierung jederzeit miteinander verglichen werden.
 
 ---
 
 # Erweiterbarkeit
 
-Der Blueprint soll zukünftige Erweiterungen unterstützen.
+Der Automation Blueprint soll zukünftige Erweiterungen unterstützen.
 
 Beispiele
 
@@ -187,7 +195,7 @@ Bestehende Installationen sollen hierbei möglichst unverändert weiter funktion
 
 # Übergang zur nativen Integration
 
-Der Blueprint stellt die erste vollständige Implementierung des Frameworks dar.
+Der Automation Blueprint stellt die erste vollständige Implementierung des Frameworks dar.
 
 Eine spätere native Home-Assistant-Integration soll dieselbe Funktionalität bereitstellen.
 
@@ -199,7 +207,7 @@ Der Übergang zur Integration soll für bestehende Benutzer möglichst einfach e
 
 ## Herstellerunabhängig
 
-Der Blueprint darf keine Eigenschaften eines bestimmten Herstellers voraussetzen.
+Der Automation Blueprint darf keine Eigenschaften eines bestimmten Herstellers voraussetzen.
 
 ---
 
@@ -211,19 +219,19 @@ Neue Komponenten sollen ergänzt werden können, ohne bestehende Installationen 
 
 ## Wiederverwendbar
 
-Ein Blueprint soll beliebig viele Luftentfeuchter unterstützen.
+Ein Automation Blueprint soll beliebig viele Luftentfeuchter unterstützen.
 
 ---
 
 ## Konsistent
 
-Blueprint und Referenzimplementierung sollen sich identisch verhalten.
+Automation Blueprint und Referenzimplementierung sollen sich identisch verhalten.
 
 ---
 
 ## Zukunftssicher
 
-Der Blueprint bildet die Grundlage für die spätere native Home-Assistant-Integration.
+Der Automation Blueprint bildet die Grundlage für die spätere native Home-Assistant-Integration.
 
 ---
 
@@ -245,8 +253,8 @@ Geplante Erweiterungen umfassen unter anderem
 
 # Zusammenfassung
 
-Der Blueprint stellt die vollständige Referenzimplementierung des Smart Humidity Control Framework innerhalb von Home Assistant bereit.
+Der Automation Blueprint stellt die vollständige Referenzimplementierung des Smart Humidity Control Framework innerhalb von Home Assistant bereit.
 
 Er ermöglicht die einfache Einrichtung eines intelligenten Luftentfeuchters und bildet gleichzeitig die Grundlage für die spätere native Home-Assistant-Integration.
 
-Der Blueprint ist damit nicht nur eine Automation, sondern die erste installierbare Version des gesamten Frameworks.
+Der Automation Blueprint stellt die erste installierbare Implementierung des Smart Humidity Control Framework innerhalb von Home Assistant dar und bildet die Grundlage für die spätere native Home-Assistant-Integration.

@@ -17,7 +17,7 @@ Communication with Home Assistant is handled by the integration or blueprint lay
 The controller is responsible for
 
 - evaluating sensor data
-- calculating the target humidity
+- evaluating the target humidity
 - applying hysteresis
 - controlling the dehumidifier
 - managing operating modes
@@ -226,8 +226,8 @@ The following events trigger a controller evaluation.
 
 - humidity changed
 - temperature changed
-- room profile changed
-- protection level changed
+- humidity profile changed
+- control characteristic changed
 - target humidity changed
 - hysteresis changed
 - timed operation started

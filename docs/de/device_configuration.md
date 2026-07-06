@@ -1,302 +1,153 @@
 # Gerätekonfiguration
 
-## Zweck
+Dieses Dokument beschreibt die Gerätekonfiguration des **Smart Humidity Control Framework**.
 
-Dieses Dokument beschreibt die technischen Voraussetzungen für den Betrieb des Smart Humidity Control Framework.
+Die Gerätekonfiguration beschreibt die technischen Eigenschaften eines unterstützten Geräts und bildet die Grundlage für eine optimale Regelung, Diagnose und zukünftige Erweiterungen.
 
-Es definiert die benötigten Geräte, Sensoren und Komponenten sowie deren Anforderungen.
-
-Die beschriebenen Anforderungen gelten unabhängig von der verwendeten Home-Assistant-Implementierung.
+Die Gerätekonfiguration ist vollständig unabhängig von Herstellern und konkreten Home-Assistant-Entitäten.
 
 ---
 
-# Architektur
+# Ziel
 
-Das Framework besteht in der aktuellen Ausbaustufe aus vier Komponenten.
+Die Gerätekonfiguration verfolgt folgende Ziele:
 
-```text
-Sensoren
-      │
-      ▼
-Controller
-      │
-      ▼
-Schaltkomponente
-      │
-      ▼
-Luftentfeuchter
-```
-
-Die einzelnen Komponenten können durch unterschiedliche Hersteller und Geräte realisiert werden.
+- Beschreibung der technischen Eigenschaften eines Geräts
+- Anpassung des Controllers an unterschiedliche Gerätetypen
+- Unterstützung zukünftiger Diagnosefunktionen
+- Vorbereitung auf verschiedene Luftentfeuchter und zukünftige Strategien zur Feuchtereduzierung
 
 ---
 
-# Pflichtkomponenten
+# Grundprinzip
 
-Für den Betrieb des Framework werden mindestens folgende Komponenten benötigt.
+Das Smart Humidity Control Framework trennt bewusst zwischen
 
-- Luftentfeuchter
-- Temperatur- und Feuchtesensor
-- Schaltbare Steckdose oder Relais
+- Framework
+- Controller
+- Gerätekonfiguration
+- Referenzgerät
+
+Dadurch kann dieselbe Regelungslogik mit unterschiedlichen Geräten verwendet werden.
 
 ---
 
-# Luftentfeuchter
+# Referenzgerät
 
-## Anforderungen
+Die Referenzimplementierung basiert derzeit auf folgendem Gerät:
 
-Der verwendete Luftentfeuchter sollte
+- **Trotec TTK 171 ECO**
 
-- nach Spannungswiederkehr automatisch starten
-- einen Dauerbetrieb unterstützen
-- für externes Schalten geeignet sein
+Das Framework selbst ist jedoch herstellerunabhängig.
 
-Diese Eigenschaften ermöglichen einen zuverlässigen Automatikbetrieb.
+Weitere Luftentfeuchter können durch eine passende Gerätekonfiguration ohne Änderungen am Regelalgorithmus unterstützt werden.
 
 ---
 
 # Geräteeigenschaften
 
-Neben den grundlegenden Anforderungen besitzt jeder Luftentfeuchter technische Eigenschaften, die vom Framework genutzt werden können.
+Jedes unterstützte Gerät wird durch eine definierte Menge technischer Eigenschaften beschrieben.
 
-Ein Teil dieser Eigenschaften ist für den Betrieb erforderlich, andere verbessern Komfort, Diagnose und zukünftige Optimierungen.
+| Eigenschaft | Erforderlich | Zweck |
+|-------------|:-----------:|-------|
+| Nennleistung | ✔ | Leistungsüberwachung |
+| Entfeuchtungsleistung | ✔ | Berechnung der geschätzten Tankfüllung |
+| Tankvolumen | optional | Tankfüllstandsschätzung |
+| Betriebsart Tank / Kondensatablauf | ✔ | Steuerung und Warnmeldungen |
+| Automatischer Wiederanlauf | ✔ | Eignung für den Betrieb über ein Schaltgerät |
+| Unterstützte Betriebsmodi | optional | Gerätebeschreibung |
 
----
-
-## Pflichtangaben
-
-Folgende Eigenschaften sind für einen zuverlässigen Automatikbetrieb erforderlich.
-
-| Eigenschaft | Beschreibung |
-|-------------|--------------|
-| Dauerbetrieb möglich | Das Gerät muss nach dem Einschalten dauerhaft weiterlaufen können. |
-| Automatischer Wiederanlauf | Das Gerät muss nach einer Spannungsunterbrechung selbstständig den Betrieb fortsetzen. |
-| Art der Kondensatableitung | Kontinuierlicher Kondensatablauf oder Tankbetrieb. |
+Weitere Eigenschaften können zukünftigen Versionen hinzugefügt werden.
 
 ---
 
-## Empfohlene Angaben
+# Tankbetrieb und Kondensatablauf
 
-Diese Eigenschaften verbessern zukünftige Berechnungen und Komfortfunktionen.
-
-| Eigenschaft | Einheit | Verwendung |
-|-------------|---------|------------|
-| Nennleistung | W | Dashboard, Leistungsbewertung |
-| Maximale Entfeuchtungsleistung | l / 24 h | Tankfüllstandsschätzung, Effizienzbewertung |
-| Tankvolumen | l | Tankfüllstandsschätzung |
-
----
-
-## Optionale Angaben
-
-Weitere Geräteeigenschaften können zukünftig genutzt werden.
-
-| Eigenschaft | Verwendung |
-|-------------|------------|
-| Luftvolumenstrom | Optimierung |
-| Einsatztemperatur | Plausibilitätsprüfung |
-| Automatische Abtaufunktion | Dokumentation |
-| Geräuschpegel | Dokumentation |
-
-Alle optionalen Eigenschaften dürfen vom Framework verwendet werden, sind jedoch für den Grundbetrieb nicht erforderlich.
-
----
-
-# Kondensatableitung
-
-Der Luftentfeuchter kann auf unterschiedliche Weise betrieben werden.
-
-## Kontinuierlicher Kondensatablauf
-
-Das Kondensat wird dauerhaft über einen Schlauch abgeführt.
-
-Dies ist die empfohlene Betriebsart für einen unbeaufsichtigten Dauerbetrieb.
-
----
+Das Framework unterscheidet zwei unterschiedliche Betriebsarten des Luftentfeuchters.
 
 ## Tankbetrieb
 
-Das Kondensat wird im internen Wassertank gesammelt.
+Das Kondenswasser wird im integrierten Wassertank gesammelt.
 
-Der Tank muss regelmäßig geleert werden.
+Das Framework kann künftig anhand
 
-Das Framework soll zukünftig den Tankfüllstand näherungsweise berechnen und den Benutzer rechtzeitig über einen notwendigen Tankwechsel informieren.
-
-Die Schätzung kann unter anderem folgende Informationen berücksichtigen.
-
-- Laufzeit des Luftentfeuchters
-- relative Luftfeuchtigkeit
-- Raumtemperatur
-- Entfeuchtungsbedarf
-- Leistungsaufnahme
+- Entfeuchtungsleistung
 - Tankvolumen
-- maximale Entfeuchtungsleistung
+- Laufzeit
+- gemessener Luftfeuchtigkeit
 
-Die Qualität der Schätzung verbessert sich, wenn möglichst viele Geräteeigenschaften bekannt sind.
+eine geschätzte Tankfüllung berechnen.
 
-Die Berechnung dient ausschließlich als Näherung.
-
-Zukünftig kann das Framework zusätzlich historische Betriebsdaten nutzen, um die Schätzung kontinuierlich zu verbessern.
-
----
-
-## Tankbetrieb mit Füllstandsensor
-
-Optional kann ein Füllstandsensor verwendet werden.
-
-In diesem Fall verwendet das Framework den gemessenen Tankfüllstand anstelle einer berechneten Schätzung.
+Der Benutzer wird rechtzeitig über einen vermutlich notwendigen Tankwechsel informiert.
 
 ---
 
-## Gerätekonfiguration
+## Kontinuierlicher Kondensatablauf
 
-Die Art der Kondensatableitung wird als Geräteeigenschaft konfiguriert.
+Das Kondenswasser wird dauerhaft über einen Schlauch abgeführt.
 
-Mögliche Einstellungen
-
-- Kontinuierlicher Kondensatablauf
-- Tankbetrieb
-- Tankbetrieb mit Füllstandsensor
+In diesem Betriebsmodus erfolgt keine Tankfüllstandsschätzung.
 
 ---
 
-# Temperatur- und Feuchtesensor
+# Tankfüllstand
 
-## Anforderungen
+Zukünftige Versionen des Frameworks unterstützen zwei Verfahren.
 
-Der Sensor sollte mindestens folgende Messwerte bereitstellen.
+## Geschätzter Tankfüllstand
 
-- Temperatur
-- relative Luftfeuchtigkeit
+Berechnung anhand
 
-Diese Messwerte bilden die Grundlage der gesamten Regelung.
+- Laufzeit
+- Entfeuchtungsleistung
+- Tankvolumen
+- aktueller Luftfeuchtigkeit
 
----
-
-## Platzierung
-
-Der Sensor sollte möglichst repräsentativ für das tatsächliche Raumklima positioniert werden.
-
-Folgende Einflüsse sollten möglichst vermieden werden.
-
-- direkte Sonneneinstrahlung
-- Heizkörper
-- unmittelbarer Luftstrom des Luftentfeuchters
-- Fenster mit häufigem Luftaustausch
+Dieses Verfahren benötigt keine zusätzliche Hardware.
 
 ---
 
-# Schaltkomponente
+## Gemessener Tankfüllstand
 
-## Anforderungen
+Alternativ kann ein Tankfüllstandsensor verwendet werden.
 
-Die Schaltkomponente muss
-
-- den Luftentfeuchter sicher schalten können
-- für die elektrische Leistung geeignet sein
+In diesem Fall verwendet das Framework den gemessenen Füllstand anstelle einer Schätzung.
 
 ---
 
-## Empfohlene Eigenschaften
+# Betrieb über ein Schaltgerät
 
-Optional werden unterstützt.
+Das Framework steuert den Luftentfeuchter über ein Schaltgerät.
 
-- Leistungsmessung
-- Energieverbrauchsmessung
+Hierfür sollte das Gerät nach Wiederkehr der Spannungsversorgung automatisch den vorherigen Betriebszustand wiederherstellen.
 
-Diese Werte dienen der Visualisierung sowie zukünftigen Optimierungen.
-
----
-
-# Optionale Komponenten
-
-Das Framework kann zukünftig weitere Sensoren und Geräte unterstützen.
-
-Beispiele
-
-- Tankfüllstandsensor
-- Außentemperatursensor
-- Außen-Feuchtesensor
-- zweiter Innen-Feuchtesensor
-- Fensterkontakte
-- Lüftungsanlage
-- Ventilator
-
-Diese Komponenten sind für den Grundbetrieb nicht erforderlich.
+Dadurch kann das Framework den Luftentfeuchter zuverlässig über Smart Plugs, Relais oder vergleichbare Schaltgeräte steuern.
 
 ---
 
-# Referenzimplementierung
+# Erweiterbarkeit
 
-Die aktuelle Referenzimplementierung verwendet folgende Konfiguration.
+Die Gerätekonfiguration wurde bewusst offen gestaltet.
 
-| Eigenschaft | Referenz |
-|-------------|----------|
-| Luftentfeuchter | Trotec TTK 171 ECO |
-| Dauerbetrieb möglich | Ja |
-| Automatischer Wiederanlauf | Ja |
-| Art der Kondensatableitung | Kontinuierlicher Kondensatablauf |
-| Nennleistung | 900 W |
-| Maximale Entfeuchtungsleistung | 52 l / 24 h |
-| Tankvolumen | 6 l |
-| Sensor | Temperatur- und Feuchtesensor |
-| Schaltkomponente | Smarte Steckdose mit Leistungs- und Energiemessung |
+Zukünftige Versionen können zusätzliche Eigenschaften ergänzen, beispielsweise
 
-Diese Auswahl dient ausschließlich als Referenz.
+- Luftstrom
+- Lüfterstufen
+- Geräuschpegel
+- Energieeffizienzklasse
+- integrierte Hygrostaten
+- automatische Abtauung
+- Wartungsintervalle
+- Filterzustand
 
-Das Framework ist nicht an bestimmte Hersteller oder Geräte gebunden.
-
----
-
-# Entwurfsprinzipien
-
-## Herstellerunabhängig
-
-Alle Komponenten können durch vergleichbare Geräte ersetzt werden.
-
----
-
-## Modular
-
-Jede Komponente besitzt eine klar definierte Aufgabe.
-
----
-
-## Erweiterbar
-
-Weitere Sensoren oder Geräte können ergänzt werden, ohne den Controller grundlegend zu verändern.
-
----
-
-## Fehlertolerant
-
-Optionale Sensoren dürfen den Grundbetrieb nicht beeinträchtigen.
-
-Das Framework muss auch ohne optionale Komponenten vollständig funktionsfähig bleiben.
-
----
-
-# Zukunft
-
-Geplante Erweiterungen umfassen unter anderem
-
-- mehrere Luftentfeuchter
-- Kombination mit Lüftungsanlagen
-- Kombination mit Ventilatoren
-- Taupunktsensoren
-- Tankfüllstandsensoren
-- automatische Tankfüllstandsschätzung
-- lernfähige Tankfüllstandsberechnung
-- automatische Gerätevorschläge anhand bekannter Modelle
-- Fenstersteuerung
-- energieoptimierte Gerätestrategien
+ohne Änderungen am Regelalgorithmus.
 
 ---
 
 # Zusammenfassung
 
-Das Smart Humidity Control Framework benötigt lediglich wenige Pflichtkomponenten.
+Die Gerätekonfiguration beschreibt sämtliche technischen Eigenschaften eines unterstützten Geräts.
 
-Durch die konsequente Trennung zwischen Sensorik, Controller, Schaltkomponente und Luftentfeuchter bleibt das Framework herstellerunabhängig und kann zukünftig um weitere Strategien zur Feuchtereduzierung erweitert werden.
+Sie ermöglicht eine vom Hersteller unabhängige Regelung sowie zukünftige Diagnose-, Wartungs- und Optimierungsfunktionen.
 
-Die Unterstützung unterschiedlicher Arten der Kondensatableitung sowie definierter Geräteeigenschaften bildet bereits heute die Grundlage für zukünftige Komfortfunktionen wie Tankfüllstandsschätzung, lernfähige Berechnungen und die Integration von Tankfüllstandsensoren.
+Durch die konsequente Trennung von Framework, Controller und Gerätekonfiguration bleibt die Architektur flexibel und langfristig erweiterbar.

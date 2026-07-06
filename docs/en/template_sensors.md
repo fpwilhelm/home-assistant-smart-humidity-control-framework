@@ -2,11 +2,11 @@
 
 ## Purpose
 
-This document describes all template sensors used by the current reference implementation of the Smart Humidity Control Framework.
+This document describes all template sensors used by the current reference implementation of the **Smart Humidity Control Framework**.
 
-The template sensors form the calculation layer of the reference implementation. They provide all computed values required by the controller, dashboards, and future blueprint or native integration implementations.
+The template sensors form the calculation layer of the reference implementation. They provide all computed framework values required by the controller, dashboards, and future blueprint or native integration implementations.
 
-The framework regulates **humidity** as its target variable. The controlled object is the **room climate**. In the current reference implementation, the **dehumidifier** is the controlled reference device.
+The framework regulates **relative humidity** as its target variable. The controlled object is the **room climate**. In the current reference implementation, the **dehumidifier** is the controlled reference device.
 
 ---
 
@@ -14,7 +14,46 @@ The framework regulates **humidity** as its target variable. The controlled obje
 
 The entity IDs used throughout this document originate from the current reference implementation based on the **Trotec TTK 171 ECO**.
 
-They are provided as examples only and will later be replaced by generic inputs in the blueprint or internal entities within the native Home Assistant integration.
+They are provided as examples only and will later be replaced by generic inputs in the Automation Blueprint or internal entities within the native Home Assistant integration.
+
+---
+
+# Sensor Groups
+
+The template sensors of the reference implementation can be divided into four functional groups.
+
+## Target Values
+
+Calculated target values used by the humidity control algorithm.
+
+- Target Humidity
+- Target Range Lower Limit
+- Target Range Upper Limit
+
+## Control
+
+Calculated values supporting the control algorithm.
+
+- Hysteresis
+- Switch-on Threshold
+- Target Deviation
+- Dehumidification Demand
+
+## Controller
+
+Logical states provided by the controller.
+
+- Operating Status
+- Operating Status Display
+
+## Diagnostics
+
+Calculated or derived diagnostic values.
+
+- Indoor Dew Point
+- Target Dew Point
+
+Additional diagnostic sensors may be introduced in future framework versions.
 
 ---
 
@@ -36,7 +75,7 @@ Calculates the current target relative humidity.
 
 - Target Mode
 - Humidity Profile
-- Protection Level
+- Control Characteristic
 - User-defined Target Humidity
 
 **Logic**
@@ -46,7 +85,7 @@ If the target mode is **User Defined**, the configured user-defined target humid
 Otherwise, the target humidity is calculated as
 
 ```text
-Humidity Profile Base Value + Protection Level Adjustment
+Humidity Profile Base Value + Control Characteristic Adjustment
 ```
 
 **Used by**
@@ -72,14 +111,16 @@ sensor.trotec_ttk_171_eco_hysterese
 
 Defines the distance between the target humidity and the switch-on threshold.
 
+Hysteresis is one of the central calculated framework values and is determined exclusively by the selected control characteristic.
+
 **Dependencies**
 
-- Protection Level
+- Control Characteristic
 
 **Current Values**
 
-| Protection Level | Hysteresis |
-|-----------------|-----------:|
+| Control Characteristic | Hysteresis |
+|------------------------|-----------:|
 | Comfort | 3 % |
 | Standard | 5 % |
 | Conservative | 7 % |
@@ -257,6 +298,8 @@ sensor.trotec_ttk_171_eco_sollwertabweichung
 
 Calculates the difference between the current humidity and the target humidity.
 
+Target deviation is one of the most important calculated framework values. It describes the current difference between the actual and desired humidity and serves both as a diagnostic value and as the foundation for future control strategies and optimization.
+
 **Formula**
 
 ```text
@@ -267,9 +310,9 @@ Target Deviation = Current Humidity − Target Humidity
 
 | Value | Meaning |
 |------:|---------|
-| less than 0 | drier than target |
-| 0 | target reached |
-| greater than 0 | more humid than target |
+| less than 0 | Drier than target humidity |
+| 0 | Target humidity reached |
+| greater than 0 | More humid than target humidity |
 
 **Used by**
 
@@ -310,13 +353,13 @@ Evaluates the target deviation as an easily understandable status.
 
 - Dashboard
 - Future automations
-- Future optimization
+- Future optimizations
 
 **Note**
 
 The dehumidification demand is currently intended for evaluation and visualization only.
 
-It is not used directly by the controller for switching decisions.
+It does not influence any controller decision.
 
 ---
 
@@ -332,7 +375,11 @@ sensor.trotec_ttk_171_eco_betriebsstatus
 
 **Purpose**
 
-Calculates the controller's current logical operating state.
+Calculates the current logical operating state of the controller.
+
+The operating status describes only the controller's logical decision.
+
+It does not represent either the actual state of the switching device or the physical operating state of the dehumidifier.
 
 **Possible States**
 
@@ -409,10 +456,13 @@ Template Sensors
 Controller
       │
       ▼
+Switching Device
+      │
+      ▼
 Dehumidifier
 ```
 
-This separation ensures that all calculations are performed centrally while the controller is responsible only for decision-making.
+This separation ensures that all calculations are performed centrally while the controller is responsible exclusively for decision-making.
 
 ---
 
@@ -420,15 +470,27 @@ This separation ensures that all calculations are performed centrally while the 
 
 ## Centralized Calculation
 
-Each calculated value is generated exactly once and then shared by all components.
+Each calculated value is generated exactly once and is subsequently reused by all components.
+
+This prevents multiple implementations of the same logical calculation.
+
+---
 
 ## Reusability
 
 Template sensors can be used simultaneously by the controller, dashboards, and future automations.
 
+This keeps the reference implementation modular and easy to extend.
+
+---
+
 ## Transparency
 
 All calculations remain transparent and can be verified independently of the controller.
+
+This simplifies both troubleshooting and future framework development.
+
+---
 
 ## Separation of Calculation and Control
 
@@ -436,7 +498,11 @@ Template sensors calculate values.
 
 The controller makes decisions.
 
-The dehumidifier executes the resulting control action.
+The switching device executes the controller's decision.
+
+The dehumidifier subsequently changes the room climate.
+
+This strict separation of responsibilities is one of the fundamental architectural principles of the Smart Humidity Control Framework.
 
 ---
 
@@ -444,9 +510,28 @@ The dehumidifier executes the resulting control action.
 
 The current reference implementation uses Home Assistant template sensors.
 
-In a future native integration, the same logical values may be calculated internally and exposed as standard sensor entities.
+In a future native Home Assistant integration, the same logical framework values may be calculated internally and exposed directly as sensor entities.
 
-Future extensions may introduce additional humidity reduction strategies without changing the underlying calculation layer.
+This preserves the framework's conceptual model while allowing the technical implementation to evolve.
+
+---
+
+# Planned Template Sensors
+
+Future versions of the framework may provide additional calculated values.
+
+Examples include:
+
+- Estimated Tank Fill Level
+- Tank Full Warning
+- Dew Point Difference
+- Condensation Risk
+- Mold Risk
+- Energy Efficiency Rating
+- Dehumidification Performance
+- Maintenance Status
+
+These sensors are not part of the current reference implementation but are already considered in the long-term framework architecture.
 
 ---
 
@@ -454,4 +539,6 @@ Future extensions may introduce additional humidity reduction strategies without
 
 The template sensors form the calculation layer of the current reference implementation of the Smart Humidity Control Framework.
 
-They provide all calculated values centrally and clearly separate calculations from control logic, user interface, and device control.
+They provide all calculated framework values centrally and clearly separate calculations from control logic, user interface, and device control.
+
+This architecture provides a transparent, understandable, and reusable control model while establishing the foundation for both the Automation Blueprint and the future native Home Assistant integration.

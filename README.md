@@ -20,7 +20,7 @@ The long-term goal is to evolve from a Home Assistant reference implementation i
 - Humidity profiles
 - Control characteristics
 - Target modes
-- Mutiple operating modes
+- Multiple operating modes
 - Hysteresis-based control
 - Reference dashboard
 - Device configuration

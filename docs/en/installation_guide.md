@@ -46,7 +46,7 @@ Before installing the framework, the following requirements should be met.
 
 The following hardware is required.
 
-- Dehumidifier
+- Reference Device (currently: Dehumidifier)
 - Temperature and humidity sensor
 - Switchable smart plug or relay
 
@@ -70,21 +70,21 @@ This includes, among other components,
 - Template Sensors
 - Controller
 - Automations
-- Dashboard
+- Reference Dashboard
 
 This installation method is primarily intended for understanding the framework and developing new features.
 
 ---
 
-# Installation via Blueprint
+# Installation via Automation Blueprint
 
 The Automation Blueprint is the recommended installation method for most users.
 
-The blueprint creates and configures all required framework components.
+The Automation Blueprint creates and configures all required framework components.
 
 The user only needs to configure
 
-- the dehumidifier
+- the reference device
 - the temperature and humidity sensor
 - the switching device
 - the desired basic settings
@@ -107,11 +107,11 @@ All remaining framework components will be created and managed automatically.
 
 # Dashboard
 
-A dashboard template is available for both the reference implementation and the automation blueprint.
+A reference dashboard template may be provided for both the Reference Implementation and the Automation Blueprint.
 
-It is based on the reference dashboard and can be customized if desired.
+It is based on the reference dashboard of the reference implementation and can be customized if desired.
 
-The future native integration may provide additional dashboard support.
+A future native Home Assistant integration may provide additional dashboard support.
 
 ---
 
@@ -129,8 +129,8 @@ Migration between different installation methods should be as simple as possible
 
 Planned migration paths include
 
-- Reference Implementation → Blueprint
-- Blueprint → Native Integration
+- Reference Implementation → Automation Blueprint
+- Automation Blueprint → Native Home Assistant Integration
 
 The logical framework configuration should remain unchanged whenever possible.
 
@@ -141,12 +141,12 @@ The logical framework configuration should remain unchanged whenever possible.
 If problems occur, the following should be checked first.
 
 - The sensor provides valid measurements.
-- The dehumidifier automatically restarts after power restoration.
+- The reference device automatically restarts after power restoration.
 - The smart plug or relay switches correctly.
 - The controller is not in **Off** operating mode.
 - All devices are available.
 
-Additional diagnostic information is provided by the dashboard.
+Additional diagnostic information is provided by the reference dashboard.
 
 ---
 
@@ -158,7 +158,7 @@ Planned future enhancements include
 - Automatic device detection
 - Automatic import of known device properties
 - Installation wizard
-- Automatic migration between the blueprint and the native integration
+- Automatic migration between the Automation Blueprint and the native Home Assistant integration
 
 ---
 
@@ -168,6 +168,6 @@ The Smart Humidity Control Framework supports multiple installation methods.
 
 The reference implementation serves as the basis for development and documentation.
 
-The Automation Blueprint is the recommended installation method for most users.
+The Automation Blueprint is the recommended installation method for most users of the current framework version.
 
 In the long term, a native Home Assistant integration will provide fully automated framework deployment.

@@ -17,7 +17,7 @@ Die Kommunikation mit Home Assistant erfolgt über die Integrationsschicht bzw. 
 Der Controller ist verantwortlich für
 
 - Auswertung der Sensordaten
-- Berechnung des Zielwerts
+- Auswertung der Ziel-Luftfeuchtigkeit
 - Anwendung der Hysterese
 - Steuerung des Luftentfeuchters
 - Verwaltung der Betriebsmodi
@@ -226,8 +226,8 @@ Folgende Ereignisse können eine Neubewertung des Controllers auslösen.
 
 - Änderung der Luftfeuchtigkeit
 - Änderung der Temperatur
-- Änderung eines Raumprofils
-- Änderung des Schutzniveaus
+- Änderung eines Feuchteprofils
+- Änderung des Regelcharakteristiken
 - Änderung eines Sollwerts
 - Änderung der Hysterese
 - Start des Zeitbetriebs
@@ -281,7 +281,7 @@ Hierzu gehören beispielsweise
 - letzter Schaltgrund
 - letzte Schaltung
 - aktive Hysterese
-- aktueller Zielwert
+- aktuelle Ziel-Luftfeuchtigkeit
 - aktuelle Regelentscheidung
 
 Diese Informationen dienen der Nachvollziehbarkeit und Fehlersuche.

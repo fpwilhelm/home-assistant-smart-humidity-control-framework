@@ -140,9 +140,9 @@ The dehumidifier remains switched off.
 
 Changes to
 
-- room profile
+- humidity profile
 - target humidity
-- protection level
+- control characteristic
 
 do not automatically restart the controller.
 
@@ -316,7 +316,7 @@ The control algorithm provides the foundation for future extensions.
 Planned enhancements include
 
 - adaptive hysteresis
-- learning room profiles
+- learning humidity profiles
 - dew point control
 - mold risk assessment
 - ventilation recommendations

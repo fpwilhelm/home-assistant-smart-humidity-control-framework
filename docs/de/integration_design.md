@@ -1,274 +1,232 @@
 # Integrationsdesign
 
-## Zweck
+Dieses Dokument beschreibt die langfristige Architektur der nativen **Smart Humidity Control Framework** Integration für Home Assistant.
 
-Dieses Dokument beschreibt den geplanten Aufbau der zukünftigen **Smart Humidity Control Integration** für Home Assistant.
+Es definiert, wie sich das Framework von der aktuellen Referenzimplementierung zu einer vollständig integrierten Home-Assistant-Komponente weiterentwickeln soll.
 
-Es definiert die Architektur der Integration, ihre Komponenten, den Datenfluss sowie die Verantwortlichkeiten der einzelnen Module.
-
-Dieses Dokument beschreibt die Zielarchitektur und ist unabhängig von der aktuellen Blueprint-Implementierung.
+Das Dokument beschreibt ausschließlich die fachliche Architektur und ist bewusst unabhängig von Implementierungsdetails.
 
 ---
 
-# Ziele
+# Ziel
 
-Die Integration soll
+Die native Integration soll den vollständigen Funktionsumfang des Smart Humidity Control Framework bereitstellen, ohne dass Benutzer Helfer, Template-Sensoren, Automationen oder Dashboards manuell erstellen müssen.
 
-- mehrere Luftentfeuchter unterstützen
-- beliebig viele Räume verwalten können
-- vollständig über die Home-Assistant-Benutzeroberfläche konfigurierbar sein
-- ohne YAML nutzbar sein
-- alle relevanten Entitäten automatisch erzeugen
-- leicht erweiterbar sein
-- vollständig dokumentiert sein
+Die Integration übernimmt die automatische Erstellung und Verwaltung sämtlicher Framework-Komponenten.
 
 ---
 
-# Integrationsübersicht
+# Entwurfsprinzipien
 
-Die Integration besteht aus mehreren logisch getrennten Komponenten.
+Die Integration folgt den grundlegenden Prinzipien des Smart Humidity Control Framework.
+
+- herstellerunabhängig
+- modular
+- nachvollziehbar
+- erweiterbar
+- wiederverwendbar
+- einfach konfigurierbar
+
+Der zugrunde liegende Regelalgorithmus bleibt identisch zur Referenzimplementierung.
+
+Lediglich die technische Umsetzung ändert sich.
+
+---
+
+# Architektur
+
+Die native Integration stellt eine mögliche Implementierung der Framework-Architektur dar.
 
 ```text
-Smart Humidity Control
-
-├── Konfiguration
-├── Geräteverwaltung
-├── Controller
-├── Profilverwaltung
-├── Laufzeitdaten
-├── Entitäten
-├── Dashboard
-└── Diagnose
+Smart Humidity Control Framework
+                │
+                ▼
+Native Home Assistant Integration
+                │
+                ▼
+Konfiguration
+                │
+                ▼
+Framework-Komponenten
+                │
+                ▼
+Controller
+                │
+                ▼
+Schaltgerät
+                │
+                ▼
+Referenzgerät
 ```
 
-Jede Komponente besitzt klar definierte Aufgaben und Schnittstellen.
+Die Architektur des Frameworks bleibt dabei vollständig unabhängig von Home Assistant.
 
 ---
 
 # Konfiguration
 
-Die Konfiguration erfolgt vollständig über Config Entries.
+Die Integration stellt eine grafische Benutzeroberfläche zur Verfügung.
 
-Der Benutzer wählt unter anderem
+Benutzer sollen keine YAML-Dateien bearbeiten müssen.
 
-- Luftentfeuchter
-- Schaltbare Steckdose
-- Luftfeuchtigkeitssensor
-- Temperatursensor
-- Energiezähler
-- Leistungsaufnahme
-- Standardprofil
-- Standard-Schutzniveau
+Für sämtliche Konfigurationsaufgaben werden verwendet:
 
-Die Integration erzeugt anschließend automatisch alle benötigten Entitäten.
+- Config Flow
+- Options Flow
 
 ---
 
-# Geräteverwaltung
+# Framework-Komponenten
 
-Die Geräteverwaltung verwaltet alle physikalischen Geräte.
+Die Integration verwaltet sämtliche benötigten Framework-Komponenten automatisch.
 
-Hierzu gehören beispielsweise
+Dazu gehören beispielsweise:
 
-- Luftentfeuchter
-- Steckdosen
-- Sensoren
-- Leistungsmessung
-- Energieverbrauch
+- Feuchteprofile
+- Regelcharakteristiken
+- Zielwertmodi
+- Betriebsmodi
+- Gerätekonfiguration
+- Template-Sensoren
+- Controller
+- Diagnosefunktionen
 
-Die Geräteverwaltung stellt diese Informationen dem Controller zur Verfügung.
+Der Benutzer konfiguriert das Framework und nicht einzelne Home-Assistant-Entitäten.
+
+---
+
+# Gerätekonfiguration
+
+Jedes unterstützte Gerät wird anhand seiner technischen Eigenschaften beschrieben.
+
+Beispiele:
+
+- Nennleistung
+- Entfeuchtungsleistung
+- Tankvolumen
+- Kondensatbetrieb
+- unterstützte Betriebsarten
+- automatischer Wiederanlauf
+
+Diese Informationen dienen sowohl der Regelung als auch zukünftigen Diagnose- und Optimierungsfunktionen.
 
 ---
 
 # Controller
 
-Der Controller bildet das Herzstück der Integration.
+Der native Controller implementiert dieselbe fachliche Logik wie die Referenzimplementierung.
 
-Er übernimmt sämtliche Steuerungsentscheidungen.
+Zu seinen Aufgaben gehören:
 
-Dazu gehören unter anderem
-
-- Sollwertberechnung
-- Hysterese
-- Ein- und Ausschalten
-- Betriebsmodus
+- Verwaltung der Betriebsmodi
+- Hystereseregelung
 - Zeitbetrieb
-- Mindestlaufzeit
-- Mindestpause
-- Sicherheitsfunktionen
+- Sofortaktivierung nach Zielwertänderungen
+- Berechnung des Betriebsstatus
+- Ansteuerung des Schaltgeräts
 
-Der Controller trifft ausschließlich logische Entscheidungen.
-
-Die eigentliche Kommunikation mit Home Assistant erfolgt über die Entitäten.
-
----
-
-# Profilverwaltung
-
-Die Profilverwaltung verwaltet sämtliche Raumprofile.
-
-Jedes Profil definiert unter anderem
-
-- Basis-Luftfeuchtigkeit
-- zulässigen Bereich
-- empfohlene Hysterese
-- Beschreibung
-
-Die Integration enthält vordefinierte Standardprofile.
-
-Benutzer können später zusätzlich eigene Profile erstellen.
-
----
-
-# Laufzeitdaten
-
-Während des Betriebs speichert die Integration verschiedene Laufzeitinformationen.
-
-Beispiele
-
-- aktueller Sollwert
-- Betriebsmodus
-- Betriebsstatus
-- aktive Hysterese
-- Restlaufzeit
-- letzte Schaltung
-- Laufzeitstatistik
-
-Diese Daten dienen sowohl der Steuerung als auch der Visualisierung.
-
----
-
-# Entitäten
-
-Die Integration erzeugt automatisch alle benötigten Home-Assistant-Entitäten.
-
-Dazu gehören beispielsweise
-
-## Sensoren
-
-- aktuelle Luftfeuchtigkeit
-- Temperatur
-- Sollwert
-- Zielbereich
-- Betriebsstatus
-- Leistungsaufnahme
-- Energieverbrauch
-
-## Selects
-
-- Raumprofil
-- Schutzniveau
-- Betriebsmodus
-
-## Numbers
-
-- Zielwert
-- Hysterese
-- Zeitbetrieb
-
-## Switches
-
-- Automatik aktiv
-- Controller aktiv
-
-## Buttons
-
-- Zeitbetrieb starten
-- Zeitbetrieb abbrechen
-- Statistiken zurücksetzen
-
-## Binary Sensoren
-
-- Entfeuchter läuft
-- Zielbereich erreicht
-- Zeitbetrieb aktiv
-- Fehlerzustand
-
----
-
-# Dashboard
-
-Die Integration stellt alle erforderlichen Informationen für ein Dashboard bereit.
-
-Das Dashboard selbst gehört jedoch nicht zur Integration.
-
-Es verwendet ausschließlich die von der Integration bereitgestellten Entitäten.
-
-Dadurch können beliebige Dashboards erstellt werden.
+Der Regelalgorithmus bleibt in allen Implementierungen identisch.
 
 ---
 
 # Diagnose
 
-Die Integration stellt umfangreiche Diagnoseinformationen bereit.
+Die Integration soll integrierte Diagnosefunktionen bereitstellen.
 
-Beispiele
+Beispiele:
 
-- aktuelle Regelentscheidung
-- letzte Schaltung
-- Sperrgrund
-- aktive Betriebsart
-- Controllerzustand
-- Sensorstatus
+- Sensorprüfung
+- Konfigurationsprüfung
+- Geräteverfügbarkeit
+- Betriebsstatus
+- Betriebsstatistiken
+- Warnmeldungen
 
-Diese Informationen erleichtern Fehlersuche und Support.
+Spätere Versionen können zusätzlich bereitstellen:
+
+- geschätzter Tankfüllstand
+- Wartungshinweise
+- Effizienzbewertung
 
 ---
 
-# Erweiterbarkeit
+# Dashboard-Generierung
 
-Die Architektur ist modular aufgebaut.
+Die Integration soll optional ein vollständiges Dashboard erzeugen.
 
-Dadurch können zukünftige Funktionen ergänzt werden, ohne bestehende Installationen zu verändern.
+Dieses umfasst unter anderem:
 
-Geplante Erweiterungen
+- Betriebssteuerung
+- Luftfeuchtigkeitsanzeige
+- Zielbereich
+- Betriebsstatus
+- Leistungsüberwachung
+- Energieüberwachung
+- Warnmeldungen
+- Diagnoseinformationen
 
-- mehrere Luftentfeuchter pro Raum
+Das erzeugte Dashboard soll anschließend individuell angepasst werden können.
+
+---
+
+# Geräteunterstützung
+
+Das Framework unterstützt unterschiedliche Schaltgeräte.
+
+Beispiele:
+
+- Smart Plugs
+- Relais
+- Shelly-Geräte
+- Schütze
+
+Das Referenzgerät bleibt der Luftentfeuchter.
+
+Zukünftige Versionen können weitere Strategien zur Reduzierung der Luftfeuchtigkeit unterstützen.
+
+---
+
+# Zukünftige Erweiterungen
+
+Die Architektur wurde so entwickelt, dass zukünftige Funktionen ohne grundlegende Änderungen ergänzt werden können.
+
+Beispiele:
+
+- mehrere Luftentfeuchter
+- Lüftungsanlagen
+- Ventilatoren
+- automatische Fenstersteuerung
+- adaptive Regelalgorithmen
+- lernfähige Feuchteprofile
 - Taupunktregelung
-- Außentemperatur
-- Fensterkontakte
-- Lüftungssteuerung
-- Wettervorhersage
-- Energieoptimierung
-- Zeitprogramme
-- Automatische Profilvorschläge
+- Schimmelrisikobewertung
+- Gebäudetrocknung
+- mehrere Strategien zur Feuchtereduzierung
 
 ---
 
-# Verhältnis zum Blueprint
+# Migration
 
-Der aktuelle Blueprint bildet die erste Ausbaustufe des Projekts.
+Die Referenzimplementierung bildet den Migrationspfad zur nativen Integration.
 
-Die spätere Integration übernimmt die bewährte Steuerungslogik des Blueprints und erweitert sie um
+```text
+Referenzimplementierung
+            │
+            ▼
+Automation Blueprint
+            │
+            ▼
+Native Home Assistant Integration
+```
 
-- grafische Konfiguration
-- automatische Entitätenerstellung
-- bessere Diagnose
-- höhere Erweiterbarkeit
-- einfachere Bedienung
-
-Dadurch bleibt der Umstieg auf die Integration für bestehende Anwender möglichst einfach.
-
----
-
-# Designprinzipien
-
-Die Integration folgt den folgenden Grundprinzipien.
-
-- Home-Assistant-Standardkonformität
-- klare Trennung der Verantwortlichkeiten
-- möglichst wenig Benutzerkonfiguration
-- automatische Einrichtung
-- nachvollziehbare Steuerungsentscheidungen
-- vollständige Diagnose
-- hohe Wiederverwendbarkeit
-- einfache Erweiterbarkeit
-- langfristige Wartbarkeit
+Benutzer sollen auf die nächste Entwicklungsstufe wechseln können, ohne die grundlegende Arbeitsweise des Frameworks ändern zu müssen.
 
 ---
 
 # Zusammenfassung
 
-Die Smart Humidity Control Integration stellt eine vollständig integrierte Lösung zur intelligenten Steuerung von Luftentfeuchtern in Home Assistant dar.
+Die native Home Assistant Integration stellt das langfristige Entwicklungsziel des Smart Humidity Control Framework dar.
 
-Sie baut auf der im Blueprint entwickelten Steuerungslogik auf und erweitert diese um eine moderne, modulare und vollständig konfigurierbare Architektur.
+Sie übernimmt die vollständige Verwaltung sämtlicher Framework-Komponenten und ersetzt die manuelle Home-Assistant-Konfiguration durch eine integrierte, benutzerfreundliche Lösung.
+
+Die fachliche Architektur des Frameworks bleibt dabei unabhängig von Herstellern, Geräten und zukünftigen Implementierungstechnologien bestehen.

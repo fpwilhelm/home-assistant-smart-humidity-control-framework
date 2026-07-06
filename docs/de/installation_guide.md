@@ -46,7 +46,7 @@ Vor der Installation sollten folgende Voraussetzungen erfüllt sein.
 
 Mindestens erforderlich sind
 
-- Luftentfeuchter
+- Referenzgerät (aktuell: Luftentfeuchter)
 - Temperatur- und Feuchtesensor
 - Schaltbare Steckdose oder Relais
 
@@ -70,21 +70,21 @@ Hierzu gehören unter anderem
 - Template-Sensoren
 - Controller
 - Automationen
-- Dashboard
+- Referenzdashboard
 
 Diese Installationsart eignet sich insbesondere zum Verständnis des Frameworks sowie zur Entwicklung neuer Funktionen.
 
 ---
 
-# Installation über Blueprint
+# Installation über Automation Blueprint
 
 Der Automation Blueprint stellt die empfohlene Installationsmethode für die meisten Benutzer dar.
 
-Der Blueprint übernimmt die Einrichtung der benötigten Komponenten.
+Der Automation Blueprint übernimmt die Einrichtung der benötigten Komponenten.
 
 Der Benutzer konfiguriert lediglich
 
-- verwendeten Luftentfeuchter
+- verwendetes Referenzgerät
 - Sensor
 - Schaltkomponente
 - gewünschte Grundeinstellungen
@@ -107,11 +107,11 @@ Alle weiteren Komponenten werden automatisch erstellt und verwaltet.
 
 # Dashboard
 
-Für Referenzimplementierung und Blueprint steht eine Dashboard-Vorlage zur Verfügung.
+Für Referenzimplementierung und Automation Blueprint kann eine Referenzdashboard-Vorlage bereitgestellt werden.
 
-Sie basiert auf der Referenzimplementierung und kann bei Bedarf individuell angepasst werden.
+Sie basiert auf dem Referenzdashboard der Referenzimplementierung und kann bei Bedarf individuell angepasst werden.
 
-Die native Integration kann zukünftig zusätzliche Dashboard-Unterstützung bereitstellen.
+Eine spätere native Home Assistant Integration kann zusätzliche Dashboard-Unterstützung bereitstellen.
 
 ---
 
@@ -129,8 +129,8 @@ Der Wechsel zwischen den verschiedenen Installationsvarianten soll möglichst ei
 
 Geplant sind insbesondere
 
-- Referenzimplementierung → Blueprint
-- Blueprint → Native Integration
+- Referenzimplementierung → Automation Blueprint
+- Automation Blueprint → Native Home Assistant Integration
 
 Die fachliche Konfiguration des Frameworks soll hierbei erhalten bleiben.
 
@@ -141,12 +141,12 @@ Die fachliche Konfiguration des Frameworks soll hierbei erhalten bleiben.
 Bei Problemen sollten zunächst folgende Punkte überprüft werden.
 
 - Sensor liefert gültige Messwerte.
-- Luftentfeuchter startet nach Spannungswiederkehr automatisch.
+- Referenzgerät startet nach Spannungswiederkehr automatisch.
 - Steckdose oder Relais schaltet korrekt.
 - Controller befindet sich nicht im Betriebsmodus **Aus**.
 - Geräte sind erreichbar.
 
-Weitere Diagnoseinformationen stellt das Dashboard bereit.
+Weitere Diagnoseinformationen stellt das Referenzdashboard bereit.
 
 ---
 
@@ -158,7 +158,7 @@ Geplante Erweiterungen umfassen unter anderem
 - automatische Geräteerkennung
 - automatische Übernahme bekannter Geräteeigenschaften
 - Installationsassistent
-- automatische Migration zwischen Blueprint und Integration
+- automatische Migration zwischen Automation Blueprint und nativer Home Assistant Integration
 
 ---
 
@@ -168,6 +168,6 @@ Das Smart Humidity Control Framework unterstützt mehrere Installationswege.
 
 Die Referenzimplementierung dient Entwicklung und Dokumentation.
 
-Der Automation Blueprint stellt die empfohlene Installationsmethode für die meisten Benutzer dar.
+Der Automation Blueprint stellt die empfohlene Installationsmethode für die meisten Benutzer der aktuellen Framework-Version dar.
 
 Langfristig soll eine native Home Assistant Integration die vollständige Einrichtung des Frameworks übernehmen.

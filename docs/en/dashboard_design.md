@@ -4,9 +4,11 @@
 
 This document describes the user interface of the reference implementation of the Smart Humidity Control Framework.
 
-The dashboard allows users to monitor and control the framework while presenting all relevant information about the current room climate and the dehumidifier.
+The dashboard allows users to monitor and control the framework while presenting all relevant information about the current room climate and the reference device.
 
-The current dashboard serves as the reference implementation for the first blueprint. Future versions may extend its functionality without changing its fundamental structure.
+In the current reference implementation, the reference device is a dehumidifier.
+
+The current reference dashboard serves as the reference implementation for the first Automation Blueprint. Future versions may extend its functionality without changing its fundamental structure.
 
 ---
 
@@ -61,7 +63,7 @@ The status section displays the current operating state of the framework.
 - Timed Operation Active
 - Remaining Timed Operation Duration
 
-The user should always be able to understand why the dehumidifier is currently running or stopped.
+The user should always be able to understand which decision the controller has made and why the reference device is currently in its present operating state.
 
 ---
 
@@ -93,6 +95,10 @@ This section visualizes the current room climate.
 - Target Range
 - Room Temperature
 
+The target range visualizes the recommended humidity range between the target humidity and the switch-on threshold.
+
+It is intended exclusively for visualization and has no direct influence on the control algorithm.
+
 ## Planned Extensions
 
 - Dew Point
@@ -104,7 +110,7 @@ This section visualizes the current room climate.
 
 # Power & Energy
 
-This section displays the current operating data of the dehumidifier.
+This section displays the current operating data of the reference device.
 
 ## Information
 
@@ -187,13 +193,13 @@ Warnings may be generated from calculated values or from dedicated sensors.
 
 # Reference Implementation
 
-The current Home Assistant dashboard represents the reference implementation of the framework.
+The current Home Assistant reference dashboard represents the reference implementation of the framework.
 
 It is based on the entities provided by the reference implementation.
 
-The first blueprint is intended to follow the same operating concept.
+The first Automation Blueprint follows the same operating concept.
 
-A future native Home Assistant integration may provide additional information and convenience features while preserving the overall user experience.
+A future native Home Assistant integration may provide additional information and convenience features while preserving the overall structure.
 
 ---
 
@@ -221,7 +227,7 @@ New information can be added without changing the existing structure.
 
 Important information should always be visible without additional navigation.
 
-Advanced functionality may be added without making the basic operation more complex.
+Advanced functionality may be be added without making the basic operation more complex.
 
 ---
 
@@ -240,12 +246,14 @@ Planned future enhancements include
 - Long-Term Statistics
 - Support for Multiple Dehumidifiers
 
+Future dashboard implementations may differ from the current reference dashboard while presenting the same logical framework values.
+
 ---
 
 # Summary
 
-The dashboard is the central user interface of the Smart Humidity Control Framework.
+The reference dashboard is the central user interface of the current reference implementation of the Smart Humidity Control Framework.
 
 It presents all relevant information in a clear and structured way, provides intuitive control, and supports the user through warnings as well as future diagnostic and analytical features.
 
-The current dashboard serves as the reference implementation for the first blueprint and will continue to evolve together with the framework.
+The current reference dashboard serves as the foundation for the first Automation Blueprint and will continue to evolve together with the framework.
