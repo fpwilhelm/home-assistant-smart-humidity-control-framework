@@ -1,8 +1,8 @@
 # Changelog
 
-All notable changes to the **Smart Humidity Control Framework** will be documented in this file.
+All notable changes to the Smart Humidity Control Framework are documented in this file.
 
-The format is based on **Keep a Changelog** and the project follows **Semantic Versioning (SemVer)**.
+The project follows the principles of [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and aims to follow Semantic Versioning where applicable.
 
 ---
 
@@ -10,37 +10,62 @@ The format is based on **Keep a Changelog** and the project follows **Semantic V
 
 ### Added
 
-#### Documentation
+- Ongoing improvements before the first public release.
 
-- Initial project documentation
-- Architecture documentation
-- Glossary
-- Helper documentation
-- Template sensor documentation
-- Project roadmap
+---
 
-#### Reference Implementation
+## [1.0.0] - Initial Development
 
-- Automatic humidity control
-- Operating modes
-- Humidity profiles
-- Target value modes
-- Protection levels
-- Timed operation
-- Dashboard
-- Template sensors
-- Device parameters
-- Power monitoring
-- Energy monitoring
+### Added
 
 #### Project
 
 - Initial project structure
 - Git repository
-- Development roadmap
+- GitHub repository
+- MIT License
+- README
+- Roadmap
+- Changelog
+
+#### Documentation
+
+- Complete German documentation
+- Complete English documentation
+- Architecture documentation
+- Glossary
+- Control algorithm
+- Controller reference
+- Integration design
+- Helper entities
+- Template sensors
+- Humidity profiles
+- Device configuration
+- Dashboard design
+- Automation blueprint
+- Installation guide
+- Coding guidelines
+- Documentation index
+
+#### Framework
+
+- Manufacturer-independent framework architecture
+- Modular controller concept
+- Humidity profile concept
+- Control characteristics
+- Multiple operating modes
+- Target mode concept
+- Hysteresis-based control
+- Device abstraction
+- Dashboard architecture
+- Future native integration architecture
 
 ---
 
-## [1.0.0] - In Development
+## Release Notes
 
-Initial development of the Smart Humidity Control Framework reference implementation.
+### 1.0.0
+
+Initial development release.
+
+This version establishes the complete framework architecture, documentation, and reference implementation that form the foundation for all future development.

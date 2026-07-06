@@ -1,235 +1,427 @@
 # Glossar
 
-Dieses Glossar definiert die im **Home Assistant Smart Humidity Control Framework** verwendeten Fachbegriffe.
+Dieses Glossar definiert die im **Smart Humidity Control Framework** verwendeten Fachbegriffe.
 
-Die hier definierten Begriffe gelten verbindlich für die Dokumentation, den Automation Blueprint, die spätere Home Assistant Integration sowie die Benutzeroberfläche.
+Es dient als verbindliche Terminologiereferenz für die gesamte Projektdokumentation, die Home-Assistant-Referenzimplementierung, den Automation Blueprint sowie die zukünftige native Home Assistant Integration.
 
----
-
-# Framework
-
-Das **Home Assistant Smart Humidity Control Framework** beschreibt die gesamte modulare Architektur zur intelligenten Feuchteregelung.
-
-Das Framework besteht aus vier logisch getrennten Ebenen:
-
-- Hardware
-- Konfiguration
-- Controller
-- Visualisierung
-
-Das Framework ist herstellerunabhängig und arbeitet grundsätzlich mit beliebigen geeigneten Aktoren.
+Alle Dokumente des Projekts verwenden die hier definierten Begriffe.
 
 ---
 
-# Aktor
+# Verwendung des Glossars
 
-Ein Aktor ist ein Gerät, das vom Controller gesteuert wird.
+Für jeden Begriff werden folgende Informationen angegeben:
 
-Der Aktor setzt die vom Framework ermittelte Regelstrategie um.
+- **Deutscher Begriff**
+- **Englischer Begriff**
+- **Beschreibung**
+- **Hinweise zur Verwendung** (falls erforderlich)
 
-Aktuell unterstützt das Framework insbesondere:
-
-- Luftentfeuchter
-
-Perspektivisch sind weitere Aktoren vorgesehen, beispielsweise:
-
-- Lüftungsanlagen
-- Fensterantriebe
-- Ventilatoren
-
-Das Framework arbeitet grundsätzlich aktorunabhängig.
+Die englischen Begriffe dienen gleichzeitig als Grundlage für die spätere Implementierung (Blueprint, Integration und Quellcode).
 
 ---
 
-# Feuchteprofil
+# Architektur
 
-Ein Feuchteprofil beschreibt einen typischen Anwendungsfall der Feuchteregelung.
+## Framework
 
-Es definiert insbesondere den empfohlenen Basiswert der relativen Luftfeuchtigkeit.
+**Englisch**
 
-Beispiele für Standardprofile:
+Framework
+
+**Beschreibung**
+
+Das Smart Humidity Control Framework umfasst die gesamte Architektur zur intelligenten Regelung der Luftfeuchtigkeit.
+
+Es besteht aus Dokumentation, Referenzimplementierung, Automation Blueprint und der späteren nativen Home Assistant Integration.
+
+---
+
+## Referenzimplementierung
+
+**Englisch**
+
+Reference Implementation
+
+**Beschreibung**
+
+Die aktuelle Home-Assistant-Implementierung des Frameworks.
+
+Sie dient als Grundlage für Entwicklung, Tests und Dokumentation.
+
+---
+
+## Referenzgerät
+
+**Englisch**
+
+Reference Device
+
+**Beschreibung**
+
+Das Gerät, auf dessen Basis die Referenzimplementierung entwickelt wurde.
+
+Aktuell:
+
+- Trotec TTK 171 ECO
+
+Das Framework selbst bleibt herstellerunabhängig.
+
+---
+
+# Regelung
+
+## Ziel-Luftfeuchtigkeit
+
+**Englisch**
+
+Target Humidity
+
+**Beschreibung**
+
+Gewünschte relative Luftfeuchtigkeit, auf welche der Controller den Raum regelt.
+
+**Hinweis**
+
+Im gesamten Framework bezeichnet „Luftfeuchtigkeit“ grundsätzlich die **relative Luftfeuchtigkeit**, sofern nicht ausdrücklich anders angegeben.
+
+---
+
+## Relative Luftfeuchtigkeit
+
+**Englisch**
+
+Relative Humidity
+
+**Beschreibung**
+
+Anteil des aktuell enthaltenen Wasserdampfes an der maximal möglichen Wasserdampfmenge der Luft bei gleicher Temperatur.
+
+Einheit:
+
+```text
+%
+```
+
+---
+
+## Absolute Luftfeuchtigkeit
+
+**Englisch**
+
+Absolute Humidity
+
+**Beschreibung**
+
+Tatsächlich in der Luft enthaltene Wassermenge.
+
+Sie wird derzeit nicht direkt vom Framework verwendet, kann jedoch künftig für erweiterte Regelstrategien berücksichtigt werden.
+
+Einheit:
+
+```text
+g/m³
+```
+
+---
+
+## Feuchteprofil
+
+**Englisch**
+
+Humidity Profile
+
+**Beschreibung**
+
+Ein Feuchteprofil definiert die empfohlene Ziel-Luftfeuchtigkeit für einen typischen Anwendungsfall.
+
+Beispiele:
 
 - Wohnraum
 - Schlafzimmer
 - Badezimmer
+- Waschküche
 - Keller unbeheizt
-- Garage
-- Technikraum
-
-Perspektivisch sollen Benutzer beliebige eigene Feuchteprofile anlegen, ändern und löschen können.
-
-Der Controller arbeitet ausschließlich mit den Eigenschaften eines Feuchteprofils und niemals mit konkreten Räumen oder deren Bezeichnungen.
 
 ---
 
-# Schutzniveau
+## Regelcharakteristik
 
-Das Schutzniveau verschiebt den Basiswert eines Feuchteprofils.
+**Englisch**
 
-Aktuell stehen folgende Schutzniveaus zur Verfügung:
+Control Characteristic
 
-- Komfort
+**Beschreibung**
+
+Die Regelcharakteristik beschreibt, wie eng oder großzügig der Controller um die Ziel-Luftfeuchtigkeit regelt.
+
+Sie beeinflusst insbesondere die verwendete Hysterese.
+
+Aktuelle Regelcharakteristiken:
+
+- Streng
 - Standard
-- Konservativ
-
-Weitere Schutzniveaus können zukünftig ergänzt werden.
+- Großzügig
 
 ---
 
-# Zielwertmodus
+## Zielwertmodus
 
-Der Zielwertmodus bestimmt, wie der aktuell gültige Zielwert ermittelt wird.
+**Englisch**
 
-Aktuell stehen folgende Modi zur Verfügung:
+Target Mode
+
+**Beschreibung**
+
+Legt fest, wie die Ziel-Luftfeuchtigkeit bestimmt wird.
+
+Aktuelle Modi:
 
 - Feuchteprofil
 - Benutzerdefiniert
 
-Zukünftig sind weitere Zielwertmodi vorgesehen, beispielsweise:
+---
 
-- Taupunktgeführt
-- Außenklimageführt
-- Optimierungsmodus
+## Hysterese
+
+**Englisch**
+
+Hysteresis
+
+**Beschreibung**
+
+Abstand zwischen Ziel-Luftfeuchtigkeit und Einschaltgrenze.
+
+Sie verhindert häufiges Ein- und Ausschalten des Luftentfeuchters.
 
 ---
 
-# Zielwert
+## Einschaltgrenze
 
-Der Zielwert ist die vom Controller aktuell verwendete Ziel-Luftfeuchtigkeit.
+**Englisch**
 
-Er ergibt sich aus dem gewählten Zielwertmodus.
+Activation Threshold
 
----
+**Beschreibung**
 
-# Hysterese
-
-Die Hysterese verhindert häufiges Ein- und Ausschalten eines Aktors.
-
-Sie definiert den Abstand zwischen Ausschalt- und Einschaltpunkt.
+Luftfeuchtigkeit, bei deren Überschreiten der Controller den Luftentfeuchter im Automatikbetrieb einschaltet.
 
 ---
 
-# Einschaltgrenze
+## Zielbereich
 
-Die Einschaltgrenze beschreibt den Feuchtewert, ab dem der Controller einen Aktor einschaltet.
+**Englisch**
 
-Sie ergibt sich aus:
+Target Range
 
-- aktueller Ziel-Luftfeuchtigkeit
-- Hysterese
+**Beschreibung**
+
+Bereich zwischen Ziel-Luftfeuchtigkeit und Einschaltgrenze.
+
+Der Zielbereich wird im Dashboard visualisiert.
 
 ---
 
-# Betriebsmodus
+# Betriebsarten
 
-Der Betriebsmodus bestimmt die grundsätzliche Arbeitsweise des Controllers.
+## Betriebsmodus
 
-Aktuell werden folgende Betriebsmodi unterstützt:
+**Englisch**
+
+Operating Mode
+
+**Beschreibung**
+
+Grundsätzliche Betriebsart des Controllers.
+
+Aktuelle Betriebsmodi:
 
 - Aus
 - Automatik
 - Dauerbetrieb
 - Zeitbetrieb
 
-Weitere Betriebsmodi können zukünftig ergänzt werden.
+---
+
+## Betriebsstatus
+
+**Englisch**
+
+Operating Status
+
+**Beschreibung**
+
+Vom Controller berechneter aktueller logischer Zustand.
+
+Der Betriebsstatus dient ausschließlich der Anzeige und Diagnose.
 
 ---
 
-# Controller
+# Geräte
 
-Der Controller bildet die zentrale Regelungslogik des Frameworks.
+## Luftentfeuchter
 
-Er verarbeitet:
+**Englisch**
 
-- Sensorwerte
-- berechnete Werte der Template-Sensoren
-- Zielwerte
-- Betriebsmodi
-- Konfigurationsparameter
+Dehumidifier
 
-Auf dieser Grundlage entscheidet der Controller über den Betrieb der angeschlossenen Aktoren.
+**Beschreibung**
 
-Der Controller kennt weder konkrete Räume noch bestimmte Geräte oder Hersteller.
+Referenzgerät des Frameworks.
+
+Langfristig können weitere Strategien zur Reduzierung der Luftfeuchtigkeit unterstützt werden.
 
 ---
 
-# Regelalgorithmus
+## Schaltgerät
 
-Der Regelalgorithmus beschreibt die fachlichen Regeln der Feuchteregelung.
+**Englisch**
 
-Er definiert ausschließlich das gewünschte Regelverhalten und ist vollständig unabhängig von einer konkreten Implementierung.
+Switching Device
 
-Sowohl die Referenzimplementierung als auch der Automation Blueprint und die spätere Home Assistant Integration implementieren denselben Regelalgorithmus.
+**Beschreibung**
 
----
+Komponente, mit der das Framework ein Gerät ein- oder ausschaltet.
 
-# Referenzimplementierung
+Beispiele:
 
-Die Referenzimplementierung ist die aktuelle Home Assistant Implementierung des Controllers.
-
-Sie dient als Grundlage für den Automation Blueprint sowie für die spätere native Home Assistant Integration.
-
----
-
-# Automation Blueprint
-
-Der Automation Blueprint stellt eine generische Home Assistant Implementierung des Controllers bereit.
-
-Er ermöglicht die Wiederverwendung derselben Regelungslogik mit unterschiedlichen Sensoren, Aktoren und Installationen, ohne Änderungen am Quellcode.
+- Smart Plug
+- Relais
+- Shelly
+- Schütz
 
 ---
 
-# Native Home Assistant Integration
+## Gerätekonfiguration
 
-Die Native Home Assistant Integration ist das langfristige Ziel des Projekts.
+**Englisch**
 
-Sie implementiert denselben Regelalgorithmus wie die Referenzimplementierung und der Automation Blueprint, stellt jedoch alle benötigten Entitäten automatisch bereit und reduziert den Konfigurationsaufwand erheblich.
+Device Configuration
 
----
+**Beschreibung**
 
-# Geräteparameter
-
-Geräteparameter beschreiben ausschließlich die Eigenschaften eines Aktors.
+Konfiguration der Eigenschaften eines unterstützten Geräts.
 
 Beispiele:
 
 - Nennleistung
-- maximale Leistungsaufnahme
-- Tankgröße
-- Dauerablauf
 - Entfeuchtungsleistung
-
-Geräteparameter beschreiben ausschließlich das Gerät selbst.
-
----
-
-# Installationsparameter
-
-Installationsparameter beschreiben die vorhandene Installation.
-
-Beispiele:
-
-- Temperaturfühler
-- Luftfeuchtigkeitssensor
-- schaltbare Steckdose
-- Außensensoren
-- Wandtemperatursensoren
-
-Installationsparameter bestimmen, welche Informationen dem Framework zur Verfügung stehen.
+- Tankvolumen
+- Kondensatbetrieb
 
 ---
 
-# Betriebsstatus
+# Sensorik
 
-Der Betriebsstatus beschreibt den aktuellen Zustand des Controllers beziehungsweise des geregelten Systems.
+## Template-Sensor
 
-Beispiele:
+**Englisch**
 
-- Aus
-- Automatik – Wartet
-- Automatik – Entfeuchtet
-- Automatik – Ziel erreicht
-- Dauerbetrieb
-- Zeitbetrieb aktiv
+Template Sensor
 
-Der Betriebsstatus wird vom Controller ermittelt und dient ausschließlich der Anzeige und Auswertung.
+**Beschreibung**
+
+Berechneter Sensor innerhalb der Referenzimplementierung.
+
+Template-Sensoren enthalten ausschließlich berechnete Werte und bilden die Datengrundlage für Controller und Dashboard.
+
+---
+
+## Helfer
+
+**Englisch**
+
+Helper
+
+**Beschreibung**
+
+Vom Benutzer konfigurierbare Home-Assistant-Entitäten.
+
+Sie enthalten keine Regelungslogik.
+
+---
+
+# Bauphysik
+
+## Taupunkt
+
+**Englisch**
+
+Dew Point
+
+**Beschreibung**
+
+Temperatur, bei der Wasserdampf aus der Luft zu kondensieren beginnt.
+
+Der Taupunkt bildet die Grundlage zukünftiger bauphysikalischer Bewertungen.
+
+---
+
+## Schimmelrisiko
+
+**Englisch**
+
+Mold Risk
+
+**Beschreibung**
+
+Bewertung des Risikos von Schimmelbildung anhand verschiedener Klimadaten.
+
+Diese Funktion ist für zukünftige Versionen vorgesehen.
+
+---
+
+# Entwicklungsstufen
+
+## Automation Blueprint
+
+**Englisch**
+
+Automation Blueprint
+
+**Beschreibung**
+
+Generische Home-Assistant-Automation zur Wiederverwendung des Frameworks.
+
+---
+
+## Native Home Assistant Integration
+
+**Englisch**
+
+Native Home Assistant Integration
+
+**Beschreibung**
+
+Zukünftige vollständige Integration des Frameworks in Home Assistant.
+
+---
+
+# Terminologie
+
+Für das gesamte Projekt gelten folgende bevorzugte Begriffe.
+
+| Deutsch | Englisch |
+|----------|-----------|
+| Ziel-Luftfeuchtigkeit | Target Humidity |
+| Relative Luftfeuchtigkeit | Relative Humidity |
+| Feuchteprofil | Humidity Profile |
+| Regelcharakteristik | Control Characteristic |
+| Betriebsmodus | Operating Mode |
+| Betriebsstatus | Operating Status |
+| Hysterese | Hysteresis |
+| Einschaltgrenze | Activation Threshold |
+| Zielbereich | Target Range |
+| Luftentfeuchter | Dehumidifier |
+| Schaltgerät | Switching Device |
+| Gerätekonfiguration | Device Configuration |
+| Template-Sensor | Template Sensor |
+| Helfer | Helper |
+
+---
+
+# Grundsatz
+
+Dieses Glossar ist die verbindliche Referenz für sämtliche Begriffe des Smart Humidity Control Framework.
+
+Neue Begriffe sollen ausschließlich hier eingeführt und anschließend in der gesamten Dokumentation konsistent verwendet werden.

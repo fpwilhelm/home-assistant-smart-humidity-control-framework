@@ -1,235 +1,427 @@
 # Glossary
 
-This glossary defines the terminology used throughout the **Home Assistant Smart Humidity Control Framework**.
+This glossary defines the terminology used throughout the **Smart Humidity Control Framework**.
 
-The definitions provided here are authoritative for the documentation, the Automation Blueprint, the future native Home Assistant Integration and the user interface.
+It serves as the authoritative terminology reference for the entire project documentation, the Home Assistant reference implementation, the Automation Blueprint, and the future native Home Assistant integration.
 
----
-
-# Framework
-
-The **Home Assistant Smart Humidity Control Framework** is a modular architecture for intelligent humidity control.
-
-The framework consists of four independent architectural layers:
-
-- Hardware
-- Configuration
-- Controller
-- Visualization
-
-The framework is manufacturer-independent and is designed to operate with any suitable actuator.
+All project documentation shall use the terminology defined in this glossary consistently.
 
 ---
 
-# Actuator
+# Using this Glossary
 
-An actuator is a device controlled by the controller.
+Each entry contains the following information:
 
-It executes the control decisions determined by the framework.
+- **German term**
+- **English term**
+- **Description**
+- **Usage notes** (where applicable)
 
-The framework currently focuses on:
-
-- Dehumidifiers
-
-Future versions may support additional actuator types, for example:
-
-- Ventilation systems
-- Window actuators
-- Fans
-
-The framework is designed to remain independent of the specific actuator type.
+The English terminology defined here also serves as the basis for the future implementation of the Blueprint, the native integration, and the source code.
 
 ---
 
-# Humidity Profile
+# Architecture
 
-A humidity profile describes a typical humidity control scenario.
+## Framework
 
-Its primary purpose is to define the recommended base relative humidity for a particular use case.
+**German**
 
-Examples of standard profiles include:
+Framework
+
+**Description**
+
+The Smart Humidity Control Framework comprises the complete architecture for intelligent humidity control.
+
+It consists of the documentation, the reference implementation, the Automation Blueprint, and the future native Home Assistant integration.
+
+---
+
+## Reference Implementation
+
+**German**
+
+Referenzimplementierung
+
+**Description**
+
+The current Home Assistant implementation of the framework.
+
+It serves as the basis for development, testing, and documentation.
+
+---
+
+## Reference Device
+
+**German**
+
+Referenzgerät
+
+**Description**
+
+The device used to develop the reference implementation.
+
+Current reference device:
+
+- Trotec TTK 171 ECO
+
+The framework itself remains manufacturer-independent.
+
+---
+
+# Control
+
+## Target Humidity
+
+**German**
+
+Ziel-Luftfeuchtigkeit
+
+**Description**
+
+The desired relative humidity maintained by the controller.
+
+**Note**
+
+Within the framework, the term "humidity" always refers to **relative humidity**, unless explicitly stated otherwise.
+
+---
+
+## Relative Humidity
+
+**German**
+
+Relative Luftfeuchtigkeit
+
+**Description**
+
+The percentage of water vapor currently present in the air relative to the maximum amount the air can hold at the same temperature.
+
+Unit:
+
+```text
+%
+```
+
+---
+
+## Absolute Humidity
+
+**German**
+
+Absolute Luftfeuchtigkeit
+
+**Description**
+
+The actual amount of water vapor contained in the air.
+
+It is currently not used directly by the framework but may become part of future advanced control strategies.
+
+Unit:
+
+```text
+g/m³
+```
+
+---
+
+## Humidity Profile
+
+**German**
+
+Feuchteprofil
+
+**Description**
+
+A humidity profile defines the recommended target humidity for a typical room or application.
+
+Examples:
 
 - Living Room
 - Bedroom
 - Bathroom
+- Laundry Room
 - Unheated Basement
-- Garage
-- Technical Room
-
-Future versions will allow users to create, modify and delete custom humidity profiles.
-
-The controller operates exclusively on the properties of a humidity profile and never on room names or their labels.
 
 ---
 
-# Protection Level
+## Control Characteristic
 
-The protection level modifies the base humidity defined by a humidity profile.
+**German**
 
-The current protection levels are:
+Regelcharakteristik
 
-- Comfort
+**Description**
+
+The control characteristic defines how tightly or generously the controller regulates around the target humidity.
+
+It primarily influences the applied hysteresis.
+
+Current control characteristics:
+
+- Strict
 - Standard
-- Conservative
-
-Additional protection levels may be introduced in future versions.
+- Flexible
 
 ---
 
-# Target Mode
+## Target Mode
 
-The target mode determines how the currently active target humidity is calculated.
+**German**
 
-Currently supported modes are:
+Zielwertmodus
+
+**Description**
+
+Defines how the target humidity is determined.
+
+Current target modes:
 
 - Humidity Profile
 - Custom
 
-Future target modes may include:
+---
 
-- Dew Point Control
-- Outdoor Climate Control
-- Optimization Mode
+## Hysteresis
+
+**German**
+
+Hysterese
+
+**Description**
+
+The difference between the target humidity and the activation threshold.
+
+It prevents excessive switching of the controlled device.
 
 ---
 
-# Target Humidity
+## Activation Threshold
 
-The target humidity is the humidity value currently used by the controller.
+**German**
 
-It is determined by the selected target mode.
+Einschaltgrenze
 
----
+**Description**
 
-# Hysteresis
-
-Hysteresis prevents the actuator from switching on and off too frequently.
-
-It defines the distance between the switch-off point and the switch-on point.
+Humidity level at which the controller activates the dehumidifier during automatic operation.
 
 ---
 
-# Switch-on Threshold
+## Target Range
 
-The switch-on threshold defines the humidity level at which the controller activates the actuator.
+**German**
 
-It is calculated from:
+Zielbereich
 
-- current target humidity
-- hysteresis
+**Description**
+
+The range between the target humidity and the activation threshold.
+
+The target range is visualized on the dashboard.
 
 ---
 
-# Operating Mode
+# Operating Modes
 
-The operating mode defines the fundamental operating behavior of the controller.
+## Operating Mode
 
-Currently supported operating modes are:
+**German**
+
+Betriebsmodus
+
+**Description**
+
+Defines the overall operating mode of the controller.
+
+Current operating modes:
 
 - Off
 - Automatic
-- Continuous
-- Timed
-
-Additional operating modes may be introduced in future versions.
+- Continuous Operation
+- Timed Operation
 
 ---
 
-# Controller
+## Operating Status
 
-The controller represents the central control logic of the framework.
+**German**
 
-It processes:
+Betriebsstatus
 
-- sensor values
-- calculated values provided by template sensors
-- target values
-- operating modes
-- configuration parameters
+**Description**
 
-Based on this information, the controller decides how the connected actuators should operate.
+The logical state calculated by the controller.
 
-The controller has no knowledge of specific rooms, devices or manufacturers.
+The operating status is intended for display and diagnostic purposes only.
 
 ---
 
-# Control Algorithm
+# Devices
 
-The control algorithm defines the functional rules governing humidity control.
+## Dehumidifier
 
-It specifies the desired behavior independently of any implementation.
+**German**
 
-The same control algorithm is implemented by the reference implementation, the Automation Blueprint and the future native Home Assistant Integration.
+Luftentfeuchter
 
----
+**Description**
 
-# Reference Implementation
+The reference device of the framework.
 
-The reference implementation is the current Home Assistant implementation of the controller.
-
-It serves as the foundation for both the Automation Blueprint and the future native Home Assistant Integration.
+Future versions may support additional humidity reduction strategies.
 
 ---
 
-# Automation Blueprint
+## Switching Device
 
-The Automation Blueprint provides a reusable Home Assistant implementation of the controller.
+**German**
 
-It enables the same control logic to be applied to different sensors, actuators and installations without modifying the source code.
+Schaltgerät
 
----
+**Description**
 
-# Native Home Assistant Integration
+The device used by the framework to switch equipment on or off.
 
-The native Home Assistant Integration is the long-term goal of the project.
+Examples:
 
-It implements the same control algorithm as the reference implementation and the Automation Blueprint while automatically creating all required entities and significantly simplifying configuration.
-
----
-
-# Device Configuration
-
-Device configuration describes the properties of an actuator.
-
-Examples include:
-
-- Rated power
-- Maximum power consumption
-- Water tank capacity
-- Continuous drain support
-- Dehumidification capacity
-
-These parameters describe only the actuator itself.
+- Smart Plug
+- Relay
+- Shelly
+- Contactor
 
 ---
 
-# Installation Configuration
+## Device Configuration
 
-Installation configuration describes the hardware available within a specific installation.
+**German**
 
-Examples include:
+Gerätekonfiguration
 
-- Temperature sensor
-- Humidity sensor
-- Smart plug
-- Outdoor sensors
-- Wall temperature sensors
+**Description**
 
-Installation parameters determine which information is available to the framework.
+Configuration describing the characteristics of a supported device.
+
+Examples:
+
+- Rated Power
+- Dehumidification Capacity
+- Tank Capacity
+- Condensate Drain Mode
 
 ---
 
-# Operating Status
+# Sensors
 
-The operating status describes the current state of the controller or the controlled system.
+## Template Sensor
 
-Examples include:
+**German**
 
-- Off
-- Automatic – Waiting
-- Automatic – Dehumidifying
-- Automatic – Target Reached
-- Continuous
-- Timed Mode Active
+Template-Sensor
 
-The operating status is determined by the controller and is intended solely for visualization and evaluation.
+**Description**
+
+A calculated sensor within the reference implementation.
+
+Template sensors contain calculated values only and provide the data basis for the controller and dashboard.
+
+---
+
+## Helper
+
+**German**
+
+Helfer
+
+**Description**
+
+User-configurable Home Assistant entities.
+
+Helpers contain configuration only and no control logic.
+
+---
+
+# Building Physics
+
+## Dew Point
+
+**German**
+
+Taupunkt
+
+**Description**
+
+The temperature at which water vapor begins to condense.
+
+The dew point forms the basis for future building physics evaluations.
+
+---
+
+## Mold Risk
+
+**German**
+
+Schimmelrisiko
+
+**Description**
+
+Assessment of mold growth risk based on various environmental conditions.
+
+This feature is planned for future framework versions.
+
+---
+
+# Development Stages
+
+## Automation Blueprint
+
+**German**
+
+Automation Blueprint
+
+**Description**
+
+Reusable Home Assistant automation implementing the framework.
+
+---
+
+## Native Home Assistant Integration
+
+**German**
+
+Native Home Assistant Integration
+
+**Description**
+
+Future native implementation of the Smart Humidity Control Framework.
+
+---
+
+# Preferred Terminology
+
+The following terminology shall be used consistently throughout the project.
+
+| German | English |
+|----------|-----------|
+| Ziel-Luftfeuchtigkeit | Target Humidity |
+| Relative Luftfeuchtigkeit | Relative Humidity |
+| Feuchteprofil | Humidity Profile |
+| Regelcharakteristik | Control Characteristic |
+| Betriebsmodus | Operating Mode |
+| Betriebsstatus | Operating Status |
+| Hysterese | Hysteresis |
+| Einschaltgrenze | Activation Threshold |
+| Zielbereich | Target Range |
+| Luftentfeuchter | Dehumidifier |
+| Schaltgerät | Switching Device |
+| Gerätekonfiguration | Device Configuration |
+| Template-Sensor | Template Sensor |
+| Helfer | Helper |
+
+---
+
+# Principle
+
+This glossary is the authoritative terminology reference for the Smart Humidity Control Framework.
+
+New terms shall be introduced here first and then used consistently throughout the entire project.

@@ -1,101 +1,107 @@
 # Roadmap
 
-Diese Roadmap beschreibt die geplante Entwicklung des Smart Humidity Control Framework.
+This roadmap describes the planned evolution of the Smart Humidity Control Framework.
 
-Sie stellt die langfristige Vision des Projekts dar und dient als Orientierung für zukünftige Versionen.
+It outlines the long-term vision of the project and serves as a guide for future development.
 
 ---
 
-# Entwicklungsstand
+# Project Status
 
 | Version | Status |
 |----------|:------:|
-| Architektur | ✅ |
-| Referenzimplementierung | ✅ |
-| Blueprint | ⏳ |
+| Architecture | ✅ |
+| Reference Implementation | ✅ |
+| Automation Blueprint | ⏳ |
 | Native Home Assistant Integration | ⏳ |
 
 ---
 
-# Version 1.0 – Referenzimplementierung
+# Version 1.0 – Reference Implementation
 
-Ziel:
+## Goal
 
-Entwicklung einer vollständigen Referenzimplementierung auf Basis eines **Trotec TTK 171 ECO**.
+Develop a complete reference implementation based on a **Trotec TTK 171 ECO**.
 
-## Funktionen
+## Features
 
-- Betriebsmodi
-- Feuchteprofile
-- Schutzniveaus
-- Zielwertmodi
-- Automatikbetrieb
-- Zeitbetrieb
+- Operating modes
+- Humidity profiles
+- Control characteristics
+- Target modes
+- Automatic operation
+- Timed operation
 - Dashboard
-- Template-Sensoren
-- Geräteparameter
-- Leistungsüberwachung
-- Energieüberwachung
-- Dokumentation
+- Template sensors
+- Device configuration
+- Operating status
+- Power monitoring
+- Energy monitoring
+- Documentation
 
-Status:
+**Status**
 
-🟡 In Entwicklung
+🟡 In Progress
 
 ---
 
-# Version 1.1 – Blueprint
+# Version 1.1 – Automation Blueprint
 
-Ziel:
+## Goal
 
-Überführung der Referenzimplementierung in einen generischen Home-Assistant-Blueprint.
+Transform the reference implementation into a reusable Home Assistant blueprint.
 
-## Geplante Funktionen
+## Planned Features
 
-- freie Auswahl der Sensoren
-- freie Auswahl des Aktors
-- automatische Erstellung der benötigten Helfer
-- Wiederverwendbarkeit für beliebige Luftentfeuchter
+- Flexible sensor selection
+- Flexible switching device selection
+- Automatic provisioning of required framework components
+- Preconfigured dashboard
+- Reusable with different dehumidifiers
 
-Status:
+**Status**
 
-⚪ Geplant
+⚪ Planned
 
 ---
 
 # Version 2.0 – Native Home Assistant Integration
 
-Ziel:
+## Goal
 
-Entwicklung einer nativen Home-Assistant-Integration.
+Develop a native Home Assistant integration.
 
-## Geplante Funktionen
+## Planned Features
 
 - Config Flow
 - Options Flow
-- Geräteverwaltung
-- automatische Entitätenerstellung
-- integriertes Dashboard
-- integrierte Regelungslogik
+- Device management
+- Device configuration
+- Humidity profile management
+- Automatic entity creation
+- Dashboard generation
+- Integrated control logic
+- Framework diagnostics
 
-Status:
+**Status**
 
-⚪ Geplant
+⚪ Planned
 
 ---
 
-# Version 3.0 – Erweiterte Feuchteregelung
+# Version 3.0 – Advanced Humidity Control
 
-## Geplante Funktionen
+## Planned Features
 
-- Außenklima
-- Außentaupunkt
-- Taupunktvergleich innen/außen
-- Lüftungsempfehlungen
-- Kondensationsbewertung
-- Schimmelrisikobewertung
+- Outdoor climate
+- Outdoor dew point
+- Indoor/outdoor dew point comparison
+- Ventilation recommendations
+- Condensation assessment
+- Mold risk assessment
+- Building drying mode
 
-Status:
+**Status**
 
 ⚪ Vision
 
@@ -103,26 +109,29 @@ Status:
 
 # Version 4.0 – Smart Humidity Control
 
-## Geplante Funktionen
+## Planned Features
 
-- adaptive Regelalgorithmen
-- lernfähige Feuchteprofile
-- Optimierung des Energieverbrauchs
-- mehrere Aktoren
-- Lüftungsanlagen
-- Ventilatoren
-- Fensterantriebe
+- Adaptive control algorithms
+- Learning humidity profiles
+- Energy optimization
+- Multiple humidity reduction strategies
+- Multiple switching devices
+- Ventilation systems
+- Fans
+- Window actuators
+- Tank level estimation
+- Tank level sensor support
 
-Status:
+**Status**
 
 ⚪ Vision
 
 ---
 
-# Langfristige Vision
+# Long-Term Vision
 
-Das Smart Humidity Control Framework soll eine universelle Plattform zur intelligenten Feuchteregelung in Home Assistant werden.
+The Smart Humidity Control Framework is intended to become a universal platform for intelligent humidity control in Home Assistant.
 
-Die Architektur soll unabhängig von Herstellern, Geräten und Sensoren funktionieren und unterschiedliche Aktoren unterstützen.
+The framework architecture shall remain independent of manufacturers, devices, and sensors while supporting different humidity reduction strategies.
 
-Im Mittelpunkt steht eine modulare, nachvollziehbare und erweiterbare Regelungslogik.
+Its core principle is a modular, transparent, understandable, and extensible control architecture that can continuously evolve without changing its fundamental design.
