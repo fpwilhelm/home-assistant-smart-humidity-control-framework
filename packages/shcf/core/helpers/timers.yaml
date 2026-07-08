@@ -1,0 +1,5 @@
+shcf_timed_operation:
+  name: SHCF Trotec TTK 171 ECO Zeitbetrieb
+  duration: "01:00:00"
+  restore: true
+  icon: mdi:timer-outline

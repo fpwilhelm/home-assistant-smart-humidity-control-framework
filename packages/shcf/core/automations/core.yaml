@@ -1,0 +1,226 @@
+- id: "1783450827871"
+  alias: SHCF Trotec TTK 171 ECO - Zeitbetrieb Dauer übernehmen
+  description: Übernimmt eine geänderte Zeitbetriebsdauer bei laufendem Zeitbetrieb.
+  triggers:
+    - trigger: state
+      entity_id: input_number.shcf_timed_operation_duration
+  conditions:
+    - condition: state
+      entity_id: input_select.shcf_operating_mode
+      state: Zeitbetrieb
+    - condition: state
+      entity_id: timer.shcf_timed_operation
+      state: active
+  actions:
+    - action: timer.start
+      target:
+        entity_id: timer.shcf_timed_operation
+      data:
+        duration: >
+          {% set minuten = states('input_number.shcf_timed_operation_duration') | int(60) %}
+          {{ '%02d:%02d:%02d' | format(minuten // 60, minuten % 60, 0) }}
+  mode: restart
+
+- id: "1783242620238"
+  alias: SHCF Trotec TTK 171 ECO - Zeitbetrieb verlassen
+  description: ""
+  triggers:
+    - trigger: state
+      entity_id: input_select.shcf_operating_mode
+      from: Zeitbetrieb
+  conditions:
+    - condition: state
+      entity_id: timer.shcf_timed_operation
+      state: active
+  actions:
+    - action: timer.cancel
+      target:
+        entity_id: timer.shcf_timed_operation
+  mode: single
+
+- id: "1783175724724"
+  alias: SHCF Trotec TTK 171 ECO - Zeitbetrieb beenden
+  description: ""
+  triggers:
+    - trigger: event
+      event_type: timer.finished
+      event_data:
+        entity_id: timer.shcf_timed_operation
+  conditions:
+    - condition: state
+      entity_id: input_select.shcf_operating_mode
+      state: Zeitbetrieb
+  actions:
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.shcf_operating_mode
+      data:
+        option: Automatik
+  mode: single
+
+- id: "1783174377265"
+  alias: SHCF Trotec TTK 171 ECO - Zeitbetrieb starten
+  description: ""
+  triggers:
+    - trigger: state
+      entity_id: input_select.shcf_operating_mode
+      to: Zeitbetrieb
+  actions:
+    - action: timer.start
+      target:
+        entity_id: timer.shcf_timed_operation
+      data:
+        duration: >
+          {% set minuten = states('input_number.shcf_timed_operation_duration') | int(60) %}
+          {{ '%02d:%02d:%02d' | format(minuten // 60, minuten % 60, 0) }}
+  mode: restart
+
+- id: "1783145680171"
+  alias: SHCF Trotec TTK 171 ECO - Controller
+  description: Zentrale Steuerlogik für Aus, Automatik, Dauerbetrieb und Zeitbetrieb
+  triggers:
+    - trigger: time_pattern
+      minutes: /5
+    - trigger: state
+      entity_id:
+        - sensor.shcf_klimasensor_humidity
+        - sensor.shcf_target_humidity
+        - sensor.shcf_switch_on_threshold
+        - input_select.shcf_operating_mode
+        - input_select.shcf_humidity_profile
+        - input_select.shcf_control_characteristic
+        - input_select.shcf_target_mode
+        - input_number.shcf_custom_target_humidity
+        - input_select.shcf_timed_operation_behavior_on_target_reached
+        - timer.shcf_timed_operation
+
+  actions:
+    - variables:
+        luftfeuchtigkeit: >
+          {{ states('sensor.shcf_klimasensor_humidity') | float(999) }}
+        zielwert: >
+          {{ states('sensor.shcf_target_humidity') | float(0) }}
+        einschaltgrenze: >
+          {{ states('sensor.shcf_switch_on_threshold') | float(0) }}
+        betriebsmodus: >
+          {{ states('input_select.shcf_operating_mode') }}
+        zeitbetrieb_aktiv: >
+          {{ is_state('timer.shcf_timed_operation', 'active') }}
+        zeitbetrieb_verhalten: >
+          {{ states('input_select.shcf_timed_operation_behavior_on_target_reached') }}
+        zielwert_geaendert: >
+          {{ trigger.platform == 'state'
+             and trigger.entity_id in [
+               'sensor.shcf_target_humidity',
+               'input_select.shcf_humidity_profile',
+               'input_select.shcf_control_characteristic',
+               'input_select.shcf_target_mode',
+               'input_number.shcf_custom_target_humidity'
+             ] }}
+        automatik_aktiviert: >
+          {{ trigger.platform == 'state'
+             and trigger.entity_id == 'input_select.shcf_operating_mode'
+             and trigger.to_state is not none
+             and trigger.to_state.state == 'Automatik' }}
+        ziel_im_zeitbetrieb_gerade_erreicht: >
+          {{ betriebsmodus == 'Zeitbetrieb'
+             and zeitbetrieb_aktiv
+             and trigger.platform == 'state'
+             and trigger.entity_id == 'sensor.shcf_klimasensor_humidity'
+             and trigger.from_state is not none
+             and trigger.to_state is not none
+             and trigger.from_state.state | float(0) > zielwert
+             and trigger.to_state.state | float(999) <= zielwert }}
+
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: "{{ betriebsmodus == 'Aus' }}"
+          sequence:
+            - action: switch.turn_off
+              target:
+                entity_id: switch.shcf_zwischenstecker
+
+        - conditions:
+            - condition: template
+              value_template: "{{ betriebsmodus == 'Dauerbetrieb' }}"
+          sequence:
+            - action: switch.turn_on
+              target:
+                entity_id: switch.shcf_zwischenstecker
+
+        - conditions:
+            - condition: template
+              value_template: >
+                {{ ziel_im_zeitbetrieb_gerade_erreicht
+                   and zeitbetrieb_verhalten == 'Ausschalten' }}
+          sequence:
+            - action: switch.turn_off
+              target:
+                entity_id: switch.shcf_zwischenstecker
+            - action: timer.cancel
+              target:
+                entity_id: timer.shcf_timed_operation
+            - action: input_select.select_option
+              target:
+                entity_id: input_select.shcf_operating_mode
+              data:
+                option: Aus
+
+        - conditions:
+            - condition: template
+              value_template: >
+                {{ ziel_im_zeitbetrieb_gerade_erreicht
+                   and zeitbetrieb_verhalten == 'Auf Automatik wechseln' }}
+          sequence:
+            - action: timer.cancel
+              target:
+                entity_id: timer.shcf_timed_operation
+            - action: input_select.select_option
+              target:
+                entity_id: input_select.shcf_operating_mode
+              data:
+                option: Automatik
+
+        - conditions:
+            - condition: template
+              value_template: >
+                {{ betriebsmodus == 'Zeitbetrieb'
+                   and zeitbetrieb_aktiv }}
+          sequence:
+            - action: switch.turn_on
+              target:
+                entity_id: switch.shcf_zwischenstecker
+
+        - conditions:
+            - condition: template
+              value_template: >
+                {{ betriebsmodus == 'Automatik'
+                   and (zielwert_geaendert or automatik_aktiviert)
+                   and luftfeuchtigkeit > zielwert }}
+          sequence:
+            - action: switch.turn_on
+              target:
+                entity_id: switch.shcf_zwischenstecker
+
+        - conditions:
+            - condition: template
+              value_template: >
+                {{ betriebsmodus == 'Automatik'
+                   and luftfeuchtigkeit > einschaltgrenze }}
+          sequence:
+            - action: switch.turn_on
+              target:
+                entity_id: switch.shcf_zwischenstecker
+
+        - conditions:
+            - condition: template
+              value_template: >
+                {{ betriebsmodus == 'Automatik'
+                   and luftfeuchtigkeit <= zielwert }}
+          sequence:
+            - action: switch.turn_off
+              target:
+                entity_id: switch.shcf_zwischenstecker
+
+  mode: restart

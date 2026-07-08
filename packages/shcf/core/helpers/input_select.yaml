@@ -1,0 +1,51 @@
+shcf_operating_mode:
+  name: SHCF Trotec TTK 171 ECO Betriebsmodus
+  options:
+    - Aus
+    - Automatik
+    - Zeitbetrieb
+    - Dauerbetrieb
+  icon: mdi:air-humidifier
+
+shcf_humidity_profile:
+  name: SHCF Trotec TTK 171 ECO Feuchteprofil
+  options:
+    - Wohnraum
+    - Schlafzimmer
+    - Badezimmer
+    - Büro
+    - Musikzimmer
+    - Küche
+    - Lagerraum
+    - Technikraum
+    - Keller beheizt
+    - Keller unbeheizt
+    - Wäschetrocknungsraum
+    - Waschküche
+    - Schwimmhalle
+    - Garage
+    - Wüste
+  icon: mdi:home-thermometer
+
+shcf_control_characteristic:
+  name: SHCF Trotec TTK 171 ECO Regelcharakteristik
+  options:
+    - Komfort
+    - Standard
+    - Konservativ
+  icon: mdi:tune-variant
+
+shcf_target_mode:
+  name: SHCF Trotec TTK 171 ECO Zielwertmodus
+  options:
+    - Feuchteprofil
+    - Benutzerdefiniert
+  icon: mdi:target
+
+shcf_timed_operation_behavior_on_target_reached:
+  name: SHCF Trotec TTK 171 ECO Verhalten bei Zielerreichung im Zeitbetrieb
+  options:
+    - Ausschalten
+    - Auf Automatik wechseln
+    - Ignorieren
+  icon: mdi:flag-checkered

@@ -1,0 +1,17 @@
+shcf_custom_target_humidity:
+  name: SHCF Trotec TTK 171 ECO Benutzerdefinierte Ziel-Luftfeuchtigkeit
+  min: 35
+  max: 75
+  step: 1
+  mode: slider
+  unit_of_measurement: "%"
+  icon: mdi:water-percent
+
+shcf_timed_operation_duration:
+  name: SHCF Trotec TTK 171 ECO Zeitbetriebsdauer
+  min: 5
+  max: 480
+  step: 5
+  mode: slider
+  unit_of_measurement: min
+  icon: mdi:timer-edit-outline

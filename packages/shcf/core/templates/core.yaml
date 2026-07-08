@@ -1,0 +1,303 @@
+- sensor:
+    - name: "SHCF Trotec TTK 171 ECO - Ziel-Luftfeuchtigkeit"
+      unique_id: shcf_target_humidity
+      unit_of_measurement: "%"
+      state_class: measurement
+      state: >
+        {% set zielwertmodus = states('input_select.shcf_target_mode') %}
+
+        {% if zielwertmodus == 'Benutzerdefiniert' %}
+          {{ states('input_number.shcf_custom_target_humidity') | int }}
+        {% else %}
+          {% set feuchteprofil = states('input_select.shcf_humidity_profile') %}
+          {% set regelcharakteristik = states('input_select.shcf_control_characteristic') %}
+
+          {% set basiswerte = {
+            'Wohnraum': 55,
+            'Schlafzimmer': 50,
+            'Badezimmer': 60,
+            'Büro': 55,
+            'Musikzimmer': 55,
+            'Küche': 60,
+            'Lagerraum': 60,
+            'Technikraum': 60,
+            'Keller beheizt': 55,
+            'Keller unbeheizt': 60,
+            'Wäschetrocknungsraum': 50,
+            'Waschküche': 55,
+            'Schwimmhalle': 60,
+            'Garage': 65,
+            'Wüste': 40
+          } %}
+
+          {% set korrekturwerte = {
+            'Komfort': -5,
+            'Standard': 0,
+            'Konservativ': 5
+          } %}
+
+          {{ (basiswerte.get(feuchteprofil, 55) + korrekturwerte.get(regelcharakteristik, 0)) | int }}
+        {% endif %}
+      icon: mdi:target
+
+    - name: "SHCF Trotec TTK 171 ECO - Hysterese"
+      unique_id: shcf_hysteresis
+      unit_of_measurement: "%"
+      state_class: measurement
+      state: >
+        {% set regelcharakteristik = states('input_select.shcf_control_characteristic') %}
+
+        {% if regelcharakteristik == 'Komfort' %}
+          3
+        {% elif regelcharakteristik == 'Standard' %}
+          5
+        {% elif regelcharakteristik == 'Konservativ' %}
+          7
+        {% else %}
+          5
+        {% endif %}
+      icon: mdi:arrow-expand-vertical
+
+    - name: "SHCF Trotec TTK 171 ECO - Einschaltgrenze"
+      unique_id: shcf_switch_on_threshold
+      unit_of_measurement: "%"
+      state_class: measurement
+      state: >
+        {% set ziel = states('sensor.shcf_target_humidity') | float(55) %}
+        {% set hysterese = states('sensor.shcf_hysteresis') | float(5) %}
+
+        {{ (ziel + hysterese) | int }}
+      icon: mdi:arrow-up-bold-circle-outline
+
+    - name: "SHCF Trotec TTK 171 ECO - Untere Grenze der Ziel-Luftfeuchtigkeit"
+      unique_id: shcf_target_humidity_lower_limit
+      unit_of_measurement: "%"
+      state: >
+        {{ states('sensor.shcf_target_humidity') | float(0) }}
+
+    - name: "SHCF Trotec TTK 171 ECO - Obere Grenze der Ziel-Luftfeuchtigkeit"
+      unique_id: shcf_target_humidity_upper_limit
+      unit_of_measurement: "%"
+      state: >
+        {{ states('sensor.shcf_switch_on_threshold') | float(0) }}
+
+    - name: "SHCF Trotec TTK 171 ECO - Ziel-Taupunkt"
+      unique_id: shcf_target_dew_point
+      unit_of_measurement: "°C"
+      device_class: temperature
+      state_class: measurement
+      state: >
+        {% set t = states('sensor.shcf_klimasensor_temperature') | float(none) %}
+        {% set rh = states('sensor.shcf_target_humidity') | float(none) %}
+        {% if t is none or rh is none or rh <= 0 %}
+          unknown
+        {% else %}
+          {% set a = 17.62 %}
+          {% set b = 243.12 %}
+          {% set gamma = ((a * t) / (b + t)) + log(rh / 100) %}
+          {{ ((b * gamma) / (a - gamma)) | round(1) }}
+        {% endif %}
+      icon: mdi:thermometer-check
+
+    - name: "SHCF Trotec TTK 171 ECO - Taupunkt innen"
+      unique_id: shcf_indoor_dew_point
+      unit_of_measurement: "°C"
+      device_class: temperature
+      state_class: measurement
+      state: >
+        {% set t = states('sensor.shcf_klimasensor_temperature') | float(none) %}
+        {% set rh = states('sensor.shcf_klimasensor_humidity') | float(none) %}
+        {% if t is none or rh is none or rh <= 0 %}
+          unknown
+        {% else %}
+          {% set a = 17.62 %}
+          {% set b = 243.12 %}
+          {% set gamma = ((a * t) / (b + t)) + log(rh / 100) %}
+          {{ ((b * gamma) / (a - gamma)) | round(1) }}
+        {% endif %}
+      icon: mdi:thermometer-water
+
+    - name: "SHCF Trotec TTK 171 ECO - Abweichung von der Ziel-Luftfeuchtigkeit"
+      unique_id: shcf_target_humidity_deviation
+      unit_of_measurement: "%"
+      state_class: measurement
+      availability: >
+        {{ states('sensor.shcf_klimasensor_humidity') | is_number
+        and states('sensor.shcf_target_humidity') | is_number }}
+      state: >
+        {% set ist = states('sensor.shcf_klimasensor_humidity') | float %}
+        {% set ziel = states('sensor.shcf_target_humidity') | float %}
+        {{ (ist - ziel) | round(1) }}
+      icon: >
+        {% set abw = states('sensor.shcf_target_humidity_deviation') | float(0) %}
+        {% if abw > 0 %}
+          mdi:arrow-up-bold
+        {% elif abw < 0 %}
+          mdi:arrow-down-bold
+        {% else %}
+          mdi:check
+        {% endif %}
+
+    - name: "SHCF Trotec TTK 171 ECO - Entfeuchtungsbedarf"
+      unique_id: shcf_dehumidification_demand
+      state: >
+        {% set ist = states('sensor.shcf_klimasensor_humidity') | float(none) %}
+        {% set ziel = states('sensor.shcf_target_humidity') | float(none) %}
+        {% if ist is none or ziel is none %}
+          Sensorfehler
+        {% else %}
+          {% set diff = ist - ziel %}
+          {% if diff <= 0 %}
+            Kein Bedarf
+          {% elif diff <= 2 %}
+            Gering
+          {% elif diff <= 5 %}
+            Mittel
+          {% elif diff <= 10 %}
+            Hoch
+          {% else %}
+            Sehr hoch
+          {% endif %}
+        {% endif %}
+      icon: >
+        {% set bedarf = states('sensor.shcf_dehumidification_demand') %}
+        {% if bedarf == 'Kein Bedarf' %}
+          mdi:check-circle
+        {% elif bedarf == 'Gering' %}
+          mdi:water-percent
+        {% elif bedarf == 'Mittel' %}
+          mdi:water-alert
+        {% elif bedarf == 'Hoch' %}
+          mdi:water-alert
+        {% elif bedarf == 'Sehr hoch' %}
+          mdi:alert
+        {% else %}
+          mdi:alert-circle
+        {% endif %}
+
+    - name: "SHCF Trotec TTK 171 ECO - Handlungsempfehlung"
+      unique_id: shcf_recommended_action
+      state: >
+        {% set bedarf = states('sensor.shcf_dehumidification_demand') %}
+        {% set modus = states('input_select.shcf_operating_mode') %}
+
+        {% if bedarf == 'Sensorfehler' %}
+          Sensorfehler
+        {% elif bedarf == 'Kein Bedarf' %}
+          {% if modus == 'Dauerbetrieb' %}
+            Dauerbetrieb prüfen
+          {% else %}
+            Kein Handlungsbedarf
+          {% endif %}
+        {% elif bedarf in ['Gering', 'Mittel'] %}
+          {% if modus == 'Automatik' %}
+            Kein Handlungsbedarf
+          {% else %}
+            Automatik empfohlen
+          {% endif %}
+        {% elif bedarf in ['Hoch', 'Sehr hoch'] %}
+          Dringend entfeuchten
+        {% else %}
+          Sensorfehler
+        {% endif %}
+      icon: >
+        {% set empfehlung = states('sensor.shcf_recommended_action') %}
+        {% if empfehlung == 'Kein Handlungsbedarf' %}
+          mdi:check-circle
+        {% elif empfehlung == 'Automatik empfohlen' %}
+          mdi:robot
+        {% elif empfehlung == 'Dauerbetrieb prüfen' %}
+          mdi:alert-outline
+        {% elif empfehlung == 'Dringend entfeuchten' %}
+          mdi:water-alert
+        {% else %}
+          mdi:alert-circle
+        {% endif %}
+
+    - name: "SHCF Trotec TTK 171 ECO - Betriebsstatus"
+      unique_id: shcf_operating_status
+      state: >
+        {% set modus = states('input_select.shcf_operating_mode') %}
+        {% set timer_aktiv = is_state('timer.shcf_timed_operation', 'active') %}
+        {% set steckdose_an = is_state('switch.shcf_zwischenstecker', 'on') %}
+        {% set luftfeuchtigkeit = states('sensor.shcf_klimasensor_humidity') | float(none) %}
+        {% set zielwert = states('sensor.shcf_target_humidity') | float(none) %}
+        {% set einschaltgrenze = states('sensor.shcf_switch_on_threshold') | float(none) %}
+
+        {% if luftfeuchtigkeit is none or zielwert is none or einschaltgrenze is none %}
+          Sensorfehler
+        {% elif modus == 'Aus' %}
+          Aus
+        {% elif modus == 'Dauerbetrieb' %}
+          Dauerbetrieb
+        {% elif modus == 'Zeitbetrieb' and timer_aktiv %}
+          Zeitbetrieb aktiv
+        {% elif modus == 'Zeitbetrieb' and not timer_aktiv %}
+          Zeitbetrieb beendet
+        {% elif modus == 'Automatik' and steckdose_an and luftfeuchtigkeit > einschaltgrenze %}
+          Automatik – Entfeuchtet
+        {% elif modus == 'Automatik' and steckdose_an %}
+          Automatik – Läuft nach
+        {% elif modus == 'Automatik' and luftfeuchtigkeit <= zielwert %}
+          Automatik – Ziel erreicht
+        {% elif modus == 'Automatik' %}
+          Automatik – Wartet
+        {% else %}
+          Unbekannter Zustand
+        {% endif %}
+      icon: >
+        {% set modus = states('input_select.shcf_operating_mode') %}
+        {% set timer_aktiv = is_state('timer.shcf_timed_operation', 'active') %}
+        {% set steckdose_an = is_state('switch.shcf_zwischenstecker', 'on') %}
+        {% set luftfeuchtigkeit = states('sensor.shcf_klimasensor_humidity') | float(none) %}
+        {% set zielwert = states('sensor.shcf_target_humidity') | float(none) %}
+        {% set einschaltgrenze = states('sensor.shcf_switch_on_threshold') | float(none) %}
+
+        {% if luftfeuchtigkeit is none or zielwert is none or einschaltgrenze is none %}
+          mdi:alert-circle
+        {% elif modus == 'Aus' %}
+          mdi:power
+        {% elif modus == 'Dauerbetrieb' %}
+          mdi:infinity
+        {% elif modus == 'Zeitbetrieb' and timer_aktiv %}
+          mdi:timer-play
+        {% elif modus == 'Zeitbetrieb' and not timer_aktiv %}
+          mdi:timer-off
+        {% elif modus == 'Automatik' and steckdose_an and luftfeuchtigkeit > einschaltgrenze %}
+          mdi:water-percent
+        {% elif modus == 'Automatik' and steckdose_an %}
+          mdi:fan-clock
+        {% elif modus == 'Automatik' and luftfeuchtigkeit <= zielwert %}
+          mdi:check-circle
+        {% elif modus == 'Automatik' %}
+          mdi:pause-circle
+        {% else %}
+          mdi:help-circle
+        {% endif %}
+
+    - name: "SHCF Trotec TTK 171 ECO - Betriebsstatus-Anzeige"
+      unique_id: shcf_operating_status_display
+      state: >
+        {% set status = states('sensor.shcf_operating_status') %}
+        {% if status == 'Sensorfehler' %}
+          ⚠️ Sensorfehler
+        {% elif status == 'Aus' %}
+          ⏻ Aus
+        {% elif status == 'Dauerbetrieb' %}
+          ♾️ Dauerbetrieb
+        {% elif status == 'Zeitbetrieb aktiv' %}
+          ⏱️ Zeitbetrieb aktiv
+        {% elif status == 'Zeitbetrieb beendet' %}
+          ⏹️ Zeitbetrieb beendet
+        {% elif status == 'Automatik – Entfeuchtet' %}
+          💧 Automatik – Entfeuchtet
+        {% elif status == 'Automatik – Läuft nach' %}
+          🌬️ Automatik – Läuft nach
+        {% elif status == 'Automatik – Ziel erreicht' %}
+          ✅ Automatik – Ziel erreicht
+        {% elif status == 'Automatik – Wartet' %}
+          🟢 Automatik – Wartet
+        {% else %}
+          ❓ Unbekannter Zustand
+        {% endif %}
+      icon: mdi:information-outline
