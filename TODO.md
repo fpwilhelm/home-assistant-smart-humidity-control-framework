@@ -17,7 +17,7 @@
 * 🟢 Local repository synchronized with Home Assistant
 * 🟢 GitHub repository established
 * 🟡 Documentation under continuous refinement
-* 🟡 Initial Automation Blueprint available
+* 🟡 SHCF instance architecture under design
 * 🔵 Native Home Assistant Integration not yet started
 
 ---
@@ -26,7 +26,7 @@
 
 * [x] v0.1.0 – Proof of Concept
 * [ ] v0.2.0 – Modular Development Platform (current development)
-* [ ] v0.3.0 – Reusable Automation Blueprint
+* [ ] v0.3.0 – SHCF Instance Provisioning
 * [ ] v0.4.0 – Multi-Instance Support
 * [ ] v0.5.0 – Native Home Assistant Integration
 * [ ] v1.0.0 – First Stable SHCF Release
@@ -55,7 +55,7 @@
 
 # Deployment
 
-* [ ] Deployment script (Mac → Home Assistant)
+* [x] Deployment script (Mac → Home Assistant)
 * [ ] Synchronization script (Home Assistant → Mac)
 * [ ] Automatic synchronization
 * [ ] Automatic backup before deployment
@@ -88,7 +88,16 @@
 * [x] Basic helper modularization
 * [ ] Review helper structure
 * [ ] Reduce helper dependencies
-* [ ] Prepare Blueprint compatibility
+
+---
+
+# SHCF Instance Architecture
+
+* [ ] Design SHCF instance architecture
+* [ ] Separate instance configuration from SHCF core
+* [ ] Define reusable instance configuration format
+* [ ] Implement SHCF instance generator
+* [ ] Test second portable SHCF instance
 
 ---
 
@@ -116,13 +125,8 @@
 
 # Automation Blueprint
 
-* [x] Blueprint placeholder file created
-* [ ] Implement first reusable SHCF Blueprint
-* [ ] Blueprint documentation
-* [ ] Test Blueprint with first SHCF instance
-* [ ] Configure second SHCF instance exclusively through Blueprint
-* [ ]  Test multiple independent SHCF instances
-* [ ]  Test multiple dashboard instances
+* [ ] Re-evaluate the role of the Automation Blueprint
+* [ ] Decide whether the Blueprint remains part of the SHCF architecture
 
 ---
 
@@ -134,7 +138,6 @@
 * [ ] Entity Registry
 * [ ] Automatic entity discovery
 * [ ] Multiple SHCF instances
-* [ ] Blueprint migration
 
 ---
 
@@ -232,7 +235,7 @@ Possible future topics include:
 # Long-Term Goals
 
 * [ ] Prepare HACS repository
-* [ ] Publish Automation Blueprint
+* [ ] Publish Automation Blueprint (if retained)
 * [ ] Publish native Home Assistant Integration
 * [ ] GitHub Pages documentation
 * [ ] First public community release
