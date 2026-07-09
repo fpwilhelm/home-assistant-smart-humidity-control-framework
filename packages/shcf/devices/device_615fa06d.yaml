@@ -1,0 +1,50 @@
+# ============================================================================
+# SHCF Device Profile
+# ============================================================================
+# This file describes one portable SHCF hardware unit.
+#
+# An SHCF Device is assembled from hardware components such as:
+# - dehumidifier
+# - switching device
+# - humidity sensor
+# - temperature sensor
+# - optional power sensor
+# - optional energy sensor
+# - optional battery sensor
+#
+# This file contains hardware-specific information only.
+#
+# It does not contain:
+# - humidity profiles
+# - operating modes
+# - target humidity values
+# - hysteresis values
+# - control logic
+#
+# These values are handled by the SHCF Core, helpers, and dashboard/UI.
+# ============================================================================
+
+metadata:
+  version: 0.1
+  profile_type: device
+  generated_by: manual
+
+device:
+  id: device_615fa06d
+  name: Pro Klima ECO DRY
+
+entities:
+  switching_device: switch.pro_klima_eco_dry_zwischenstecker
+
+  humidity_sensor: sensor.pro_klima_eco_dry_klimasensor_humidity
+  temperature_sensor: sensor.pro_klima_eco_dry_klimasensor_temperature
+
+  power_sensor: sensor.pro_klima_eco_dry_zwischenstecker_power
+  energy_sensor: sensor.pro_klima_eco_dry_zwischenstecker_energy
+
+  battery_sensor: sensor.pro_klima_eco_dry_klimasensor_battery
+
+capabilities:
+  power_measurement: true
+  energy_measurement: true
+  battery_monitoring: true

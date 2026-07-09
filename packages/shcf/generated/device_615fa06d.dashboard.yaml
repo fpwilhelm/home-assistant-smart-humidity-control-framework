@@ -1,0 +1,43 @@
+title: SHCF Pro Klima ECO DRY
+views:
+  - title: Overview
+    path: shcf-device_615fa06d
+    icon: mdi:air-humidifier
+    badges:
+      - entity: sensor.shcf_device_615fa06d_operating_status_display
+      - entity: sensor.pro_klima_eco_dry_klimasensor_battery
+    cards:
+      - type: entities
+        title: SHCF Pro Klima ECO DRY Control
+        entities:
+          - entity: input_select.shcf_device_615fa06d_operating_mode
+          - entity: input_select.shcf_device_615fa06d_humidity_profile
+          - entity: input_select.shcf_device_615fa06d_control_characteristic
+          - entity: input_select.shcf_device_615fa06d_target_mode
+          - entity: input_select.shcf_device_615fa06d_timed_operation_behavior_on_target_reached
+          - entity: input_number.shcf_device_615fa06d_custom_target_humidity
+          - entity: input_number.shcf_device_615fa06d_hysteresis
+          - entity: input_number.shcf_device_615fa06d_timed_operation_duration
+          - entity: timer.shcf_device_615fa06d_timed_operation
+
+      - type: entities
+        title: SHCF Pro Klima ECO DRY Sensors
+        entities:
+          - entity: sensor.shcf_device_615fa06d_current_humidity
+          - entity: sensor.shcf_device_615fa06d_current_temperature
+          - entity: sensor.shcf_device_615fa06d_target_humidity
+          - entity: sensor.shcf_device_615fa06d_switch_on_threshold
+          - entity: sensor.shcf_device_615fa06d_target_humidity_deviation
+          - entity: sensor.shcf_device_615fa06d_indoor_dew_point
+          - entity: sensor.shcf_device_615fa06d_dehumidification_demand
+          - entity: sensor.shcf_device_615fa06d_recommendation
+
+      - type: entities
+        title: SHCF Pro Klima ECO DRY Device
+        entities:
+          - entity: switch.pro_klima_eco_dry_zwischenstecker
+          - entity: sensor.pro_klima_eco_dry_klimasensor_humidity
+          - entity: sensor.pro_klima_eco_dry_klimasensor_temperature
+          - entity: sensor.pro_klima_eco_dry_zwischenstecker_power
+          - entity: sensor.pro_klima_eco_dry_zwischenstecker_energy
+          - entity: sensor.pro_klima_eco_dry_klimasensor_battery

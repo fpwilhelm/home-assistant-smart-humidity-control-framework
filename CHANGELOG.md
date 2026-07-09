@@ -14,6 +14,9 @@ The project follows the principles of [Keep a Changelog](https://keepachangelog.
 - Split the framework into templates, automations, and helpers
 - Prepared the project for further modularization
 - Evolved from a single automation into a reusable framework
+- Introduced the SHCF Device Profile architecture
+- Separated hardware configuration from SHCF Core logic
+- Started the transition towards portable multi-device provisioning
 
 ### Home Assistant
 
@@ -50,6 +53,24 @@ The project follows the principles of [Keep a Changelog](https://keepachangelog.
 - Operating Status
 - Timed Operation
 - Recommendations
+- Prototype dashboard generator
+
+### Device Provisioning
+
+- Introduced SHCF Device Profiles
+- Implemented first device package generator
+- Automatic generation of:
+  - Home Assistant helpers
+  - Template sensors
+  - Timers
+  - Controller automation
+- First prototype dashboard generation
+- Successfully generated and loaded the first SHCF device package
+
+### Reference Hardware
+
+- Added optional battery sensor support
+- Extended portable hardware abstraction
 
 ### Repository
 
@@ -57,6 +78,7 @@ The project follows the principles of [Keep a Changelog](https://keepachangelog.
 - Added English project documentation
 - Created glossary
 - Added roadmap
+- Added continuously maintained development backlog
 - Synchronized Home Assistant configuration with the local repository
 
 ---
@@ -81,7 +103,7 @@ Included:
 
 | Version | Description |
 |----------|-------------|
-| v0.3.0 | First Reusable SHCF Automation Blueprint |
+| v0.3.0 | SHCF Instance Provisioning |
 | v0.4.0 | Multi-Instance Support |
 | v0.5.0 | Native Home Assistant Integration |
 | v1.0.0 | First Stable SHCF Release |

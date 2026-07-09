@@ -17,7 +17,9 @@
 * 🟢 Local repository synchronized with Home Assistant
 * 🟢 GitHub repository established
 * 🟡 Documentation under continuous refinement
-* 🟡 SHCF instance architecture under design
+* 🟢 SHCF Device Profile architecture defined
+* 🟢 First package generator prototype implemented
+* 🟡 Dashboard generator prototype under development
 * 🔵 Native Home Assistant Integration not yet started
 
 ---
@@ -25,7 +27,7 @@
 # Planned Releases
 
 * [x] v0.1.0 – Proof of Concept
-* [ ] v0.2.0 – Modular Development Platform (current development)
+* [ ] v0.2.0 – Modular Development Platform
 * [ ] v0.3.0 – SHCF Instance Provisioning
 * [ ] v0.4.0 – Multi-Instance Support
 * [ ] v0.5.0 – Native Home Assistant Integration
@@ -48,6 +50,7 @@
 ## Repository Maintenance
 
 * [ ] Review .gitignore
+* [ ] Decide generated-files policy
 * [ ] Clean repository structure
 * [ ] Synchronize GitHub repository
 
@@ -56,6 +59,7 @@
 # Deployment
 
 * [x] Deployment script (Mac → Home Assistant)
+* [x] Manual deployment of generated SHCF packages
 * [ ] Synchronization script (Home Assistant → Mac)
 * [ ] Automatic synchronization
 * [ ] Automatic backup before deployment
@@ -91,13 +95,25 @@
 
 ---
 
-# SHCF Instance Architecture
+# SHCF Device Architecture
 
-* [ ] Design SHCF instance architecture
-* [ ] Separate instance configuration from SHCF core
-* [ ] Define reusable instance configuration format
-* [ ] Implement SHCF instance generator
-* [ ] Test second portable SHCF instance
+* [x] Define SHCF Device Profile concept
+* [x] Separate hardware configuration from SHCF Core
+* [x] Define SHCF Device Profile format
+* [x] Create first SHCF Device Profile
+* [x] Implement package generator prototype
+* [x] Generate first Home Assistant device package
+* [x] Load generated package in Home Assistant
+* [x] Verify generated helpers
+* [x] Verify generated timer
+* [x] Verify generated automations
+* [x] Verify generated template sensors
+* [x] Implement dashboard generator prototype
+* [ ] Resolve generated template sensor entity-ID strategy
+* [ ] Improve generated dashboard template
+* [ ] Automatically register generated dashboards
+* [ ] Test complete second portable SHCF device
+* [ ] Test multiple independent SHCF devices
 
 ---
 
@@ -118,6 +134,7 @@
 * [x] Continuous-operation dehumidifier
 * [x] Temperature / humidity sensor
 * [x] Smart plug with power and energy measurement
+* [x] Optional battery sensor support
 * [ ] Native relay support
 * [ ] Alternative switching devices
 
@@ -138,6 +155,7 @@
 * [ ] Entity Registry
 * [ ] Automatic entity discovery
 * [ ] Multiple SHCF instances
+* [ ] Migration from generated packages
 
 ---
 
@@ -151,6 +169,7 @@
 * [x] Indoor Dew Point
 * [x] Power
 * [x] Energy
+* [x] Battery Level (optional)
 
 ## Layer 2 – Diagnostics
 
@@ -207,11 +226,14 @@
 # Dashboard
 
 * [x] Initial dashboard exists in Home Assistant
-* [ ] Export dashboard YAML to repository
+* [x] Dashboard generator prototype
+* [ ] Export reference dashboard YAML
 * [ ] Dashboard Version 1.0
+* [ ] Dynamic gauge generation
 * [ ] Target range visualization
 * [ ] Animated dehumidification indicator
 * [ ] Extended operating status
+* [ ] Automatic dashboard deployment
 * [ ] Multiple dashboard instances
 * [ ] SHCF overview dashboard
 
@@ -225,7 +247,7 @@ Possible future topics include:
 
 * Coordinated control of multiple dehumidifiers
 * Combined control of dehumidifiers and ventilation systems
-* Multiple sensors per SHCF instance
+* Multiple sensors per SHCF device
 * Device prioritization
 * Load balancing
 * Energy-aware device coordination
