@@ -116,13 +116,13 @@
 
 # Automation Blueprint
 
-* [x] Initial Blueprint file created
-* [ ] Review Blueprint implementation
+* [x] Blueprint placeholder file created
+* [ ] Implement first reusable SHCF Blueprint
 * [ ] Blueprint documentation
 * [ ] Test Blueprint with first SHCF instance
 * [ ] Configure second SHCF instance exclusively through Blueprint
-* [ ] Test multiple independent SHCF instances
-* [ ] Test multiple dashboard instances
+* [ ]  Test multiple independent SHCF instances
+* [ ]  Test multiple dashboard instances
 
 ---
 
@@ -203,7 +203,8 @@
 
 # Dashboard
 
-* [x] Initial dashboard
+* [x] Initial dashboard exists in Home Assistant
+* [ ] Export dashboard YAML to repository
 * [ ] Dashboard Version 1.0
 * [ ] Target range visualization
 * [ ] Animated dehumidification indicator
