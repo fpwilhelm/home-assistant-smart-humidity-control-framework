@@ -12,8 +12,5 @@ __pycache__/
 # Home Assistant
 .storage/
 
-# Lokale Notizen (nur Frank Wilhelm)
-notes.local.md
-
-# Lokale TODOs (nur Frank Wilhelm)
-TODO.local.md
+# Local development files (nur Frank Wilhelm)
+.local/

@@ -1,137 +1,163 @@
-# Roadmap
+# SHCF Roadmap
 
-This roadmap describes the planned evolution of the Smart Humidity Control Framework.
+This roadmap outlines the planned evolution of the **Smart Humidity Control Framework (SHCF)**.
 
-It outlines the long-term vision of the project and serves as a guide for future development.
-
----
-
-# Project Status
-
-| Version | Status |
-|----------|:------:|
-| Architecture | ✅ |
-| Reference Implementation | ✅ |
-| Automation Blueprint | ⏳ |
-| Native Home Assistant Integration | ⏳ |
+The roadmap describes the major development milestones. Detailed implementation tasks are maintained separately in the project TODO list.
 
 ---
 
-# Version 1.0 – Reference Implementation
+# Development Philosophy
 
-## Goal
+SHCF is developed incrementally.
 
-Develop a complete reference implementation based on a **Trotec TTK 171 ECO**.
+Each development stage builds upon the previous one while maintaining a stable architecture and a consistent control concept.
 
-## Features
+The project evolves through the following stages:
 
-- Operating modes
-- Humidity profiles
-- Control characteristics
-- Target modes
-- Automatic operation
-- Timed operation
-- Dashboard
-- Template sensors
-- Device configuration
-- Operating status
-- Power monitoring
-- Energy monitoring
-- Documentation
-
-**Status**
-
-🟡 In Progress
-
----
-
-# Version 1.1 – Automation Blueprint
-
-## Goal
-
-Transform the reference implementation into a reusable Home Assistant blueprint.
-
-## Planned Features
-
-- Flexible sensor selection
-- Flexible switching device selection
-- Automatic provisioning of required framework components
-- Preconfigured dashboard
-- Reusable with different dehumidifiers
-
-**Status**
-
-⚪ Planned
+```text
+Proof of Concept
+        │
+        ▼
+Modular Framework
+        │
+        ▼
+Reusable Automation Blueprint
+        │
+        ▼
+Multi-Instance Support
+        │
+        ▼
+Native Home Assistant Integration
+        │
+        ▼
+Stable SHCF Release
+```
 
 ---
 
-# Version 2.0 – Native Home Assistant Integration
+# Planned Releases
 
-## Goal
+## v0.1.0 – Proof of Concept
 
-Develop a native Home Assistant integration.
+Completed
 
-## Planned Features
+The first functional implementation demonstrating the SHCF control concept.
 
-- Config Flow
-- Options Flow
-- Device management
-- Device configuration
-- Humidity profile management
-- Automatic entity creation
-- Dashboard generation
-- Integrated control logic
-- Framework diagnostics
+Main achievements:
 
-**Status**
-
-⚪ Planned
+* automatic humidity control
+* humidity target control
+* dashboard
+* first template sensors
+* first automation
 
 ---
 
-# Version 3.0 – Advanced Humidity Control
+## v0.2.0 – Modular Development Platform
 
-## Planned Features
+**Current development version**
 
-- Outdoor climate
-- Outdoor dew point
-- Indoor/outdoor dew point comparison
-- Ventilation recommendations
-- Condensation assessment
-- Mold risk assessment
-- Building drying mode
+Focus:
 
-**Status**
-
-⚪ Vision
+* modular package architecture
+* reusable project structure
+* framework foundation
+* German and English documentation
+* diagnostics and recommendation layers
+* repository structure
+* development workflow
 
 ---
 
-# Version 4.0 – Smart Humidity Control
+## v0.3.0 – Reusable Automation Blueprint
 
-## Planned Features
+Planned
 
-- Adaptive control algorithms
-- Learning humidity profiles
-- Energy optimization
-- Multiple humidity reduction strategies
-- Multiple switching devices
-- Ventilation systems
-- Fans
-- Window actuators
-- Tank level estimation
-- Tank level sensor support
+Goals:
 
-**Status**
-
-⚪ Vision
+* first reusable SHCF Blueprint
+* simplified installation
+* reusable configuration
+* standardized entity structure
 
 ---
 
-# Long-Term Vision
+## v0.4.0 – Multi-Instance Support
 
-The Smart Humidity Control Framework is intended to become a universal platform for intelligent humidity control in Home Assistant.
+Planned
 
-The framework architecture shall remain independent of manufacturers, devices, and sensors while supporting different humidity reduction strategies.
+Goals:
 
-Its core principle is a modular, transparent, understandable, and extensible control architecture that can continuously evolve without changing its fundamental design.
+* multiple independent SHCF instances
+* multiple dashboards
+* multiple dehumidifiers in different rooms
+* independent configuration for each installation
+
+Each SHCF instance represents one complete hardware unit and operates independently.
+
+---
+
+## v0.5.0 – Native Home Assistant Integration
+
+Planned
+
+Goals:
+
+* Config Flow
+* Options Flow
+* Device Registry
+* Entity Registry
+* automatic entity creation
+* migration path from Blueprint to Integration
+
+---
+
+## v1.0.0 – First Stable Release
+
+Planned
+
+Goals:
+
+* stable framework architecture
+* production-ready Home Assistant integration
+* complete documentation
+* long-term maintenance
+* first public release
+
+---
+
+# Future Development
+
+After the first stable release, SHCF is planned to expand beyond the current reference implementation.
+
+Possible future areas include:
+
+* Multi-Device Control
+* ventilation systems
+* multiple coordinated dehumidifiers
+* adaptive control strategies
+* weather-aware control
+* building physics evaluation
+* mold prevention
+* energy optimization
+* additional humidity control devices
+
+These features are intentionally planned after the first stable architecture has been established.
+
+---
+
+# Versioning
+
+SHCF follows Semantic Versioning.
+
+Major architectural milestones are reflected by the project version.
+
+Development versions are marked accordingly until the first stable release.
+
+---
+
+# Related Documents
+
+* README.md
+* CHANGELOG.md
+* TODO.md

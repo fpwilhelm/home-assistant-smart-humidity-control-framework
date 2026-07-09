@@ -192,6 +192,10 @@ Every significant architectural decision should be documented.
 
 Examples must always remain synchronized with the implementation.
 
+The project documentation is currently maintained in English only.
+
+Additional language versions may be introduced once the framework architecture has stabilized.
+
 ---
 
 # Comments
@@ -224,21 +228,9 @@ This includes
 
 # Internationalization
 
-The framework is developed in both German and English.
+During active development, the official project documentation is maintained in English only.
 
-## German
-
-German serves as the primary language for project documentation.
-
----
-
-## English
-
-English documentation is maintained alongside the German version.
-
-Both language versions should remain functionally identical.
-
-Neither version should become outdated.
+Additional language versions may be added after the first reusable Automation Blueprint has been completed and the framework architecture has become sufficiently stable.
 
 ---
 
@@ -311,6 +303,36 @@ Recommended practices include
 
 ---
 
+# Git Commit Messages
+
+SHCF follows a simplified Conventional Commit style to keep the Git history clear and consistent.
+
+The following commit prefixes should be used whenever applicable.
+
+| Prefix | Purpose |
+|---------|---------|
+| `docs:` | Documentation changes |
+| `feat:` | New functionality |
+| `fix:` | Bug fixes |
+| `refactor:` | Code restructuring without functional changes |
+| `test:` | Test-related changes |
+| `ci:` | Continuous Integration |
+| `build:` | Build and packaging changes |
+
+## Examples
+
+```text
+docs: reorganize project documentation for v0.2 development
+
+feat: add drying mode
+
+fix: correct operating status detection
+
+refactor: split template sensors into dedicated files
+```
+
+---
+
 # Quality
 
 Every change should improve at least one of the following.
@@ -344,6 +366,6 @@ Planned additions include
 
 The Coding Guidelines define the common development principles of the Smart Humidity Control Framework.
 
-They ensure that documentation, the reference implementation, the blueprint, and the future native Home Assistant integration evolve consistently over time.
+They ensure that documentation, the reference implementation, the Automation Blueprint, and the future native Home Assistant integration evolve consistently over time.
 
 Readability, modularity, manufacturer independence, and maintainability remain the guiding principles of the project.

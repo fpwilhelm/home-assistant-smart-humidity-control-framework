@@ -1,71 +1,87 @@
 # Changelog
 
-All notable changes to the Smart Humidity Control Framework are documented in this file.
+All notable changes to the **Smart Humidity Control Framework (SHCF)** are documented in this file.
 
-The project follows the principles of [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and aims to follow Semantic Versioning where applicable.
-
----
-
-## [Unreleased]
-
-### Added
-
-- Ongoing improvements before the first public release.
+The project follows the principles of [Keep a Changelog](https://keepachangelog.com/) and uses Semantic Versioning.
 
 ---
 
-## [1.0.0] - Initial Development
+## v0.2.0 (Development)
 
-### Added
+### Architecture
 
-#### Project
+- Introduced a modular SHCF package architecture
+- Split the framework into templates, automations, and helpers
+- Prepared the project for further modularization
+- Evolved from a single automation into a reusable framework
 
-- Initial project structure
-- Git repository
-- GitHub repository
-- MIT License
-- README
-- Roadmap
-- Changelog
+### Home Assistant
 
-#### Documentation
+#### Operating Modes
 
-- Complete German documentation
-- Complete English documentation
-- Architecture documentation
-- Glossary
-- Control algorithm
-- Controller reference
-- Integration design
-- Helper entities
-- Template sensors
-- Humidity profiles
-- Device configuration
-- Dashboard design
-- Automation blueprint
-- Installation guide
-- Coding guidelines
-- Documentation index
+- Automatic
+- Continuous Operation
+- Timed Operation
+- Off
 
-#### Framework
+#### Sensors
 
-- Manufacturer-independent framework architecture
-- Modular controller concept
-- Humidity profile concept
-- Control characteristics
-- Multiple operating modes
-- Target mode concept
-- Hysteresis-based control
-- Device abstraction
-- Dashboard architecture
-- Future native integration architecture
+- Target Humidity
+- Hysteresis
+- Switch-on Threshold
+- Target Dew Point
+- Indoor Dew Point
+- Humidity Deviation
+- Dehumidification Demand
+- Recommendation
+- Operating Status
+- Operating Status Indicator
+
+#### Controller
+
+- Central SHCF controller
+- Timed Operation
+- Automatic return to Automatic mode
+- Adjustable timer during runtime
+
+#### Dashboard
+
+- Initial SHCF dashboard
+- Operating Status
+- Timed Operation
+- Recommendations
+
+### Repository
+
+- Created GitHub repository
+- Added English project documentation
+- Created glossary
+- Added roadmap
+- Synchronized Home Assistant configuration with the local repository
 
 ---
 
-## Release Notes
+## v0.1.0
 
-### 1.0.0
+### Proof of Concept
 
-Initial development release.
+First functional Home Assistant implementation demonstrating the SHCF control concept.
 
-This version establishes the complete framework architecture, documentation, and reference implementation that form the foundation for all future development.
+Included:
+
+- Automatic humidity control
+- Target humidity regulation
+- Initial dashboard
+- First template sensors
+- First automations
+
+---
+
+## Planned Releases
+
+| Version | Description |
+|----------|-------------|
+| v0.3.0 | First Reusable SHCF Automation Blueprint |
+| v0.4.0 | Multi-Instance Support |
+| v0.5.0 | Native Home Assistant Integration |
+| v1.0.0 | First Stable SHCF Release |
