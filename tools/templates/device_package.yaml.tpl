@@ -92,54 +92,94 @@ template:
       - name: SHCF __DEVICE_ID__ Current Humidity
         unique_id: shcf___DEVICE_ID___current_humidity
         unit_of_measurement: "%"
-        state: "{{ states('__HUMIDITY_SENSOR__') | float(0) }}"
+        state: >
+          {{ states('__HUMIDITY_SENSOR__') | float(0) | round(1) }}
 
       - name: SHCF __DEVICE_ID__ Current Temperature
         unique_id: shcf___DEVICE_ID___current_temperature
         unit_of_measurement: "°C"
-        state: "{{ states('__TEMPERATURE_SENSOR__') | float(0) }}"
+        state: >
+          {{ states('__TEMPERATURE_SENSOR__') | float(0) | round(1) }}
 
       - name: SHCF __DEVICE_ID__ Target Humidity
         unique_id: shcf___DEVICE_ID___target_humidity
         unit_of_measurement: "%"
-        state: "{{ states('input_number.shcf___DEVICE_ID___custom_target_humidity') | float(60) }}"
+        state: >
+          {{
+            states(
+              'input_number.shcf___DEVICE_ID___custom_target_humidity'
+            ) | float(60) | round(1)
+          }}
 
       - name: SHCF __DEVICE_ID__ Hysteresis
         unique_id: shcf___DEVICE_ID___hysteresis
         unit_of_measurement: "%"
-        state: "{{ states('input_number.shcf___DEVICE_ID___hysteresis') | float(5) }}"
+        state: >
+          {{
+            states(
+              'input_number.shcf___DEVICE_ID___hysteresis'
+            ) | float(5) | round(1)
+          }}
 
       - name: SHCF __DEVICE_ID__ Switch-on Threshold
         unique_id: shcf___DEVICE_ID___switch_on_threshold
         unit_of_measurement: "%"
         state: >
-          {{ states('sensor.shcf___DEVICE_ID___target_humidity') | float(60)
-             + states('sensor.shcf___DEVICE_ID___hysteresis') | float(5) }}
+          {% set target =
+            states('sensor.shcf___DEVICE_ID___target_humidity') | float(60)
+          %}
+          {% set hysteresis =
+            states('sensor.shcf___DEVICE_ID___hysteresis') | float(5)
+          %}
+          {{ (target + hysteresis) | round(1) }}
 
       - name: SHCF __DEVICE_ID__ Target Humidity Lower Limit
         unique_id: shcf___DEVICE_ID___target_humidity_lower_limit
         unit_of_measurement: "%"
-        state: "{{ states('sensor.shcf___DEVICE_ID___target_humidity') | float(60) }}"
+        state: >
+          {{
+            states(
+              'sensor.shcf___DEVICE_ID___target_humidity'
+            ) | float(60) | round(1)
+          }}
 
       - name: SHCF __DEVICE_ID__ Target Humidity Upper Limit
         unique_id: shcf___DEVICE_ID___target_humidity_upper_limit
         unit_of_measurement: "%"
-        state: "{{ states('sensor.shcf___DEVICE_ID___switch_on_threshold') | float(65) }}"
+        state: >
+          {{
+            states(
+              'sensor.shcf___DEVICE_ID___switch_on_threshold'
+            ) | float(65) | round(1)
+          }}
 
       - name: SHCF __DEVICE_ID__ Target Humidity Deviation
         unique_id: shcf___DEVICE_ID___target_humidity_deviation
         unit_of_measurement: "%"
         state: >
-          {{ states('__HUMIDITY_SENSOR__') | float(0)
-             - states('sensor.shcf___DEVICE_ID___target_humidity') | float(60) }}
+          {% set current =
+            states('__HUMIDITY_SENSOR__') | float(0)
+          %}
+          {% set target =
+            states('sensor.shcf___DEVICE_ID___target_humidity') | float(60)
+          %}
+          {{ (current - target) | round(2) }}
 
       - name: SHCF __DEVICE_ID__ Indoor Dew Point
         unique_id: shcf___DEVICE_ID___indoor_dew_point
         unit_of_measurement: "°C"
         state: >
-          {% set t = states('__TEMPERATURE_SENSOR__') | float(0) %}
-          {% set h = states('__HUMIDITY_SENSOR__') | float(0) %}
-          {{ (t - ((100 - h) / 5)) | round(1) }}
+          {% set temperature =
+            states('__TEMPERATURE_SENSOR__') | float(0)
+          %}
+          {% set humidity =
+            states('__HUMIDITY_SENSOR__') | float(0)
+          %}
+          {{
+            (
+              temperature - ((100 - humidity) / 5)
+            ) | round(1)
+          }}
 
       - name: SHCF __DEVICE_ID__ Dehumidification Demand
         unique_id: shcf___DEVICE_ID___dehumidification_demand

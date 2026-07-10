@@ -1,8 +1,8 @@
 # ============================================================================
 # SHCF Generated Device Dashboard View
 # ============================================================================
-# Device: __DEVICE_NAME__
-# Device ID: __DEVICE_ID__
+# Device: Pro Klima ECO DRY
+# Device ID: device_615fa06d
 #
 # This file represents one view inside the shared SHCF dashboard.
 # Do not edit generated views manually.
@@ -11,8 +11,8 @@
 
 type: sections
 max_columns: 4
-title: SHCF __DEVICE_NAME__
-path: shcf-__DEVICE_ID__
+title: SHCF Pro Klima ECO DRY
+path: shcf-device_615fa06d
 
 sections:
   - type: grid
@@ -23,7 +23,7 @@ sections:
         heading: Control
 
       - type: tile
-        entity: input_select.shcf___DEVICE_ID___operating_mode
+        entity: input_select.shcf_device_615fa06d_operating_mode
         name: Operating Mode
         vertical: false
         features:
@@ -31,7 +31,7 @@ sections:
         features_position: inline
 
       - type: tile
-        entity: input_select.shcf___DEVICE_ID___target_mode
+        entity: input_select.shcf_device_615fa06d_target_mode
         name: Target Mode
         vertical: false
         features:
@@ -40,11 +40,11 @@ sections:
 
       - type: conditional
         conditions:
-          - entity: input_select.shcf___DEVICE_ID___target_mode
+          - entity: input_select.shcf_device_615fa06d_target_mode
             state: "Humidity Profile"
         card:
           type: tile
-          entity: input_select.shcf___DEVICE_ID___humidity_profile
+          entity: input_select.shcf_device_615fa06d_humidity_profile
           name: Humidity Profile
           vertical: false
           features:
@@ -53,11 +53,11 @@ sections:
 
       - type: conditional
         conditions:
-          - entity: input_select.shcf___DEVICE_ID___target_mode
+          - entity: input_select.shcf_device_615fa06d_target_mode
             state: "Humidity Profile"
         card:
           type: tile
-          entity: input_select.shcf___DEVICE_ID___control_characteristic
+          entity: input_select.shcf_device_615fa06d_control_characteristic
           name: Control Characteristic
           vertical: false
           features:
@@ -66,28 +66,28 @@ sections:
 
       - type: conditional
         conditions:
-          - entity: input_select.shcf___DEVICE_ID___target_mode
+          - entity: input_select.shcf_device_615fa06d_target_mode
             state: "Custom Target"
         card:
           type: entities
           title: Custom Target
           entities:
-            - entity: input_number.shcf___DEVICE_ID___custom_target_humidity
+            - entity: input_number.shcf_device_615fa06d_custom_target_humidity
               name: Target Humidity
 
       - type: conditional
         conditions:
-          - entity: input_select.shcf___DEVICE_ID___operating_mode
+          - entity: input_select.shcf_device_615fa06d_operating_mode
             state: "Timed Operation"
         card:
           type: entities
           title: Timed Operation
           entities:
-            - entity: input_number.shcf___DEVICE_ID___timed_operation_duration
+            - entity: input_number.shcf_device_615fa06d_timed_operation_duration
               name: Duration
-            - entity: input_select.shcf___DEVICE_ID___timed_operation_behavior_on_target_reached
+            - entity: input_select.shcf_device_615fa06d_timed_operation_behavior_on_target_reached
               name: Behavior on Target Reached
-            - entity: timer.shcf___DEVICE_ID___timed_operation
+            - entity: timer.shcf_device_615fa06d_timed_operation
               name: Timer
 
   - type: grid
@@ -98,7 +98,7 @@ sections:
         heading: Local Climate Conditions
 
       - type: custom:gauge-card-pro
-        entity: __HUMIDITY_SENSOR__
+        entity: sensor.pro_klima_eco_dry_klimasensor_humidity
         min: 0
         max: 100
         needle: true
@@ -124,33 +124,33 @@ sections:
           primary:
             value: |
               {% if is_state(
-                'input_select.shcf___DEVICE_ID___target_mode',
+                'input_select.shcf_device_615fa06d_target_mode',
                 'Humidity Profile'
               ) %}
-                {{ states('input_select.shcf___DEVICE_ID___humidity_profile') }}
+                {{ states('input_select.shcf_device_615fa06d_humidity_profile') }}
               {% else %}
                 Custom Target
               {% endif %}
           secondary:
             value: >-
               Target range:
-              {{ states('sensor.shcf___DEVICE_ID___target_humidity_lower_limit') | int }}
+              {{ states('sensor.shcf_device_615fa06d_target_humidity_lower_limit') | int }}
               –
-              {{ states('sensor.shcf___DEVICE_ID___target_humidity_upper_limit') | int }}
+              {{ states('sensor.shcf_device_615fa06d_target_humidity_upper_limit') | int }}
               %
         animation_speed: "off"
         setpoint:
           type: entity
-          value: sensor.shcf___DEVICE_ID___target_humidity
+          value: sensor.shcf_device_615fa06d_target_humidity
         min_indicator:
           type: entity
-          value: sensor.shcf___DEVICE_ID___target_humidity_lower_limit
+          value: sensor.shcf_device_615fa06d_target_humidity_lower_limit
           label: true
           opacity: 0.1
           precision: 0
         max_indicator:
           type: entity
-          value: sensor.shcf___DEVICE_ID___target_humidity_upper_limit
+          value: sensor.shcf_device_615fa06d_target_humidity_upper_limit
           label: true
           opacity: 0.1
           precision: 0
@@ -160,7 +160,7 @@ sections:
 
       - type: history-graph
         entities:
-          - __HUMIDITY_SENSOR__
+          - sensor.pro_klima_eco_dry_klimasensor_humidity
         hours_to_show: 24
         show_names: false
         logarithmic_scale: false
@@ -168,7 +168,7 @@ sections:
 
       - type: statistics-graph
         entities:
-          - __TEMPERATURE_SENSOR__
+          - sensor.pro_klima_eco_dry_klimasensor_temperature
         days_to_show: 3
         period: 5minute
         chart_type: line
@@ -184,7 +184,7 @@ sections:
         heading: Power and Energy
 
       - type: custom:gauge-card-pro
-        entity: __POWER_SENSOR__
+        entity: sensor.pro_klima_eco_dry_zwischenstecker_power
         min: 0
         max: 800
         needle: true
@@ -208,7 +208,7 @@ sections:
           primary:
             value: Power Consumption
           secondary:
-            value: __DEVICE_NAME__
+            value: Pro Klima ECO DRY
         animation_speed: "off"
         value_texts:
           primary:
@@ -217,7 +217,7 @@ sections:
 
       - type: statistics-graph
         entities:
-          - __POWER_SENSOR__
+          - sensor.pro_klima_eco_dry_zwischenstecker_power
         days_to_show: 1
         period: 5minute
         chart_type: line
@@ -226,7 +226,7 @@ sections:
 
       - type: statistics-graph
         entities:
-          - __ENERGY_SENSOR__
+          - sensor.pro_klima_eco_dry_zwischenstecker_energy
         days_to_show: 7
         period: hour
         chart_type: line
@@ -240,89 +240,89 @@ badges:
     show_name: false
     show_state: true
     show_icon: false
-    entity: sensor.shcf___DEVICE_ID___operating_status_display
+    entity: sensor.shcf_device_615fa06d_operating_status_display
 
   - type: entity
     show_name: true
     show_state: true
     show_icon: true
-    entity: __HUMIDITY_SENSOR__
+    entity: sensor.pro_klima_eco_dry_klimasensor_humidity
     name: Current
 
   - type: entity
     show_name: true
     show_state: true
     show_icon: true
-    entity: sensor.shcf___DEVICE_ID___target_humidity
+    entity: sensor.shcf_device_615fa06d_target_humidity
     name: Target
 
   - type: entity
     show_name: true
     show_state: true
     show_icon: true
-    entity: sensor.shcf___DEVICE_ID___target_humidity_deviation
+    entity: sensor.shcf_device_615fa06d_target_humidity_deviation
     name: Deviation
 
   - type: entity
     show_name: true
     show_state: true
     show_icon: true
-    entity: sensor.shcf___DEVICE_ID___switch_on_threshold
+    entity: sensor.shcf_device_615fa06d_switch_on_threshold
     name: Switch-on Threshold
 
   - type: entity
     show_name: true
     show_state: true
     show_icon: true
-    entity: sensor.shcf___DEVICE_ID___hysteresis
+    entity: sensor.shcf_device_615fa06d_hysteresis
     name: Hysteresis
 
   - type: entity
     show_name: true
     show_state: true
     show_icon: true
-    entity: __TEMPERATURE_SENSOR__
+    entity: sensor.pro_klima_eco_dry_klimasensor_temperature
     name: Temperature
 
   - type: entity
     show_name: true
     show_state: true
     show_icon: true
-    entity: sensor.shcf___DEVICE_ID___dehumidification_demand
+    entity: sensor.shcf_device_615fa06d_dehumidification_demand
     name: Demand
 
   - type: entity
     show_name: true
     show_state: true
     show_icon: true
-    entity: sensor.shcf___DEVICE_ID___recommendation
+    entity: sensor.shcf_device_615fa06d_recommendation
     name: Recommendation
 
   - type: entity
     show_name: true
     show_state: true
     show_icon: true
-    entity: __POWER_SENSOR__
+    entity: sensor.pro_klima_eco_dry_zwischenstecker_power
     name: Power
 
   - type: entity
     show_name: true
     show_state: true
     show_icon: true
-    entity: __ENERGY_SENSOR__
+    entity: sensor.pro_klima_eco_dry_zwischenstecker_energy
     name: Energy
 
   - type: entity
     show_name: false
     show_state: true
     show_icon: true
-    entity: __BATTERY_SENSOR__
+    entity: sensor.pro_klima_eco_dry_klimasensor_battery
 
 header:
   card:
     type: markdown
     text_only: true
-    content: "# SHCF : __DEVICE_NAME__"
+    content: "# SHCF : Pro Klima ECO DRY"
   layout: start
   badges_position: bottom
   badges_wrap: wrap

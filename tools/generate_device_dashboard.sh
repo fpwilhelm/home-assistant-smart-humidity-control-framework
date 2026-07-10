@@ -7,27 +7,60 @@ if [ ! -d ".git" ]; then
   exit 1
 fi
 
-if [ $# -ne 1 ]; then
+if [ "$#" -ne 1 ]; then
   echo "Usage: $0 packages/shcf/devices/device_<id>.yaml"
   exit 1
 fi
 
 DEVICE_PROFILE="$1"
-TEMPLATE_FILE="tools/templates/device_dashboard.yaml.tpl"
+TEMPLATE_FILE="tools/templates/device_dashboard_view.yaml.tpl"
 OUTPUT_DIR="packages/shcf/generated"
+
+if [ ! -f "$DEVICE_PROFILE" ]; then
+  echo "Error: device profile not found: $DEVICE_PROFILE"
+  exit 1
+fi
+
+if [ ! -f "$TEMPLATE_FILE" ]; then
+  echo "Error: dashboard view template not found: $TEMPLATE_FILE"
+  exit 1
+fi
 
 mkdir -p "$OUTPUT_DIR"
 
-DEVICE_ID="$(grep -E '^  id:' "$DEVICE_PROFILE" | head -1 | sed 's/^  id:[[:space:]]*//')"
-DEVICE_NAME="$(grep -E '^  name:' "$DEVICE_PROFILE" | head -1 | sed 's/^  name:[[:space:]]*//')"
-SWITCHING_DEVICE="$(grep -E '^  switching_device:' "$DEVICE_PROFILE" | head -1 | sed 's/^  switching_device:[[:space:]]*//')"
-HUMIDITY_SENSOR="$(grep -E '^  humidity_sensor:' "$DEVICE_PROFILE" | head -1 | sed 's/^  humidity_sensor:[[:space:]]*//')"
-TEMPERATURE_SENSOR="$(grep -E '^  temperature_sensor:' "$DEVICE_PROFILE" | head -1 | sed 's/^  temperature_sensor:[[:space:]]*//')"
-POWER_SENSOR="$(grep -E '^  power_sensor:' "$DEVICE_PROFILE" | head -1 | sed 's/^  power_sensor:[[:space:]]*//')"
-ENERGY_SENSOR="$(grep -E '^  energy_sensor:' "$DEVICE_PROFILE" | head -1 | sed 's/^  energy_sensor:[[:space:]]*//')"
-BATTERY_SENSOR="$(grep -E '^  battery_sensor:' "$DEVICE_PROFILE" | head -1 | sed 's/^  battery_sensor:[[:space:]]*//')"
+read_profile_value() {
+  local key="$1"
 
-OUTPUT_FILE="${OUTPUT_DIR}/${DEVICE_ID}.dashboard.yaml"
+  grep -E "^  ${key}:" "$DEVICE_PROFILE" \
+    | head -1 \
+    | sed "s/^  ${key}:[[:space:]]*//"
+}
+
+DEVICE_ID="$(read_profile_value "id")"
+DEVICE_NAME="$(read_profile_value "name")"
+SWITCHING_DEVICE="$(read_profile_value "switching_device")"
+HUMIDITY_SENSOR="$(read_profile_value "humidity_sensor")"
+TEMPERATURE_SENSOR="$(read_profile_value "temperature_sensor")"
+POWER_SENSOR="$(read_profile_value "power_sensor")"
+ENERGY_SENSOR="$(read_profile_value "energy_sensor")"
+BATTERY_SENSOR="$(read_profile_value "battery_sensor")"
+
+required_values=(
+  "$DEVICE_ID"
+  "$DEVICE_NAME"
+  "$SWITCHING_DEVICE"
+  "$HUMIDITY_SENSOR"
+  "$TEMPERATURE_SENSOR"
+)
+
+for value in "${required_values[@]}"; do
+  if [ -z "$value" ]; then
+    echo "Error: required value missing in device profile."
+    exit 1
+  fi
+done
+
+OUTPUT_FILE="${OUTPUT_DIR}/${DEVICE_ID}.view.yaml"
 
 sed \
   -e "s|__DEVICE_ID__|${DEVICE_ID}|g" \
@@ -40,5 +73,6 @@ sed \
   -e "s|__BATTERY_SENSOR__|${BATTERY_SENSOR}|g" \
   "$TEMPLATE_FILE" > "$OUTPUT_FILE"
 
-echo "Generated dashboard:"
+echo
+echo "Generated SHCF dashboard view:"
 echo "$OUTPUT_FILE"

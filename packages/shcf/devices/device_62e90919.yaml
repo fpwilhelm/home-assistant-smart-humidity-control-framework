@@ -1,0 +1,29 @@
+# ============================================================================
+# SHCF Device Profile
+# ============================================================================
+# This file describes one portable SHCF hardware unit.
+# It contains hardware-specific information only.
+# No humidity profile, room profile, target value, or control logic is stored here.
+# ============================================================================
+
+metadata:
+  version: 0.1
+  profile_type: device
+  generated_by: manual
+
+device:
+  id: device_62e90919
+  name: Trotec TTK 171 ECO
+
+entities:
+  switching_device: switch.shcf_zwischenstecker
+  humidity_sensor: sensor.shcf_klimasensor_humidity
+  temperature_sensor: sensor.shcf_klimasensor_temperature
+  power_sensor: sensor.shcf_zwischenstecker_power
+  energy_sensor: sensor.shcf_zwischenstecker_energy
+  battery_sensor: sensor.shcf_klimasensor_battery
+
+capabilities:
+  power_measurement: true
+  energy_measurement: true
+  battery_monitoring: true
