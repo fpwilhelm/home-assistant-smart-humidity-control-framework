@@ -100,8 +100,13 @@ views:
               entities:
                 - entity: input_number.shcf_device_615fa06d_timed_operation_duration
                   name: Duration
+    
                 - entity: input_select.shcf_device_615fa06d_timed_operation_behavior_on_target_reached
-                  name: Behavior on Target Reached
+                  name: On Target Reached
+    
+                - entity: input_select.shcf_device_615fa06d_timed_operation_behavior_on_timer_finished
+                  name: On Timer Finished
+    
                 - entity: timer.shcf_device_615fa06d_timed_operation
                   name: Timer
     
@@ -433,8 +438,13 @@ views:
               entities:
                 - entity: input_number.shcf_device_62e90919_timed_operation_duration
                   name: Duration
+    
                 - entity: input_select.shcf_device_62e90919_timed_operation_behavior_on_target_reached
-                  name: Behavior on Target Reached
+                  name: On Target Reached
+    
+                - entity: input_select.shcf_device_62e90919_timed_operation_behavior_on_timer_finished
+                  name: On Timer Finished
+    
                 - entity: timer.shcf_device_62e90919_timed_operation
                   name: Timer
     

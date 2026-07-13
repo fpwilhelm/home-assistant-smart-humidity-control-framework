@@ -22,22 +22,24 @@ input_select:
   shcf___DEVICE_ID___humidity_profile:
     name: SHCF __DEVICE_ID__ Humidity Profile
     options:
-      - "Living Room"
+      - "Living Area"
       - "Bedroom"
-      - "Basement"
+      - "Bathroom"
+      - "Office"
+      - "Laundry Room"
+      - "Heated Basement"
       - "Unheated Basement"
-      - "Pool Room"
-      - "Desert"
-      - "Custom"
-    initial: "Custom"
+      - "Storage Room"
+      - "Archive"
+      - "Technical Room"
+    initial: "Living Area"
 
   shcf___DEVICE_ID___control_characteristic:
     name: SHCF __DEVICE_ID__ Control Characteristic
     options:
-      - "Standard"
       - "Comfort"
-      - "Protective"
-      - "Energy Saving"
+      - "Standard"
+      - "Conservative"
     initial: "Standard"
 
   shcf___DEVICE_ID___target_mode:
@@ -45,12 +47,19 @@ input_select:
     options:
       - "Humidity Profile"
       - "Custom Target"
-    initial: "Custom Target"
+    initial: "Humidity Profile"
 
   shcf___DEVICE_ID___timed_operation_behavior_on_target_reached:
     name: SHCF __DEVICE_ID__ Timed Operation Behavior on Target Reached
     options:
-      - "Continue Until Timer Ends"
+      - "Continue Timed Operation"
+      - "Switch to Automatic"
+      - "Turn Off"
+    initial: "Switch to Automatic"
+
+  shcf___DEVICE_ID___timed_operation_behavior_on_timer_finished:
+    name: SHCF __DEVICE_ID__ Timed Operation Behavior on Timer Finished
+    options:
       - "Switch to Automatic"
       - "Turn Off"
     initial: "Switch to Automatic"
@@ -65,15 +74,6 @@ input_number:
     mode: slider
     initial: 60
 
-  shcf___DEVICE_ID___hysteresis:
-    name: SHCF __DEVICE_ID__ Hysteresis
-    min: 1
-    max: 15
-    step: 1
-    unit_of_measurement: "%"
-    mode: slider
-    initial: 5
-
   shcf___DEVICE_ID___timed_operation_duration:
     name: SHCF __DEVICE_ID__ Timed Operation Duration
     min: 5
@@ -86,6 +86,9 @@ input_number:
 timer:
   shcf___DEVICE_ID___timed_operation:
     name: SHCF __DEVICE_ID__ Timed Operation
+    duration: "00:30:00"
+    restore: true
+    icon: mdi:timer-outline
 
 template:
   - sensor:
@@ -104,21 +107,71 @@ template:
       - name: SHCF __DEVICE_ID__ Target Humidity
         unique_id: shcf___DEVICE_ID___target_humidity
         unit_of_measurement: "%"
+        state_class: measurement
         state: >
-          {{
-            states(
-              'input_number.shcf___DEVICE_ID___custom_target_humidity'
-            ) | float(60) | round(1)
-          }}
+          {% set target_mode =
+            states('input_select.shcf___DEVICE_ID___target_mode')
+          %}
+
+          {% if target_mode == 'Custom Target' %}
+            {{
+              states(
+                'input_number.shcf___DEVICE_ID___custom_target_humidity'
+              ) | float(60) | round(1)
+            }}
+          {% else %}
+            {% set humidity_profile =
+              states('input_select.shcf___DEVICE_ID___humidity_profile')
+            %}
+            {% set control_characteristic =
+              states('input_select.shcf___DEVICE_ID___control_characteristic')
+            %}
+
+            {% set base_humidity = {
+              'Living Area': 55,
+              'Bedroom': 50,
+              'Bathroom': 60,
+              'Office': 55,
+              'Laundry Room': 50,
+              'Heated Basement': 55,
+              'Unheated Basement': 60,
+              'Storage Room': 60,
+              'Archive': 50,
+              'Technical Room': 60
+            } %}
+
+            {% set correction = {
+              'Comfort': -5,
+              'Standard': 0,
+              'Conservative': 5
+            } %}
+
+            {{
+              (
+                base_humidity.get(humidity_profile, 55)
+                + correction.get(control_characteristic, 0)
+              ) | round(1)
+            }}
+          {% endif %}
 
       - name: SHCF __DEVICE_ID__ Hysteresis
         unique_id: shcf___DEVICE_ID___hysteresis
         unit_of_measurement: "%"
+        state_class: measurement
         state: >
+          {% set control_characteristic =
+            states('input_select.shcf___DEVICE_ID___control_characteristic')
+          %}
+
+          {% set hysteresis_values = {
+            'Comfort': 3,
+            'Standard': 5,
+            'Conservative': 7
+          } %}
+
           {{
-            states(
-              'input_number.shcf___DEVICE_ID___hysteresis'
-            ) | float(5) | round(1)
+            hysteresis_values.get(control_characteristic, 5)
+            | round(1)
           }}
 
       - name: SHCF __DEVICE_ID__ Switch-on Threshold
@@ -245,46 +298,60 @@ template:
           {% endif %}
 
 automation:
-  - id: shcf___DEVICE_ID___controller
-    alias: SHCF __DEVICE_ID__ Controller
+  ###########################################################################
+  # Timed Operation Lifecycle
+  ###########################################################################
+
+  - id: shcf___DEVICE_ID___timed_operation_lifecycle
+    alias: SHCF __DEVICE_ID__ Timed Operation Lifecycle
+    description: >
+      Starts, updates, and cancels the timer when Timed Operation is entered,
+      adjusted, or left.
     mode: restart
 
     trigger:
-      - platform: time_pattern
-        minutes: "/5"
+      - platform: state
+        entity_id: input_select.shcf___DEVICE_ID___operating_mode
+        id: operating_mode_changed
 
       - platform: state
-        entity_id:
-          - __HUMIDITY_SENSOR__
-          - input_select.shcf___DEVICE_ID___operating_mode
-          - input_number.shcf___DEVICE_ID___custom_target_humidity
-          - input_number.shcf___DEVICE_ID___hysteresis
-          - input_number.shcf___DEVICE_ID___timed_operation_duration
-
-      - platform: event
-        event_type: timer.finished
-        event_data:
-          entity_id: timer.shcf___DEVICE_ID___timed_operation
+        entity_id: input_number.shcf___DEVICE_ID___timed_operation_duration
+        id: duration_changed
 
     variables:
-      mode_state: "{{ states('input_select.shcf___DEVICE_ID___operating_mode') }}"
-      humidity: "{{ states('__HUMIDITY_SENSOR__') | float(999) }}"
-      target: "{{ states('sensor.shcf___DEVICE_ID___target_humidity') | float(60) }}"
-      threshold: "{{ states('sensor.shcf___DEVICE_ID___switch_on_threshold') | float(65) }}"
-      timer_active: "{{ is_state('timer.shcf___DEVICE_ID___timed_operation', 'active') }}"
-      timed_behavior: "{{ states('input_select.shcf___DEVICE_ID___timed_operation_behavior_on_target_reached') }}"
+      operating_mode: >
+        {{ states(
+          'input_select.shcf___DEVICE_ID___operating_mode'
+        ) }}
+
+      timer_active: >
+        {{ is_state(
+          'timer.shcf___DEVICE_ID___timed_operation',
+          'active'
+        ) }}
+
       duration: >
-        {% set minutes = states('input_number.shcf___DEVICE_ID___timed_operation_duration') | int(60) %}
-        {{ '%02d:%02d:%02d' | format(minutes // 60, minutes % 60, 0) }}
+        {% set minutes =
+          states(
+            'input_number.shcf___DEVICE_ID___timed_operation_duration'
+          ) | int(60)
+        %}
+        {{ '%02d:%02d:%02d' | format(
+          minutes // 60,
+          minutes % 60,
+          0
+        ) }}
 
     action:
       - choose:
+          # Enter Timed Operation: start the timer.
           - conditions:
+              - condition: trigger
+                id: operating_mode_changed
+
               - condition: template
                 value_template: >
-                  {{ trigger.platform == 'state'
-                     and trigger.entity_id == 'input_select.shcf___DEVICE_ID___operating_mode'
-                     and trigger.to_state is not none
+                  {{ trigger.to_state is not none
                      and trigger.to_state.state == 'Timed Operation' }}
             sequence:
               - service: timer.start
@@ -292,16 +359,32 @@ automation:
                   entity_id: timer.shcf___DEVICE_ID___timed_operation
                 data:
                   duration: "{{ duration }}"
-              - service: switch.turn_on
-                target:
-                  entity_id: __SWITCHING_DEVICE__
 
+          # Leave Timed Operation: cancel a still-running timer.
           - conditions:
+              - condition: trigger
+                id: operating_mode_changed
+
               - condition: template
                 value_template: >
-                  {{ trigger.platform == 'state'
-                     and trigger.entity_id == 'input_number.shcf___DEVICE_ID___timed_operation_duration'
-                     and mode_state == 'Timed Operation'
+                  {{ trigger.from_state is not none
+                     and trigger.from_state.state == 'Timed Operation'
+                     and trigger.to_state is not none
+                     and trigger.to_state.state != 'Timed Operation'
+                     and timer_active }}
+            sequence:
+              - service: timer.cancel
+                target:
+                  entity_id: timer.shcf___DEVICE_ID___timed_operation
+
+          # Update the running timer when its configured duration changes.
+          - conditions:
+              - condition: trigger
+                id: duration_changed
+
+              - condition: template
+                value_template: >
+                  {{ operating_mode == 'Timed Operation'
                      and timer_active }}
             sequence:
               - service: timer.start
@@ -310,47 +393,44 @@ automation:
                 data:
                   duration: "{{ duration }}"
 
+  ###########################################################################
+  # Timed Operation – Timer Finished
+  ###########################################################################
+
+  - id: shcf___DEVICE_ID___timed_operation_finished
+    alias: SHCF __DEVICE_ID__ Timed Operation Finished
+    description: >
+      Applies the configured behavior after the timer expires normally.
+    mode: single
+
+    trigger:
+      - platform: event
+        event_type: timer.finished
+        event_data:
+          entity_id: timer.shcf___DEVICE_ID___timed_operation
+
+    condition:
+      - condition: state
+        entity_id: input_select.shcf___DEVICE_ID___operating_mode
+        state: "Timed Operation"
+
+    variables:
+      timer_finished_behavior: >
+        {{ states(
+          'input_select.shcf___DEVICE_ID___timed_operation_behavior_on_timer_finished'
+        ) }}
+
+    action:
+      - choose:
           - conditions:
               - condition: template
                 value_template: >
-                  {{ trigger.platform == 'event'
-                     and mode_state == 'Timed Operation' }}
-            sequence:
-              - service: input_select.select_option
-                target:
-                  entity_id: input_select.shcf___DEVICE_ID___operating_mode
-                data:
-                  option: "Automatic"
-
-          - conditions:
-              - condition: template
-                value_template: "{{ mode_state == 'Off' }}"
+                  {{ timer_finished_behavior == 'Turn Off' }}
             sequence:
               - service: switch.turn_off
                 target:
                   entity_id: __SWITCHING_DEVICE__
 
-          - conditions:
-              - condition: template
-                value_template: "{{ mode_state == 'Continuous Operation' }}"
-            sequence:
-              - service: switch.turn_on
-                target:
-                  entity_id: __SWITCHING_DEVICE__
-
-          - conditions:
-              - condition: template
-                value_template: >
-                  {{ mode_state == 'Timed Operation'
-                     and humidity <= target
-                     and timed_behavior == 'Turn Off' }}
-            sequence:
-              - service: switch.turn_off
-                target:
-                  entity_id: __SWITCHING_DEVICE__
-              - service: timer.cancel
-                target:
-                  entity_id: timer.shcf___DEVICE_ID___timed_operation
               - service: input_select.select_option
                 target:
                   entity_id: input_select.shcf___DEVICE_ID___operating_mode
@@ -360,13 +440,74 @@ automation:
           - conditions:
               - condition: template
                 value_template: >
-                  {{ mode_state == 'Timed Operation'
-                     and humidity <= target
-                     and timed_behavior == 'Switch to Automatic' }}
+                  {{ timer_finished_behavior == 'Switch to Automatic' }}
+            sequence:
+              - service: input_select.select_option
+                target:
+                  entity_id: input_select.shcf___DEVICE_ID___operating_mode
+                data:
+                  option: "Automatic"
+
+  ###########################################################################
+  # Timed Operation – Target Reached
+  ###########################################################################
+
+  - id: shcf___DEVICE_ID___timed_operation_target_reached
+    alias: SHCF __DEVICE_ID__ Timed Operation Target Reached
+    description: >
+      Applies the configured behavior when humidity crosses the target while
+      Timed Operation is active.
+    mode: restart
+
+    trigger:
+      - platform: state
+        entity_id: __HUMIDITY_SENSOR__
+
+    condition:
+      - condition: state
+        entity_id: input_select.shcf___DEVICE_ID___operating_mode
+        state: "Timed Operation"
+
+      - condition: state
+        entity_id: timer.shcf___DEVICE_ID___timed_operation
+        state: "active"
+
+      - condition: template
+        value_template: >
+          {% set target =
+            states(
+              'sensor.shcf___DEVICE_ID___target_humidity'
+            ) | float(none)
+          %}
+
+          {{ target is not none
+             and trigger.from_state is not none
+             and trigger.to_state is not none
+             and trigger.from_state.state | is_number
+             and trigger.to_state.state | is_number
+             and trigger.from_state.state | float > target
+             and trigger.to_state.state | float <= target }}
+
+    variables:
+      target_reached_behavior: >
+        {{ states(
+          'input_select.shcf___DEVICE_ID___timed_operation_behavior_on_target_reached'
+        ) }}
+
+    action:
+      - choose:
+          # Continue Timed Operation:
+          # no action; timer and switching device continue running.
+
+          - conditions:
+              - condition: template
+                value_template: >
+                  {{ target_reached_behavior == 'Switch to Automatic' }}
             sequence:
               - service: timer.cancel
                 target:
                   entity_id: timer.shcf___DEVICE_ID___timed_operation
+
               - service: input_select.select_option
                 target:
                   entity_id: input_select.shcf___DEVICE_ID___operating_mode
@@ -375,26 +516,169 @@ automation:
 
           - conditions:
               - condition: template
-                value_template: "{{ mode_state == 'Timed Operation' }}"
+                value_template: >
+                  {{ target_reached_behavior == 'Turn Off' }}
+            sequence:
+              - service: timer.cancel
+                target:
+                  entity_id: timer.shcf___DEVICE_ID___timed_operation
+
+              - service: switch.turn_off
+                target:
+                  entity_id: __SWITCHING_DEVICE__
+
+              - service: input_select.select_option
+                target:
+                  entity_id: input_select.shcf___DEVICE_ID___operating_mode
+                data:
+                  option: "Off"
+
+  ###########################################################################
+  # Central Controller
+  ###########################################################################
+
+  - id: shcf___DEVICE_ID___controller
+    alias: SHCF __DEVICE_ID__ Controller
+    description: >
+      Central control logic for Off, Automatic, Continuous Operation,
+      and Timed Operation.
+    mode: restart
+
+    trigger:
+      - platform: time_pattern
+        minutes: "/5"
+        id: periodic_update
+
+      - platform: state
+        entity_id:
+          - __HUMIDITY_SENSOR__
+          - sensor.shcf___DEVICE_ID___target_humidity
+          - sensor.shcf___DEVICE_ID___switch_on_threshold
+          - input_select.shcf___DEVICE_ID___operating_mode
+          - input_select.shcf___DEVICE_ID___humidity_profile
+          - input_select.shcf___DEVICE_ID___control_characteristic
+          - input_select.shcf___DEVICE_ID___target_mode
+          - input_number.shcf___DEVICE_ID___custom_target_humidity
+          - timer.shcf___DEVICE_ID___timed_operation
+        id: state_changed
+
+    variables:
+      operating_mode: >
+        {{ states(
+          'input_select.shcf___DEVICE_ID___operating_mode'
+        ) }}
+
+      humidity: >
+        {{ states('__HUMIDITY_SENSOR__') | float(999) }}
+
+      target: >
+        {{ states(
+          'sensor.shcf___DEVICE_ID___target_humidity'
+        ) | float(60) }}
+
+      switch_on_threshold: >
+        {{ states(
+          'sensor.shcf___DEVICE_ID___switch_on_threshold'
+        ) | float(65) }}
+
+      timer_active: >
+        {{ is_state(
+          'timer.shcf___DEVICE_ID___timed_operation',
+          'active'
+        ) }}
+
+      target_changed: >
+        {{ trigger.platform == 'state'
+           and trigger.entity_id in [
+             'sensor.shcf___DEVICE_ID___target_humidity',
+             'input_select.shcf___DEVICE_ID___humidity_profile',
+             'input_select.shcf___DEVICE_ID___control_characteristic',
+             'input_select.shcf___DEVICE_ID___target_mode',
+             'input_number.shcf___DEVICE_ID___custom_target_humidity'
+           ] }}
+
+      automatic_activated: >
+        {{ trigger.platform == 'state'
+           and trigger.entity_id ==
+             'input_select.shcf___DEVICE_ID___operating_mode'
+           and trigger.to_state is not none
+           and trigger.to_state.state == 'Automatic' }}
+
+    action:
+      - choose:
+          # Off always switches the controlled device off.
+          - conditions:
+              - condition: template
+                value_template: >
+                  {{ operating_mode == 'Off' }}
+            sequence:
+              - service: switch.turn_off
+                target:
+                  entity_id: __SWITCHING_DEVICE__
+
+          # Continuous Operation always switches the device on.
+          - conditions:
+              - condition: template
+                value_template: >
+                  {{ operating_mode == 'Continuous Operation' }}
             sequence:
               - service: switch.turn_on
                 target:
                   entity_id: __SWITCHING_DEVICE__
 
+          # Timed Operation runs while the timer is active.
           - conditions:
               - condition: template
                 value_template: >
-                  {{ mode_state == 'Automatic'
-                     and humidity > threshold }}
+                  {{ operating_mode == 'Timed Operation'
+                     and timer_active }}
             sequence:
               - service: switch.turn_on
                 target:
                   entity_id: __SWITCHING_DEVICE__
 
+          # Safety fallback:
+          # do not leave the device running if Timed Operation has no active timer.
           - conditions:
               - condition: template
                 value_template: >
-                  {{ mode_state == 'Automatic'
+                  {{ operating_mode == 'Timed Operation'
+                     and not timer_active }}
+            sequence:
+              - service: switch.turn_off
+                target:
+                  entity_id: __SWITCHING_DEVICE__
+
+          # When Automatic is selected, or its target changes, start immediately
+          # if humidity is above the new target. This deliberately bypasses the
+          # normal switch-on threshold for this one transition.
+          - conditions:
+              - condition: template
+                value_template: >
+                  {{ operating_mode == 'Automatic'
+                     and (target_changed or automatic_activated)
+                     and humidity > target }}
+            sequence:
+              - service: switch.turn_on
+                target:
+                  entity_id: __SWITCHING_DEVICE__
+
+          # Normal Automatic switch-on condition.
+          - conditions:
+              - condition: template
+                value_template: >
+                  {{ operating_mode == 'Automatic'
+                     and humidity > switch_on_threshold }}
+            sequence:
+              - service: switch.turn_on
+                target:
+                  entity_id: __SWITCHING_DEVICE__
+
+          # Normal Automatic switch-off condition.
+          - conditions:
+              - condition: template
+                value_template: >
+                  {{ operating_mode == 'Automatic'
                      and humidity <= target }}
             sequence:
               - service: switch.turn_off

@@ -85,8 +85,13 @@ sections:
           entities:
             - entity: input_number.shcf___DEVICE_ID___timed_operation_duration
               name: Duration
+
             - entity: input_select.shcf___DEVICE_ID___timed_operation_behavior_on_target_reached
-              name: Behavior on Target Reached
+              name: On Target Reached
+
+            - entity: input_select.shcf___DEVICE_ID___timed_operation_behavior_on_timer_finished
+              name: On Timer Finished
+
             - entity: timer.shcf___DEVICE_ID___timed_operation
               name: Timer
 

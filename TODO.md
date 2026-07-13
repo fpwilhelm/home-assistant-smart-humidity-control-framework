@@ -22,7 +22,7 @@
 * 🟢 Dashboard view generator implemented
 * 🟢 Shared SHCF dashboard builder implemented
 * 🟢 End-to-end deployment workflow implemented
-* 🟡 Second generated SHCF device under functional testing
+* 🟢 Two generated SHCF devices successfully deployed and functionally verified
 * 🔵 Native Home Assistant Integration not yet started
 
 ---
@@ -112,6 +112,17 @@
   * operating_mode.yaml
 * [ ] Compare generated controller behavior with the reference implementation
 * [ ] Verify all operating modes for multiple independent devices
+* [x] Implement separate Timed Operation lifecycle automation
+* [x] Implement configurable behavior on target reached
+* [x] Implement configurable behavior on timer finished
+* [x] Verify different timer-finished behaviors on two independent devices
+  * Trotec TTK 171 ECO → Switch to Automatic
+  * Pro Klima ECO DRY → Turn Off
+* [ ] Verify all target-reached behaviors
+  * Continue Timed Operation
+  * Switch to Automatic
+  * Turn Off
+* [ ] Verify mode changes while Timed Operation is active
 
 ## Helpers
 
@@ -148,13 +159,120 @@
 * [ ] Finalize generated entity naming and unique ID strategy
 * [ ] Automatically register generated packages
 * [ ] Remove dependency on manual `configuration.yaml` edits
-* [ ] Verify complete second portable SHCF device
-* [ ] Test second device control in all operating modes
+* [x] Verify complete second portable SHCF device
+* [ ] Complete regression test of all operating modes
 * [ ] Test independent simultaneous operation of multiple SHCF devices
 * [ ] Replace the manual Trotec reference implementation with a generated SHCF device
 * [ ] Remove obsolete reference entities after successful migration
 * [ ] Remove obsolete manually maintained dashboard after successful migration
 * [ ] Implement safe removal workflow for generated SHCF devices
+* [x] Verify independent timer-finished behavior on two generated SHCF devices
+* [ ] Complete regression test of both generated devices
+* [ ] Verify Humidity Profile target calculation for all profiles
+* [ ] Verify Custom Target mode
+* [ ] Verify Comfort, Standard, and Conservative control characteristics
+
+---
+
+# Environmental Analysis Dashboard
+
+* [ ] Create a dedicated moisture-source analysis dashboard
+* [ ] Record climate conditions in the former indoor pool area
+* [ ] Record climate conditions in the adjoining room
+* [ ] Record outdoor climate conditions at the south-west sensor location
+* [ ] Record outdoor climate conditions at the north-east sensor location
+* [ ] Calculate dew point for all relevant locations
+* [ ] Calculate absolute humidity for all relevant locations
+* [ ] Calculate indoor-to-outdoor absolute-humidity differences
+* [ ] Correlate indoor humidity changes with:
+  * Outdoor temperature
+  * Outdoor humidity
+  * Rain
+  * Wind speed and direction
+  * Air pressure
+  * Dehumidifier operation and power consumption
+* [ ] Add an experiment-phase helper
+  * Dehumidification
+  * Stabilization
+  * Door Open
+  * Door Closed
+  * Ventilation Ducts Open
+  * Ventilation Ducts Sealed
+  * Observation
+* [ ] Perform the first closed-door moisture-entry observation
+* [ ] Compare open and temporarily sealed ventilation ducts
+
+
+# SHCCF Evolution (Future Architecture)
+
+The current SHCF architecture focuses primarily on humidity control through one dehumidification actuator.
+
+Future versions shall evolve towards **SHCCF – Smart Humidity & Climate Control Framework** and a capability-based climate appliance architecture.
+
+The long-term goal is to represent one logical climate appliance that coordinates multiple sensors and actuators.
+
+## Project Evolution
+
+* [ ] Evaluate the formal transition from SHCF to SHCCF
+* [ ] Perform the project rename when the first heating or ventilation capability is implemented
+* [ ] Preserve compatibility with existing dehumidification-only installations
+* [ ] Document the migration path from SHCF Device Profiles to SHCCF Appliance Profiles
+
+## Capability-Based Climate Appliance
+
+Possible capabilities include:
+
+* [x] Dehumidification
+* [ ] Heating
+* [ ] Ventilation
+* [ ] Air circulation
+* [ ] Cooling
+* [ ] Air purification
+* [ ] Outdoor climate integration
+* [ ] Weather integration
+* [ ] Mold prevention
+* [ ] Energy optimization
+
+Example capability configuration:
+
+```yaml
+capabilities:
+  dehumidification: true
+  heating: true
+  ventilation: true
+  air_circulation: false
+```
+
+A future SHCCF Appliance may consist of:
+
+* Indoor humidity and temperature sensors
+* Additional climate sensors
+* Dehumidifier with switching actuator
+* Electric heater with a separate switching actuator
+* Ventilation fan controlled by a smart plug or distribution-board relay
+* Outdoor climate sensors
+* Additional capability-specific actuators
+
+## Reference Scenario – Former Indoor Pool Area
+
+Use the former indoor pool area as an extended SHCCF reference scenario.
+
+The future appliance may coordinate:
+
+* One dehumidifier
+* One electric heater
+* One separate heater switching actuator
+* One future exhaust or ventilation fan
+* One smart plug or distribution-board relay for ventilation control
+* Indoor climate sensors
+* Climate sensor in the adjoining room
+* Two outdoor climate sensor locations
+* Mold-prevention strategies
+* Dew-point and absolute-humidity evaluation
+* Energy-aware control
+* Long-term moisture monitoring
+
+The objective is to protect the large, partly underground room from moisture accumulation and mold while identifying relevant moisture-entry paths.
 
 ---
 
@@ -202,3 +320,18 @@ capabilities:
   heating: false
   cooling: false
   air_purification: false
+```
+
+* [ ] Introduce capability-dependent actuator definitions
+* [ ] Define SHCCF appliance structure
+* [ ] Define actuator configuration model
+
+---
+
+# Experimental Validation
+
+* [ ] Validate humidity ingress through former ventilation ducts
+* [ ] Compare sealed vs. open ventilation ducts
+* [ ] Validate absolute humidity calculations
+* [ ] Validate dew-point-based moisture analysis
+* [ ] Validate SHCCF climate-control strategies using the former indoor pool area
