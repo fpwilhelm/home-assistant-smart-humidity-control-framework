@@ -1,266 +1,198 @@
-# =============================================================================
-# Smart Humidity Control Framework (SHCF)
 # Engineering Backlog
-# =============================================================================
-#
-# Version:
-#   v0.3.0 – Analysis Framework
-#
-# Purpose:
-#
-#   This document serves as the central engineering backlog of the Smart
-#   Humidity Control Framework (SHCF).
-#
-#   It is intentionally more than a traditional TODO list.
-#
-#   Besides implementation tasks it documents
-#
-#     • engineering priorities
-#     • architectural decisions
-#     • technical debt
-#     • long-term roadmap items
-#     • research topics
-#
-#   The objective is to preserve a consistent architecture while allowing
-#   incremental development.
-#
-# =============================================================================
 
-# Current Development Status
+> **Project:** Smart Humidity Control Framework (SHCF)  
+> **Current Version:** v0.3.0 (Development)  
+> **Current Milestone:** Analysis Framework  
+> **Repository Status:** Private – Early Development
 
-Project
-: Smart Humidity Control Framework (SHCF)
+---
 
-Current Version
-: v0.3.0 (Development)
+# Purpose
 
-Current Milestone
-: Analysis Framework
+This document serves as the central engineering backlog for the **Smart Humidity Control Framework (SHCF)**.
 
-Current Focus
+Unlike a traditional TODO list, this document combines:
 
-- Climate Laboratory
-- Experiment Lifecycle
-- Analytics
-- Diagnostics
-- Recommendations
-- Building Climate Analysis
+- current development priorities
+- engineering tasks
+- architectural direction
+- technical debt
+- research topics
+- long-term framework evolution
 
-Repository Status
+The objective is to preserve a consistent architecture while enabling incremental development.
 
-- Private
-- Early Development
-- Architecture under active refinement
-
-Development Philosophy
-
-- Architecture before implementation
-- Incremental development
-- Stable interfaces
-- Modular components
-- Reusable building blocks
-- Documentation-driven engineering
+Long-term planning is intentionally separated from the daily development workflow.
 
 ---
 
 # Engineering Principles
 
-The following principles guide all future development.
+These principles guide every architectural and implementation decision.
 
-These principles have higher priority than individual feature requests.
+## Architecture Before Implementation
 
-## 1. Architecture before implementation
-
-New functionality shall only be implemented after the architectural direction
-has been defined.
+New functionality should only be implemented after its architectural direction has been defined.
 
 Avoid feature-driven development.
 
-Avoid isolated one-off solutions.
-
-Whenever possible, implement reusable concepts.
+Prefer reusable concepts over one-off solutions.
 
 ---
 
-## 2. Incremental Development
+## Incremental Development
 
-Large features are implemented in small,
-fully working iterations.
+Develop the framework in small, fully functional iterations.
 
-Every milestone should produce a stable,
-testable system.
+Every milestone should produce a stable and testable system.
 
-Avoid "big bang" implementations.
+Avoid large disruptive changes whenever possible.
 
 ---
 
-## 3. Reusability
+## Reusability
 
-SHCF Core must remain reusable.
+The SHCF Core should remain independent from individual use cases.
 
-Use-case specific functionality belongs outside the Core.
-
-Reference implementations should validate the framework,
-not define it.
+Use-case specific functionality belongs in examples, laboratories or future extensions—not in the reusable framework.
 
 ---
 
-## 4. Separation of Concerns
+## Separation of Concerns
 
-The framework consists of independent modules.
+The framework consists of clearly separated modules.
 
-SHCF Core
-
-contains
-
-- controller
-- entities
-- helpers
-- automations
-- blueprint
-- integration
-
-SHCF Analysis
-
-contains
-
-- analytics
-- diagnostics
-- recommendations
-- experiments
-
-Climate Laboratory
-
-is a reference implementation built on top of SHCF Analysis.
+| Module | Responsibility |
+|---------|----------------|
+| **SHCF Core** | Humidity control, helpers, controller, templates, automations |
+| **SHCF Analysis** | Analytics, diagnostics, recommendations and experiments |
+| **Climate Laboratory** | Reference implementation used to validate new concepts |
 
 ---
 
-## 5. Documentation First
+## Documentation First
 
-Major architectural decisions shall be documented before implementation.
+Major architectural decisions should be documented before implementation.
 
-README
-
-answers
-
-"What is SHCF?"
-
-ROADMAP
-
-answers
-
-"Where is SHCF going?"
-
-CHANGELOG
-
-answers
-
-"What changed?"
-
-TODO
-
-answers
-
-"What should be built next?"
-
-Architecture documents
-
-answer
-
-"Why was this decision made?"
+| Document | Purpose |
+|----------|---------|
+| **README.md** | Introduces the project |
+| **ROADMAP.md** | Describes future evolution |
+| **CHANGELOG.md** | Documents completed work |
+| **ENGINEERING_BACKLOG.md** | Defines future engineering work |
+| **TODO.md** | Current sprint only |
 
 ---
 
-## 6. Backward Compatibility
+## Backward Compatibility
 
-Whenever practical,
-
-existing installations should continue to work after framework updates.
+Whenever practical, updates should preserve existing installations.
 
 Breaking changes should be avoided.
 
-If unavoidable,
-
-provide a migration path.
+If unavoidable, provide a migration strategy.
 
 ---
 
-## 7. Modularization
+## Modular Design
 
-Large YAML files should continuously be divided into
-small,
-well-defined modules.
+Continue replacing large YAML files with small reusable modules.
 
-Preferred architecture
+Preferred structure:
 
+```text
 templates/
-
 automations/
-
 helpers/
-
-dashboard/
-
+dashboards/
 examples/
-
-documentation/
-
 tools/
+docs/
+```
 
 ---
 
-## 8. Engineering Quality
+## Engineering Quality
 
-Prefer
+The project values:
 
-clarity
+- clarity over cleverness
+- maintainability over brevity
+- consistency over personal preference
+- readability over complexity
 
-over cleverness.
+---
 
-Prefer
+# Current Development Status
 
-maintainability
+| Item | Status |
+|------|--------|
+| **Project** | Smart Humidity Control Framework |
+| **Version** | v0.3.0 (Development) |
+| **Current Milestone** | Analysis Framework |
+| **Repository** | Private |
+| **Documentation** | Active restructuring |
 
-over short code.
+## Current Focus
 
-Prefer
+- Experiment Lifecycle
+- Analytics
+- Diagnostics
+- Recommendations
+- Climate Laboratory
+- Building Climate Analysis
 
-consistency
+---
 
-over personal preference.
+# Priority Levels
+
+The engineering backlog uses four priority levels.
+
+## 🟥 Current Sprint
+
+Tasks currently under active development.
+
+---
+
+## 🟧 Next Milestone
+
+Approved work that immediately follows the current sprint.
+
+---
+
+## 🟨 Planned
+
+Future work that has been agreed but is intentionally postponed.
+
+---
+
+## 🟩 Future Architecture
+
+Long-term architectural ideas.
+
+These items are intentionally **not** scheduled for implementation yet.
 
 ---
 
 # Architecture Decisions
 
-The following decisions are currently considered fixed.
+The following decisions are currently considered established project direction.
 
-Future development should build upon them.
+## Project Identity
 
-## Project Name
+The project remains **Smart Humidity Control Framework (SHCF)**.
 
-The project remains
-
-Smart Humidity Control Framework (SHCF)
-
-until the framework supports additional climate-control capabilities beyond
-humidity control.
-
-The later transition to
-
-Smart Home Climate Control Framework (SHCCF)
-
-remains a planned long-term evolution.
+A future transition to **Smart Home Climate Control Framework (SHCCF)** will only occur once the framework supports climate-control capabilities beyond humidity control.
 
 ---
 
-## SHCF Analysis
+## Analysis Architecture
 
 Analysis is part of SHCF.
 
-It is not an independent project.
+It is **not** an independent project.
 
-It currently consists of
+Current analysis modules include:
 
 - Analytics
 - Diagnostics
@@ -271,210 +203,95 @@ It currently consists of
 
 ## Climate Laboratory
 
-The Climate Laboratory is
+The Climate Laboratory is the primary reference implementation.
 
-NOT
-
-part of SHCF Core.
-
-It is the primary reference implementation used to validate
+Its purpose is to validate:
 
 - algorithms
 - diagnostics
 - experiment workflows
-- user interface concepts
+- dashboard concepts
+- user interaction
 
-before they become reusable framework functionality.
+before functionality becomes part of the reusable framework.
 
 ---
 
 ## Device Evolution
 
-Current architecture
+Current concept
 
-Device
-
-Future architecture
-
-Climate Appliance
-
-The transition will only occur after the concept has matured.
-
-No immediate renaming is planned.
-
----
-
-## Experiment Lifecycle
-
-The following lifecycle has been adopted.
-
-Draft
+**Device**
 
 ↓
 
-Running
+Future concept
 
-↓
+**Climate Appliance**
 
-Paused
-
-↓
-
-Running
-
-↓
-
-Completed
-
-Future versions may support additional states if required.
+This migration is planned only after the architecture has matured.
 
 ---
 
 ## Historical Data
 
-Historical experiment data should be obtained automatically from
-Home Assistant Recorder / History.
+Historical experiment data should be obtained automatically from the Home Assistant Recorder.
 
-Manual entry of historical measurements is considered
-a temporary workaround only.
+Manual entry of historical measurements is considered a temporary workaround only.
 
 ---
 
 # Planned Releases
 
-## v0.3.0
+| Version | Focus |
+|---------|-------|
+| **v0.3.0** | Analysis Framework |
+| **v0.4.0** | Instance Provisioning & Blueprint |
+| **v0.5.0** | Multi-Instance Support |
+| **v0.6.0** | Native Home Assistant Integration |
+| **v1.0.0** | First Stable Release |
 
-Current Development
+# 🟥 Current Sprint
 
-Focus
-
-- Analysis Framework
-- Climate Laboratory
-- Experiment Lifecycle
-- Building Analysis
-
----
-
-## v0.4.0
-
-Planned
-
-- Instance Provisioning
-- Blueprint
-- Appliance abstraction
-- Dashboard generation
-
----
-
-## v0.5.0
-
-Planned
-
-- Multi-instance support
-- Appliance profiles
-- Independent dashboards
-
----
-
-## v0.6.0
-
-Planned
-
-Native Home Assistant Integration
-
-- Config Flow
-- Options Flow
-- Entity Registry
-- Device Registry
-- History-aware services
-
----
-
-## v1.0.0
-
-First Stable Release
-
-Goals
-
-- Stable Architecture
-- Complete Documentation
-- Public Repository
-- Production-ready Integration
-
-# =============================================================================
-# ENGINEERING BACKLOG
-# =============================================================================
-
-Legend
-
-🟥 Current Sprint
-
-Immediate development focus.
-
-Work currently in progress.
-
-🟧 Next Milestone
-
-Planned immediately after the current sprint.
-
-🟨 Planned
-
-Already approved.
-
-Implementation at a later stage.
-
-🟩 Future Architecture
-
-Long-term evolution.
-
-No implementation planned yet.
-
----
-
-# 🟥 CURRENT SPRINT
-
-The following work packages are currently the highest project priority.
+The following work packages are the current development focus.
 
 ---
 
 # SHCF Core
 
-Status
+**Status:** 🟡 In Progress
 
-In Progress
+**Priority:** 🟥 Current Sprint
 
-Priority
+## Objective
 
-Highest
+Continue stabilizing the reusable SHCF Core while maintaining strict separation
+between framework functionality and use-case specific implementations.
 
-Goal
-
-Continue stabilizing the reusable SHCF Core while keeping it independent from
-individual use cases.
+---
 
 ## Controller
 
 ### Completed
 
-- Central controller
-- Automatic mode
-- Continuous operation
-- Timed operation
-- Adjustable timed operation
-- Automatic return after timed operation
-- Operating status sensor
-- Recommendation sensor
-- Dehumidification demand sensor
+- [x] Central humidity controller
+- [x] Automatic mode
+- [x] Continuous operation
+- [x] Timed operation
+- [x] Adjustable timed operation
+- [x] Automatic return after timed operation
+- [x] Operating status sensor
+- [x] Recommendation sensor
+- [x] Dehumidification demand sensor
 
-### Next Tasks
+### Current Tasks
 
-- Review controller logic
-- Simplify controller automations
-- Reduce duplicated template logic
-- Improve error handling
-- Improve unavailable-state handling
-- Improve startup behavior
-- Improve restart behavior
+- [ ] Simplify controller logic
+- [ ] Reduce duplicated template logic
+- [ ] Improve startup behaviour
+- [ ] Improve restart behaviour
+- [ ] Improve unavailable-state handling
+- [ ] Improve controller diagnostics
 
 ---
 
@@ -482,313 +299,298 @@ individual use cases.
 
 ### Completed
 
-- Operating mode
-- Target mode
-- Humidity profile
-- Control characteristic
-- Timer helpers
+- [x] Operating Mode
+- [x] Target Mode
+- [x] Humidity Profiles
+- [x] Control Characteristics
+- [x] Timed Operation Helpers
 
-### Planned Improvements
+### Current Tasks
 
-- Helper consistency review
-- Helper naming review
-- Better grouping
-- Translation preparation
+- [ ] Review helper naming
+- [ ] Improve helper consistency
+- [ ] Prepare translation support
+- [ ] Group helpers logically
 
 ---
 
 ## Templates
 
-Continue modularization.
+### Objective
 
-Split large template collections into dedicated files.
+Continue modularization of template sensors.
 
-Target structure
+### Target Structure
 
+```text
 templates/
+├── target_humidity.yaml
+├── hysteresis.yaml
+├── dew_point.yaml
+├── operating_status.yaml
+├── recommendations.yaml
+├── diagnostics.yaml
+└── analytics.yaml
+```
 
-- target_humidity.yaml
-- hysteresis.yaml
-- dewpoint.yaml
-- operating_status.yaml
-- recommendations.yaml
-- diagnostics.yaml
-- analytics.yaml
+### Current Tasks
+
+- [ ] Split remaining large template files
+- [ ] Remove duplicated calculations
+- [ ] Improve template readability
+- [ ] Standardize naming
 
 ---
 
 ## Automations
 
-Continue modularization.
+### Target Structure
 
-Target structure
-
+```text
 automations/
+├── controller.yaml
+├── timed_operation.yaml
+├── operating_mode.yaml
+└── notifications.yaml
+```
 
-- controller.yaml
-- timed_operation.yaml
-- operating_mode.yaml
-- notifications.yaml
+### Current Tasks
+
+- [ ] Continue automation modularization
+- [ ] Reduce duplicated logic
+- [ ] Improve maintainability
+- [ ] Improve error handling
 
 ---
 
 ## Dashboard
 
-Current priorities
+### Current Tasks
 
-- improve consistency
-- remove duplicated cards
-- improve responsiveness
-- improve mobile usability
-- improve icon consistency
-- improve terminology consistency
+- [ ] Improve layout consistency
+- [ ] Improve mobile usability
+- [ ] Standardize icons
+- [ ] Standardize terminology
+- [ ] Remove duplicate cards
 
 ---
 
 # SHCF Analysis
 
-Status
+**Status:** 🟡 Active Development
 
-Active Development
+**Priority:** 🟥 Current Sprint
 
-Priority
+## Objective
 
-Highest
-
-Goal
-
-Create a reusable climate analysis framework independent from individual
-buildings.
+Develop a reusable climate analysis framework independent of any specific building.
 
 ---
 
 ## Common Module
 
-Responsibilities
+### Responsibilities
 
-- shared entities
-- shared calculations
-- shared helpers
-- shared templates
+- Shared calculations
+- Shared helpers
+- Shared templates
+- Shared services
 
-Tasks
+### Current Tasks
 
-- identify duplicated logic
-- move reusable calculations
-- prepare shared services
-
----
-
-## Analytics Module
-
-Status
-
-Started
-
-Completed
-
-- Weekly Runtime
-- Weekly Energy
-- Humidity Exposure
-- Utility Meter integration
-
-Current Tasks
-
-- Monthly Runtime
-- Monthly Energy
-- Runtime efficiency
-- Energy efficiency
-- Dehumidification performance
-- Climate trend statistics
-
-Future Tasks
-
-- seasonal statistics
-- annual statistics
-- comparison reports
+- [ ] Identify duplicated logic
+- [ ] Move reusable calculations
+- [ ] Prepare common analysis services
 
 ---
 
-## Diagnostics Module
+## Analytics
 
-Status
+### Completed
 
-Early Development
+- [x] Weekly Runtime
+- [x] Weekly Energy
+- [x] Humidity Exposure
+- [x] Utility Meter Integration
 
-Current Tasks
+### Current Tasks
 
-- improve diagnosis model
-- improve humidity diagnosis
-- improve dew point diagnosis
-- improve building diagnosis
+- [ ] Monthly Runtime
+- [ ] Monthly Energy
+- [ ] Runtime efficiency
+- [ ] Energy efficiency
+- [ ] Climate trend statistics
 
-Future Tasks
+### Future Improvements
 
-- automatic cause detection
-- confidence estimation
-- diagnostic scoring
-- sensor plausibility checks
+- [ ] Seasonal statistics
+- [ ] Annual statistics
+- [ ] Comparative reports
 
 ---
 
-## Recommendations Module
+## Diagnostics
 
-Status
+### Current Tasks
 
-Early Development
+- [ ] Improve diagnosis model
+- [ ] Improve humidity diagnostics
+- [ ] Improve dew point diagnostics
+- [ ] Improve building diagnostics
 
-Current Tasks
+### Future Improvements
 
-- recommendation engine
-- context awareness
-- diagnosis-based recommendations
-- experiment-aware recommendations
+- [ ] Automatic cause detection
+- [ ] Diagnostic confidence score
+- [ ] Sensor plausibility checks
+- [ ] Root cause ranking
 
-Future Tasks
+---
 
-- energy optimization
-- weather awareness
-- seasonal recommendations
-- learning recommendations
+## Recommendations
+
+### Current Tasks
+
+- [ ] Continue recommendation engine
+- [ ] Context-aware recommendations
+- [ ] Diagnosis-based recommendations
+- [ ] Experiment-aware recommendations
+
+### Future Improvements
+
+- [ ] Weather-aware recommendations
+- [ ] Energy-aware recommendations
+- [ ] Adaptive recommendations
 
 ---
 
 ## Experiment Module
 
-Status
+### Current Tasks
 
-Active Development
+- [ ] Stabilize experiment lifecycle
+- [ ] Improve experiment metadata
+- [ ] Improve experiment workflow
+- [ ] Improve experiment timeline
 
-Current Tasks
+### High Priority
 
-- stabilize lifecycle
-- improve experiment metadata
-- improve experiment timeline
-- improve experiment workflow
-
-High Priority
-
-- Adopt Existing Experiment
-- automatic history lookup
-- Recorder integration
-- timeline improvements
+- [ ] Adopt Existing Experiment
+- [ ] Automatic history lookup
+- [ ] Recorder abstraction
+- [ ] Timeline improvements
 
 ---
 
 # Climate Laboratory
 
-Status
+**Status:** 🟢 Reference Implementation
 
-Reference Implementation
+**Priority:** 🟥 Current Sprint
 
-Purpose
+## Purpose
 
-Validate SHCF Analysis under real-world conditions.
+Validate SHCF Analysis using a real-world building.
 
 ---
 
 ## Dashboard
 
-Completed
+### Completed
 
-- Overview
-- Measurements
-- Analytics
-- Diagnostics
-- Recommendations
-- Experiment
-- Weather
+- [x] Overview
+- [x] Measurements
+- [x] Analytics
+- [x] Diagnostics
+- [x] Recommendations
+- [x] Experiment
+- [x] Weather
 
-Current Tasks
+### Current Tasks
 
-- dashboard cleanup
-- consistent card design
-- improved navigation
-- improved section layout
-- improved mobile usability
+- [ ] Improve navigation
+- [ ] Improve dashboard consistency
+- [ ] Improve section layout
+- [ ] Improve mobile usability
 
 ---
 
 ## Investigation Workflow
 
-Current Tasks
+### Current Tasks
 
-- improve workflow guidance
-- improve experiment documentation
-- improve action tracking
-- improve observation workflow
+- [ ] Improve workflow guidance
+- [ ] Improve observation tracking
+- [ ] Improve action documentation
+- [ ] Improve experiment workflow
 
 ---
 
 ## Experiment Timeline
 
-Current Tasks
+### Current Tasks
 
-- improve readability
-- improve event descriptions
-- reduce duplicate events
-- support future pause/resume
+- [ ] Improve readability
+- [ ] Improve event descriptions
+- [ ] Reduce duplicate events
+- [ ] Prepare pause/resume support
 
 ---
 
 ## Weekly Trends
 
-Current Tasks
+### Current Tasks
 
-- validate statistics
-- improve presentation
-- extend historical comparison
+- [ ] Validate calculations
+- [ ] Improve presentation
+- [ ] Extend historical comparison
 
 ---
 
 ## Validation
 
-Current Tasks
+### Current Tasks
 
-- verify all calculations
-- verify controller behavior
-- verify experiment workflow
-- verify dashboard consistency
+- [ ] Validate controller behaviour
+- [ ] Validate dashboard calculations
+- [ ] Validate experiment workflow
+- [ ] Validate analysis results
 
 ---
 
 # Documentation
 
-Priority
+**Priority:** 🟥 Current Sprint
 
-Highest
+### Current Tasks
 
-Current Tasks
+- [ ] Maintain README.md
+- [ ] Maintain ROADMAP.md
+- [ ] Maintain CHANGELOG.md
+- [ ] Maintain ENGINEERING_BACKLOG.md
+- [ ] Maintain TODO.md
 
-- maintain README
-- maintain ROADMAP
-- maintain CHANGELOG
-- maintain TODO
+### Objective
 
-Continue documenting every architectural decision before implementation.
+Keep documentation synchronized with the implementation and document architectural decisions before introducing major new functionality.
 
-# =============================================================================
-# 🟧 NEXT MILESTONE
-# =============================================================================
+# 🟧 Next Milestone
 
-The following work packages are planned immediately after the current sprint.
+The following work packages define the next architectural milestone after the
+current sprint.
 
-They define the transition from today's Analysis Framework towards a reusable
-SHCF platform.
+The objective is to transform today's reference implementation into a reusable
+framework suitable for multiple installations.
 
 ---
 
 # Experiment Lifecycle
 
-Status
+**Status:** 🟡 Architecture Defined
 
-Architecture Defined
+**Priority:** 🟧 Next Milestone
 
-Implementation
-
-Planned
-
-Objective
+## Objective
 
 Transform the current experiment implementation into a reusable experiment
 management framework.
@@ -797,169 +599,144 @@ management framework.
 
 ## Lifecycle
 
-Current lifecycle
+### Current Lifecycle
 
+```text
 Draft
-
-↓
-
+   │
+   ▼
 Running
-
-↓
-
+   │
+   ▼
 Paused
-
-↓
-
+   │
+   ▼
 Running
-
-↓
-
+   │
+   ▼
 Completed
+```
 
-Future extensions may include
+### Future Lifecycle States
 
-- Cancelled
-- Archived
-- Imported
+- [ ] Cancelled
+- [ ] Archived
+- [ ] Imported
+- [ ] Read Only
 
 ---
 
 ## Adopt Existing Experiment
 
-High Priority
+### Objective
 
-Objective
+Allow users to continue an already running real-world experiment.
 
-Allow users to continue an already running real-world experiment without manual
-reconstruction.
+The user should only provide:
 
-The user should only provide
+- Experiment Name
+- Historical Start Date & Time
+- Current Experiment Phase
 
-- experiment name
-- historical start date/time
-- current experiment phase
-
-Everything else should be derived automatically.
+Everything else should be restored automatically.
 
 ---
 
-### Automatic History Lookup
+## Automatic History Lookup
 
-Target Architecture
+### Goal
 
-The framework shall automatically determine
+Retrieve historical experiment data directly from Home Assistant.
 
-- energy meter at experiment start
-- runtime
-- historical humidity
-- historical temperature
-- historical operating mode
+Automatically determine:
 
-using Home Assistant Recorder.
+- [ ] Energy meter at experiment start
+- [ ] Runtime
+- [ ] Temperature
+- [ ] Relative humidity
+- [ ] Operating mode
+- [ ] Controller state
 
-Manual entry of historical values shall not be required.
+Manual entry of historical values should only be used as an emergency fallback.
 
 ---
 
-### Recorder Abstraction
+## History Service
 
-Future architecture
+### Target Architecture
 
-SHCF should not directly depend on Recorder.
+```text
+Home Assistant Recorder
+            │
+            ▼
+      History Service
+            │
+            ▼
+   Experiment Manager
+            │
+            ▼
+        Dashboard
+```
 
-Instead,
+### Responsibilities
 
-provide a dedicated
-
-History Service
-
-which hides all Recorder-specific logic.
-
-Future Integration
-
-Recorder
-
-↓
-
-History Service
-
-↓
-
-Experiment Manager
-
-↓
-
-Dashboard
+- Read historical sensor values
+- Determine experiment start values
+- Provide a unified interface
+- Hide Recorder-specific implementation details
 
 ---
 
 ## Pause / Resume
 
-Planned
+### Planned Features
 
-Support
+- [ ] Pause experiment
+- [ ] Resume experiment
+- [ ] Continue without creating a new experiment
+- [ ] Preserve timeline continuity
 
-Pause
+Track separately:
 
-Resume
+- Total Duration
+- Active Duration
+- Paused Duration
+- Energy Consumption
+- Runtime
 
-Continue
+Timeline should document:
 
-without creating a new experiment.
-
-Track
-
-- elapsed duration
-- active duration
-- paused duration
-- accumulated energy
-- accumulated runtime
-
-Timeline shall document
-
-- start
-- pause
-- resume
-- finish
+- Start
+- Pause
+- Resume
+- Finish
 
 ---
 
 ## Experiment Templates
 
-Future
+Provide reusable templates for common investigations.
 
-Provide reusable experiment templates.
+### Planned Templates
 
-Examples
+- [ ] Initial Dehumidification
+- [ ] Building Investigation
+- [ ] Condensation Analysis
+- [ ] Heating Experiment
+- [ ] Ventilation Experiment
+- [ ] Long-Term Monitoring
 
-Initial Dehumidification
-
-Building Investigation
-
-Condensation Analysis
-
-Heating Experiment
-
-Ventilation Experiment
-
-Long-term Monitoring
-
-Users should be able to customize templates.
+Templates should remain fully customizable.
 
 ---
 
 # Building Climate Analysis
 
-Status
+**Status:** 🟡 Concept Phase
 
-Concept Phase
+**Priority:** 🟧 Next Milestone
 
-Priority
-
-High
-
-Purpose
+## Objective
 
 Extend SHCF Analysis from climate monitoring towards building physics.
 
@@ -967,93 +744,81 @@ Extend SHCF Analysis from climate monitoring towards building physics.
 
 ## Surface Temperatures
 
-Planned
+Support recording of:
 
-Support manual or automatic recording of
+- [ ] Floor temperature
+- [ ] Ceiling temperature
+- [ ] North wall
+- [ ] South wall
+- [ ] East wall
+- [ ] West wall
+- [ ] Windows
+- [ ] Heating pipes
+- [ ] Floor drain
+- [ ] Ventilation ducts
 
-- floor temperature
-- ceiling temperature
-- wall temperatures
-- window temperature
-- pipe temperature
-- drain temperature
-
-Future
-
-Wireless surface sensors.
+Future versions should support wireless surface sensors.
 
 ---
 
 ## Condensation Analysis
 
-Planned
-
 Compare
 
-Surface Temperature
+- Surface Temperature
 
 with
 
-Indoor Dew Point
+- Indoor Dew Point
 
-Determine
+Determine:
 
-- condensation risk
-- safety margin
-- affected surfaces
+- [ ] Condensation Risk
+- [ ] Safety Margin
+- [ ] Critical Surfaces
 
 ---
 
 ## Thermal Bridge Detection
 
-Future
+Compare temperatures between building surfaces.
 
-Compare
+Possible indicators:
 
-surface temperatures
+- North vs. South wall
+- Ceiling vs. Floor
+- Interior vs. Exterior wall
 
-between
+Future:
 
-- north wall
-- south wall
-- east wall
-- west wall
-
-Detect
-
-possible thermal bridges.
+- Automatic thermal bridge detection
 
 ---
 
 ## Moisture Source Localization
 
-Future
+Combine:
 
-Combine
+- Absolute humidity
+- Surface temperatures
+- Experiment observations
+- Outdoor climate
+- Ventilation state
+- Energy consumption
 
-- absolute humidity
-- surface temperatures
-- experiment observations
-- weather
-- ventilation state
-
-Estimate
-
-probable moisture source.
+Estimate probable moisture sources.
 
 ---
 
-## Multi-Location Measurements
+## Measurement Locations
 
-Extend the current laboratory.
+Current laboratory locations
 
-Planned measurement locations
-
-- former indoor pool
-- fitness room
-- heating room
-- outdoor south-west
-- outdoor north-east
+- Former Indoor Pool
+- Fitness Room
+- Heating Room
+- Outdoor South-West
+- Outdoor North-East
 
 Future
 
@@ -1063,321 +828,312 @@ Unlimited measurement locations.
 
 ## Building Model
 
-Long-term goal
+Long-term objective
 
-Represent
+Represent a complete building model consisting of:
 
-rooms
-
-connections
-
-airflow
-
-temperature
-
-humidity
-
-as one building model.
+- Rooms
+- Connections
+- Airflow
+- Climate
+- Measurements
+- Experiments
 
 ---
 
 # SHCF Blueprint
 
-Status
+**Status:** 🟧 Planned
 
-Planned
-
-Objective
+## Objective
 
 Provide a reusable Home Assistant Blueprint.
 
-User inputs
+User configuration should require only:
 
-- smart switch
-- humidity sensor
-- temperature sensor
+- Smart Switch
+- Humidity Sensor
+- Temperature Sensor
 
-Framework automatically creates
+Everything else should be generated automatically.
 
-- helpers
-- templates
-- controller
-- dashboard
+---
 
-Minimal manual configuration.
+## Automatic Generation
+
+Create automatically:
+
+- [ ] Helpers
+- [ ] Template Sensors
+- [ ] Timers
+- [ ] Controller Automations
+- [ ] Dashboard
+
+Minimize manual configuration.
 
 ---
 
 # Instance Provisioning
 
-Objective
+**Status:** 🟧 Planned
 
-Generate complete SHCF instances.
+## Objective
 
-Automatically create
+Generate complete SHCF instances automatically.
 
-- entities
-- helpers
-- timers
-- automations
-- dashboards
+Generate:
 
-Future
+- [ ] Helpers
+- [ ] Timers
+- [ ] Template Sensors
+- [ ] Automations
+- [ ] Dashboards
+
+Future:
 
 Interactive instance generator.
 
 ---
 
-# Appliance Evolution
+# Climate Appliance Evolution
 
-Architecture
+**Status:** 🟩 Future Architecture
 
-Current
+Current terminology
 
-Device
+**Device**
 
 ↓
 
-Future
+Future terminology
 
-Climate Appliance
+**Climate Appliance**
 
-Reason
+A Climate Appliance consists of:
 
-A controlled appliance consists of
+- Sensors
+- Actuators
+- Controller
+- Dashboard
+- Analytics
+- Diagnostics
+- Configuration
 
-- sensors
-- actuators
-- controller
-- dashboard
-- analytics
-
-and therefore represents more than a single hardware device.
-
-Migration will happen only after the architecture has matured.
+Migration should occur only after the architecture has matured.
 
 ---
 
 # Dashboard Generation
 
-Objective
+**Status:** 🟧 Planned
+
+## Objective
 
 Generate dashboards automatically.
 
-Future
+Future users should select:
 
-User selects
+- Appliance
+- Analysis Modules
+- Dashboard Style
 
-- appliance
-- analysis modules
-- dashboard style
-
-Framework generates
-
-complete dashboard.
+The framework generates a complete dashboard automatically.
 
 ---
 
 # Deployment
 
-Improve deployment workflow.
+**Status:** 🟧 Planned
 
-Current Tasks
+## Current Tasks
 
-- deployment validation
-- backup verification
-- synchronization improvements
+- [ ] Deployment validation
+- [ ] Backup verification
+- [ ] Synchronization improvements
 
-Future
+## Long-Term Goal
 
-One-command deployment
+Provide one-command deployment.
 
+```text
 Mac
-
-↓
-
-Repository
-
-↓
-
+ │
+ ▼
+Git Repository
+ │
+ ▼
 Home Assistant
+```
 
-with automatic verification.
+including automatic validation and rollback support.
 
-# =============================================================================
-# 🟩 FUTURE ARCHITECTURE
-# =============================================================================
+# 🟩 Future Architecture
 
-The following topics are intentionally planned for the long-term evolution of
-the framework.
+The following topics describe the long-term evolution of the Smart Humidity
+Control Framework.
 
-They are not part of the current milestone but document the intended
-architectural direction.
-
-Implementation should only begin after the corresponding prerequisites have
-been completed.
+They are intentionally **not scheduled** for implementation yet and should only
+be addressed once the current architecture has stabilized.
 
 ---
 
 # SHCF Evolution
 
-Long-term objective
+**Status:** 🔵 Vision
 
-Transform SHCF from a humidity controller into a modular building climate
-management framework.
+## Long-Term Objective
 
-The transition should happen gradually while maintaining backward compatibility.
+Evolve SHCF from a humidity controller into a modular building climate
+management framework while maintaining backward compatibility.
 
-Possible future capabilities
+Possible future capabilities include:
 
-- Humidity Control
-- Heating Support
-- Ventilation Support
-- Cooling Support
-- Air Quality Monitoring
-- Air Filtration
-- Weather Integration
-- Building Climate Optimization
+- [ ] Humidity Control
+- [ ] Heating Support
+- [ ] Cooling Support
+- [ ] Ventilation Support
+- [ ] Air Quality Monitoring
+- [ ] Air Filtration
+- [ ] Weather Integration
+- [ ] Building Climate Optimization
 
 ---
 
-## SHCF → SHCCF
+# SHCF → SHCCF
 
-Status
-
-Future Architecture
+**Status:** 🔵 Future Architecture
 
 The project currently remains
 
-Smart Humidity Control Framework
+**Smart Humidity Control Framework (SHCF)**.
 
-The transition to
+A future transition to
 
-Smart Home Climate Control Framework
+**Smart Home Climate Control Framework (SHCCF)**
 
-should only occur once the framework supports climate-control capabilities
-beyond humidity.
+should only occur once the framework provides reusable climate-control
+capabilities beyond humidity control.
 
-This migration is considered an architectural milestone rather than a version
-number change.
+This transition represents an architectural milestone rather than a marketing
+decision.
 
 ---
 
 # Climate Appliance
 
-Future Architecture
+**Status:** 🔵 Future Architecture
 
-Current terminology
+Long-term terminology:
 
+```text
 Device
-
-Future terminology
-
+   │
+   ▼
 Climate Appliance
+```
 
-A Climate Appliance represents one complete climate-control unit consisting of
+A Climate Appliance represents a complete climate-control unit consisting of:
 
-- sensors
-- actuators
-- controller
-- analytics
-- dashboard
-- configuration
-- diagnostics
+- Sensors
+- Actuators
+- Controller
+- Configuration
+- Dashboard
+- Analytics
+- Diagnostics
 
-Future appliance examples
+Future appliance examples:
 
-- Dehumidifier
-- Heating Controller
-- Ventilation Controller
-- Air Cleaner
-- Combined Climate Controller
+- [ ] Dehumidifier
+- [ ] Heating Controller
+- [ ] Ventilation Controller
+- [ ] Air Cleaner
+- [ ] Combined Climate Controller
 
 ---
 
-# Building Climate Analysis
+# Building Climate Analysis Framework
 
-Long-term Vision
+**Status:** 🔵 Vision
 
-The current Climate Laboratory shall evolve into a reusable Building Climate
-Analysis Framework.
+The current Climate Laboratory should evolve into a reusable framework for
+building climate investigations.
 
-Potential analysis areas
+Potential analysis domains:
 
-- Condensation
-- Mold Prevention
-- Moisture Transport
-- Thermal Bridges
-- Air Exchange
-- Ventilation Efficiency
-- Building Envelope
-- Energy Efficiency
-- Drying Behaviour
+- [ ] Condensation
+- [ ] Mold Prevention
+- [ ] Moisture Transport
+- [ ] Thermal Bridges
+- [ ] Air Exchange
+- [ ] Ventilation Efficiency
+- [ ] Building Envelope
+- [ ] Energy Efficiency
+- [ ] Drying Behaviour
 
-Future analyses should combine
+Future analyses should combine:
 
-- indoor measurements
-- outdoor measurements
-- building observations
-- experiments
-- weather
-- energy consumption
+- Indoor Measurements
+- Outdoor Measurements
+- Surface Temperatures
+- Weather Data
+- Building Observations
+- Experiment Results
+- Energy Consumption
 
-to generate engineering-quality diagnostics.
+to generate engineering-grade diagnostics.
 
 ---
 
 # Experiment Framework
 
-Long-term Vision
+**Status:** 🔵 Vision
 
 Experiments should become reusable engineering objects.
 
-Future functionality
+Planned capabilities:
 
-- experiment templates
-- experiment library
-- experiment comparison
-- automatic reports
-- experiment export
-- experiment import
-- experiment sharing
+- [ ] Experiment Templates
+- [ ] Experiment Library
+- [ ] Experiment Comparison
+- [ ] Automatic Reports
+- [ ] Import / Export
+- [ ] Shared Experiment Definitions
 
 ---
 
 # Artificial Intelligence
 
-Future
+**Status:** 🔵 Research
 
-Evaluate AI-assisted analysis.
+Evaluate AI-assisted climate analysis.
 
-Possible use cases
+Potential use cases:
 
-- anomaly detection
-- diagnosis assistance
-- recommendation generation
-- experiment evaluation
-- report generation
+- [ ] Anomaly Detection
+- [ ] Diagnostic Assistance
+- [ ] Recommendation Generation
+- [ ] Experiment Evaluation
+- [ ] Automated Reports
 
-All AI-generated recommendations should remain explainable.
+AI-generated recommendations should always remain explainable.
 
 ---
 
 # Research Topics
 
-The following research topics intentionally remain open.
+The following topics intentionally remain open.
 
-Future work may investigate
+Future investigation may include:
 
-- optimal humidity targets
-- drying efficiency
-- energy efficiency
-- adaptive control
-- predictive control
-- weather forecasting
-- occupancy influence
-- seasonal behaviour
-- long-term moisture transport
+- [ ] Adaptive Humidity Targets
+- [ ] Predictive Climate Control
+- [ ] Weather Forecast Integration
+- [ ] Seasonal Behaviour
+- [ ] Occupancy Influence
+- [ ] Moisture Transport
+- [ ] Drying Efficiency
+- [ ] Energy Optimisation
 
 Research findings should continuously improve SHCF Core.
 
@@ -1385,82 +1141,84 @@ Research findings should continuously improve SHCF Core.
 
 # Technical Debt
 
-Current technical debt
+Technical debt should be reduced continuously.
 
-- continue YAML modularization
-- reduce duplicated logic
-- improve naming consistency
-- improve translations
-- improve package separation
-- improve dashboard modularization
+## Architecture
 
-Future technical debt
+- [ ] Continue YAML modularization
+- [ ] Remove duplicated logic
+- [ ] Improve package separation
+- [ ] Simplify automation structure
 
-- migrate reusable logic into integration
-- reduce template complexity
-- reduce automation complexity
-- remove legacy structures
+## Naming
 
-Technical debt should continuously be reduced.
+- [ ] Standardize terminology
+- [ ] Review entity naming
+- [ ] Review helper naming
 
----
+## Dashboard
 
-# Repository
+- [ ] Remove duplicate cards
+- [ ] Standardize icons
+- [ ] Improve responsiveness
 
-Continue improving repository quality.
+## Integration
 
-Tasks
-
-- improve folder structure
-- improve documentation
-- improve examples
-- improve deployment tools
-- improve validation scripts
-- improve developer onboarding
+- [ ] Reduce template complexity
+- [ ] Move reusable logic into the native integration
+- [ ] Prepare Config Flow migration
 
 ---
 
 # Documentation
 
-Continue maintaining
-
-- README
-- ROADMAP
-- CHANGELOG
-- TODO
-
-Future documentation
-
-- Architecture Decision Records (ADR)
-- Developer Guide
-- Integration Guide
-- Blueprint Guide
-- Dashboard Guide
-- Analysis Guide
-- Experiment Guide
-- Building Climate Analysis Guide
-
 Documentation should evolve together with the implementation.
+
+Maintain continuously:
+
+- [ ] README.md
+- [ ] ROADMAP.md
+- [ ] CHANGELOG.md
+- [ ] ENGINEERING_BACKLOG.md
+- [ ] TODO.md
+
+Future documentation:
+
+- [ ] Architecture Decision Records (ADR)
+- [ ] Developer Guide
+- [ ] Integration Guide
+- [ ] Blueprint Guide
+- [ ] Dashboard Guide
+- [ ] Analysis Guide
+- [ ] Experiment Guide
+- [ ] Building Climate Analysis Guide
 
 ---
 
 # Success Criteria
 
-The project should always strive for
+The framework should always strive for:
 
-- clear architecture
-- modular design
-- reusable components
-- understandable code
-- understandable documentation
-- reproducible experiments
-- validated engineering decisions
+- Clear architecture
+- Modular design
+- Reusable components
+- Understandable code
+- High-quality documentation
+- Reproducible experiments
+- Explainable engineering decisions
+- Long-term maintainability
 
-The objective is not merely to build a Home Assistant package.
+---
 
-The objective is to create a reusable open-source framework for climate control
-and climate analysis.
+# Engineering Vision
 
-# =============================================================================
-# END OF ENGINEERING BACKLOG
-# =============================================================================
+The objective is not merely to build another Home Assistant package.
+
+The objective is to create an open, reusable engineering framework for
+humidity control, climate analysis and, ultimately, comprehensive building
+climate management.
+
+Future development should always prioritise architectural quality over feature
+quantity.
+
+---
