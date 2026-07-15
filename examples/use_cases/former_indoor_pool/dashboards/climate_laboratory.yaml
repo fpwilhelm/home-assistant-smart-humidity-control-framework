@@ -1,0 +1,1432 @@
+# =============================================================================
+# SHCCF Climate Laboratory V2 – Former Indoor Pool
+# =============================================================================
+# Experimental dashboard for moisture-source analysis.
+# This use-case dashboard is not part of the SHCF/SHCCF core.
+# =============================================================================
+
+title: SHCCF Climate Laboratory
+
+views:
+  - title: Overview
+    path: overview
+    icon: mdi:view-dashboard-outline
+    type: sections
+    max_columns: 4
+
+    header:
+      card:
+        type: markdown
+        text_only: true
+        content: |
+          # SHCCF Climate Laboratory
+          Former Indoor Pool – Overview
+      layout: start
+      badges_position: bottom
+      badges_wrap: wrap
+
+    badges:
+      - type: entity
+        entity: input_select.shccf_lab_experiment_phase
+        name: Phase
+        show_name: true
+        show_state: true
+        show_icon: true
+      - type: entity
+        entity: sensor.shcf_klimasensor_temperature
+        name: Temperature
+        show_name: true
+        show_state: true
+        show_icon: true
+      - type: entity
+        entity: sensor.shcf_klimasensor_humidity
+        name: Humidity
+        show_name: true
+        show_state: true
+        show_icon: true
+      - type: entity
+        entity: sensor.shccf_lab_pool_absolute_humidity
+        name: Absolute Humidity
+        show_name: true
+        show_state: true
+        show_icon: true
+      - type: entity
+        entity: sensor.shccf_lab_pool_dew_point
+        name: Dew Point
+        show_name: true
+        show_state: true
+        show_icon: true
+      - type: entity
+        entity: sensor.shcf_device_62e90919_operating_status_display
+        name: Dehumidifier
+        show_name: true
+        show_state: true
+        show_icon: false
+
+    sections:
+      - type: grid
+        column_span: 4
+        cards:
+          - type: heading
+            heading: Climate Conditions
+            heading_style: title
+            icon: mdi:home-thermometer-outline
+
+          - type: entities
+            title: Former Indoor Pool
+            show_header_toggle: false
+            entities:
+              - entity: sensor.shcf_klimasensor_temperature
+                name: Temperature
+              - entity: sensor.shcf_klimasensor_humidity
+                name: Relative Humidity
+              - entity: sensor.shccf_lab_pool_dew_point
+                name: Dew Point
+              - entity: sensor.shccf_lab_pool_absolute_humidity
+                name: Absolute Humidity
+
+          - type: entities
+            title: Humidity Differences
+            show_header_toggle: false
+            entities:
+              - entity: sensor.shccf_lab_fitness_room_minus_pool_absolute_humidity
+                name: Fitness Room minus Pool
+              - entity: sensor.shccf_lab_outdoor_south_west_minus_pool_absolute_humidity
+                name: Outdoor South-West minus Pool
+              - entity: sensor.shccf_lab_outdoor_north_east_minus_pool_absolute_humidity
+                name: Outdoor North-East minus Pool
+
+          - type: entities
+            title: SHCCF Controller
+            show_header_toggle: false
+            entities:
+              - entity: input_select.shcf_device_62e90919_operating_mode
+                name: Operating Mode
+              - entity: sensor.shcf_device_62e90919_operating_status_display
+                name: Controller Status
+              - entity: sensor.shcf_device_62e90919_target_humidity
+                name: Target Humidity
+              - entity: sensor.shcf_device_62e90919_switch_on_threshold
+                name: Start Threshold
+              - entity: sensor.shcf_device_62e90919_dehumidification_demand
+                name: Dehumidification Demand
+
+      - type: grid
+        column_span: 4
+        cards:
+          - type: heading
+            heading: Today's Analytics
+            heading_style: title
+            icon: mdi:chart-box-outline
+
+          - type: tile
+            entity: sensor.shccf_lab_trotec_runtime_today
+            name: Runtime
+            vertical: false
+          - type: tile
+            entity: sensor.shccf_lab_trotec_energy_today
+            name: Energy
+            vertical: false
+          - type: tile
+            entity: sensor.shccf_lab_pool_time_above_60_today
+            name: Exposure
+            vertical: false
+          - type: tile
+            entity: sensor.shcf_device_62e90919_operating_status_display
+            name: Current Status
+            vertical: false
+
+          - type: entities
+            title: Indoor Humidity
+            show_header_toggle: false
+            entities:
+              - entity: sensor.shccf_lab_pool_humidity_minimum_24h
+                name: Minimum
+              - entity: sensor.shccf_lab_pool_humidity_mean_24h
+                name: Mean
+              - entity: sensor.shccf_lab_pool_humidity_maximum_24h
+                name: Maximum
+
+          - type: entities
+            title: Indoor Absolute Humidity
+            show_header_toggle: false
+            entities:
+              - entity: sensor.shccf_lab_pool_absolute_humidity_minimum_24h
+                name: Minimum
+              - entity: sensor.shccf_lab_pool_absolute_humidity_mean_24h
+                name: Mean
+              - entity: sensor.shccf_lab_pool_absolute_humidity_maximum_24h
+                name: Maximum
+
+      - type: grid
+        column_span: 4
+        cards:
+          - type: heading
+            heading: 24-Hour History
+            heading_style: title
+            icon: mdi:chart-line
+
+          - type: history-graph
+            title: Indoor Humidity and SHCCF Thresholds
+            hours_to_show: 24
+            logarithmic_scale: false
+            entities:
+              - entity: sensor.shcf_klimasensor_humidity
+                name: Indoor Humidity
+              - entity: sensor.shcf_device_62e90919_target_humidity
+                name: Target
+              - entity: sensor.shcf_device_62e90919_switch_on_threshold
+                name: Start Threshold
+
+          - type: history-graph
+            title: Absolute Humidity
+            hours_to_show: 24
+            logarithmic_scale: false
+            entities:
+              - entity: sensor.shccf_lab_pool_absolute_humidity
+                name: Former Indoor Pool
+              - entity: sensor.shccf_lab_fitness_room_absolute_humidity
+                name: Fitness Room
+              - entity: sensor.shccf_lab_outdoor_south_west_absolute_humidity
+                name: Outdoor South-West
+              - entity: sensor.shccf_lab_outdoor_north_east_absolute_humidity
+                name: Outdoor North-East
+
+          - type: history-graph
+            title: Dehumidifier Power
+            hours_to_show: 24
+            logarithmic_scale: false
+            entities:
+              - entity: sensor.shcf_zwischenstecker_power
+                name: Power
+
+      - type: grid
+        column_span: 4
+        cards:
+          - type: heading
+            heading: Experiment Summary
+            heading_style: title
+            icon: mdi:flask-outline
+
+          - type: entities
+            title: Current Experiment
+            show_header_toggle: false
+            entities:
+              - entity: input_text.shccf_lab_experiment_name
+                name: Experiment Name
+              - entity: sensor.shccf_lab_experiment_status
+                name: Status
+              - entity: input_select.shccf_lab_experiment_phase
+                name: Phase
+              - entity: input_text.shccf_lab_primary_measurement_location
+                name: Primary Measurement Location
+              - entity: input_datetime.shccf_lab_experiment_started
+                name: Started
+              - entity: sensor.shccf_lab_experiment_duration
+                name: Duration
+              - entity: sensor.shccf_lab_experiment_energy_used
+                name: Energy Used
+              - entity: input_text.shccf_lab_current_investigation_action
+                name: Current Investigation
+
+      - type: grid
+        column_span: 4
+        cards:
+          - type: heading
+            heading: Operational Timeline
+            heading_style: title
+            icon: mdi:timeline-clock-outline
+
+          - type: custom:timeline-card
+            title: Recent Events
+            hours: 24
+            limit: 20
+            visible_events: 8
+            overflow: collapse
+            relative_time: true
+            show_names: true
+            show_states: true
+            show_icons: true
+            allow_multiline: true
+            collapse_duplicates: true
+            collapse_duplicates_keep: latest
+            language: en-GB
+            refresh_interval: 60
+            entities:
+              - entity: input_select.shccf_lab_experiment_phase
+                name: Experiment Phase
+                icon: mdi:flask-outline
+              - entity: input_select.shcf_device_62e90919_operating_mode
+                name: Operating Mode
+                icon: mdi:tune-variant
+              - entity: sensor.shcf_device_62e90919_operating_status
+                name: Controller Status
+                icon: mdi:air-humidifier
+              - entity: binary_sensor.shccf_lab_trotec_running
+                name: Dehumidifier
+                icon_map:
+                  "on": mdi:play-circle
+                  "off": mdi:stop-circle
+                state_map:
+                  "on": Running
+                  "off": Stopped
+              - entity: binary_sensor.shccf_lab_pool_humidity_above_60
+                name: Humidity Exposure
+                icon_map:
+                  "on": mdi:water-percent-alert
+                  "off": mdi:water-check
+                state_map:
+                  "on": Elevated
+                  "off": Normal
+
+    cards: []
+
+  - title: Measurements
+    path: measurements
+    icon: mdi:gauge
+    type: sections
+    max_columns: 4
+
+    header:
+      card:
+        type: markdown
+        text_only: true
+        content: |
+          # Measurements
+          Detailed values from all climate measurement locations
+      layout: start
+      badges_position: bottom
+      badges_wrap: wrap
+
+    sections:
+      - type: grid
+        column_span: 4
+        cards:
+          - type: heading
+            heading: Climate Conditions
+            heading_style: title
+            icon: mdi:home-thermometer-outline
+
+          - type: entities
+            title: Former Indoor Pool
+            show_header_toggle: false
+            entities:
+              - entity: sensor.shcf_klimasensor_temperature
+                name: Temperature
+              - entity: sensor.shcf_klimasensor_humidity
+                name: Relative Humidity
+              - entity: sensor.shccf_lab_pool_dew_point
+                name: Dew Point
+              - entity: sensor.shccf_lab_pool_absolute_humidity
+                name: Absolute Humidity
+
+          - type: entities
+            title: Adjoining Fitness Room
+            show_header_toggle: false
+            entities:
+              - entity: sensor.fitnessraum_klimasensor_temperature
+                name: Temperature
+              - entity: sensor.fitnessraum_klimasensor_humidity
+                name: Relative Humidity
+              - entity: sensor.shccf_lab_fitness_room_dew_point
+                name: Dew Point
+              - entity: sensor.shccf_lab_fitness_room_absolute_humidity
+                name: Absolute Humidity
+
+          - type: entities
+            title: Outdoor South-West
+            show_header_toggle: false
+            entities:
+              - entity: sensor.gw1200a_outdoor_temperature
+                name: Temperature
+              - entity: sensor.gw1200a_humidity
+                name: Relative Humidity
+              - entity: sensor.shccf_lab_outdoor_south_west_dew_point
+                name: Dew Point
+              - entity: sensor.shccf_lab_outdoor_south_west_absolute_humidity
+                name: Absolute Humidity
+
+          - type: entities
+            title: Outdoor North-East
+            show_header_toggle: false
+            entities:
+              - entity: sensor.gw1200a_temperature_1
+                name: Temperature
+              - entity: sensor.gw1200a_humidity_1
+                name: Relative Humidity
+              - entity: sensor.shccf_lab_outdoor_north_east_dew_point
+                name: Dew Point
+              - entity: sensor.shccf_lab_outdoor_north_east_absolute_humidity
+                name: Absolute Humidity
+
+      - type: grid
+        column_span: 4
+        cards:
+          - type: heading
+            heading: Humidity Differences
+            heading_style: title
+            icon: mdi:delta
+          - type: entities
+            title: Absolute Humidity Differences
+            show_header_toggle: false
+            entities:
+              - entity: sensor.shccf_lab_fitness_room_minus_pool_absolute_humidity
+                name: Fitness Room minus Pool
+              - entity: sensor.shccf_lab_outdoor_south_west_minus_pool_absolute_humidity
+                name: Outdoor South-West minus Pool
+              - entity: sensor.shccf_lab_outdoor_north_east_minus_pool_absolute_humidity
+                name: Outdoor North-East minus Pool
+          - type: markdown
+            content: |
+              **Interpretation**
+
+              A positive value means that the comparison location contains
+              more water vapour than the former indoor pool.
+
+              A negative value means that the comparison location is
+              absolutely drier than the former indoor pool.
+
+      - type: grid
+        column_span: 4
+        cards:
+          - type: heading
+            heading: Climate History
+            heading_style: title
+            icon: mdi:chart-multiple
+
+          - type: history-graph
+            title: Temperature
+            hours_to_show: 24
+            logarithmic_scale: false
+            entities:
+              - entity: sensor.shcf_klimasensor_temperature
+                name: Former Indoor Pool
+              - entity: sensor.fitnessraum_klimasensor_temperature
+                name: Fitness Room
+              - entity: sensor.gw1200a_outdoor_temperature
+                name: Outdoor South-West
+              - entity: sensor.gw1200a_temperature_1
+                name: Outdoor North-East
+
+          - type: history-graph
+            title: Relative Humidity
+            hours_to_show: 24
+            logarithmic_scale: false
+            entities:
+              - entity: sensor.shcf_klimasensor_humidity
+                name: Former Indoor Pool
+              - entity: sensor.fitnessraum_klimasensor_humidity
+                name: Fitness Room
+              - entity: sensor.gw1200a_humidity
+                name: Outdoor South-West
+              - entity: sensor.gw1200a_humidity_1
+                name: Outdoor North-East
+
+          - type: history-graph
+            title: Dew Point
+            hours_to_show: 24
+            logarithmic_scale: false
+            entities:
+              - entity: sensor.shccf_lab_pool_dew_point
+                name: Former Indoor Pool
+              - entity: sensor.shccf_lab_fitness_room_dew_point
+                name: Fitness Room
+              - entity: sensor.shccf_lab_outdoor_south_west_dew_point
+                name: Outdoor South-West
+              - entity: sensor.shccf_lab_outdoor_north_east_dew_point
+                name: Outdoor North-East
+
+          - type: history-graph
+            title: Absolute Humidity
+            hours_to_show: 24
+            logarithmic_scale: false
+            entities:
+              - entity: sensor.shccf_lab_pool_absolute_humidity
+                name: Former Indoor Pool
+              - entity: sensor.shccf_lab_fitness_room_absolute_humidity
+                name: Fitness Room
+              - entity: sensor.shccf_lab_outdoor_south_west_absolute_humidity
+                name: Outdoor South-West
+              - entity: sensor.shccf_lab_outdoor_north_east_absolute_humidity
+                name: Outdoor North-East
+
+          - type: history-graph
+            title: Absolute Humidity Differences
+            hours_to_show: 24
+            logarithmic_scale: false
+            entities:
+              - entity: sensor.shccf_lab_fitness_room_minus_pool_absolute_humidity
+                name: Fitness Room minus Pool
+              - entity: sensor.shccf_lab_outdoor_south_west_minus_pool_absolute_humidity
+                name: South-West minus Pool
+              - entity: sensor.shccf_lab_outdoor_north_east_minus_pool_absolute_humidity
+                name: North-East minus Pool
+
+    cards: []
+
+  - title: Analytics
+    path: analytics
+    icon: mdi:chart-box-outline
+    type: sections
+    max_columns: 4
+
+    header:
+      card:
+        type: markdown
+        text_only: true
+        content: |
+          # Analytics
+          Runtime, energy and climate stability
+      layout: start
+      badges_position: bottom
+      badges_wrap: wrap
+
+    badges:
+      - type: entity
+        entity: sensor.shccf_lab_trotec_runtime_today
+        name: Runtime
+        show_name: true
+        show_state: true
+        show_icon: true
+      - type: entity
+        entity: sensor.shccf_lab_trotec_energy_today
+        name: Energy
+        show_name: true
+        show_state: true
+        show_icon: true
+      - type: entity
+        entity: sensor.shccf_lab_pool_time_above_60_today
+        name: Exposure
+        show_name: true
+        show_state: true
+        show_icon: true
+
+    sections:
+      - type: grid
+        column_span: 4
+        cards:
+          - type: heading
+            heading: Today's Analytics
+            heading_style: title
+            icon: mdi:clock-check-outline
+
+          - type: entities
+            title: Today's Operation
+            show_header_toggle: false
+            entities:
+              - entity: sensor.shcf_device_62e90919_operating_status_display
+                name: Current Status
+              - entity: sensor.shccf_lab_trotec_runtime_today
+                name: Runtime
+              - entity: sensor.shccf_lab_trotec_energy_today
+                name: Energy
+              - entity: sensor.shcf_zwischenstecker_power
+                name: Current Power
+              - entity: sensor.shcf_zwischenstecker_energy
+                name: Total Energy
+
+          - type: entities
+            title: Humidity Exposure
+            show_header_toggle: false
+            entities:
+              - entity: binary_sensor.shccf_lab_pool_humidity_above_60
+                name: Current Exposure
+              - entity: sensor.shccf_lab_pool_time_above_60_today
+                name: Time Above Limit
+              - entity: sensor.shcf_device_62e90919_switch_on_threshold
+                name: Current Limit
+
+      - type: grid
+        column_span: 4
+        cards:
+          - type: heading
+            heading: 24-Hour Statistics
+            heading_style: title
+            icon: mdi:chart-bell-curve-cumulative
+
+          - type: markdown
+            content: |
+              *All 24-hour statistics are calculated over a rolling 24-hour window.*
+          - type: entities
+            title: Indoor Humidity
+            show_header_toggle: false
+            entities:
+              - entity: sensor.shccf_lab_pool_humidity_minimum_24h
+                name: Minimum
+              - entity: sensor.shccf_lab_pool_humidity_mean_24h
+                name: Mean
+              - entity: sensor.shccf_lab_pool_humidity_maximum_24h
+                name: Maximum
+          - type: entities
+            title: Indoor Absolute Humidity
+            show_header_toggle: false
+            entities:
+              - entity: sensor.shccf_lab_pool_absolute_humidity_minimum_24h
+                name: Minimum
+              - entity: sensor.shccf_lab_pool_absolute_humidity_mean_24h
+                name: Mean
+              - entity: sensor.shccf_lab_pool_absolute_humidity_maximum_24h
+                name: Maximum
+
+      - type: grid
+        column_span: 4
+        cards:
+          - type: heading
+            heading: Weekly Trends
+            heading_style: title
+            icon: mdi:calendar-week-outline
+
+          - type: entities
+            title: This Week
+            show_header_toggle: false
+            entities:
+              - entity: sensor.shccf_lab_dehumidifier_runtime_this_week
+                name: Runtime This Week
+
+              - entity: sensor.shccf_lab_dehumidifier_energy_this_week
+                name: Energy This Week
+
+              - entity: sensor.shccf_lab_time_above_limit_this_week
+                name: Time Above Limit This Week
+
+          - type: entities
+            title: Current Experiment
+            show_header_toggle: false
+            entities:
+              - entity: sensor.shccf_lab_experiment_status
+                name: Status
+
+              - entity: sensor.shccf_lab_experiment_duration
+                name: Duration
+
+              - entity: sensor.shccf_lab_experiment_energy_used
+                name: Energy Used
+
+      - type: grid
+        column_span: 4
+        cards:
+          - type: heading
+            heading: Analytics History
+            heading_style: title
+            icon: mdi:chart-timeline-variant
+          - type: history-graph
+            title: Runtime
+            hours_to_show: 24
+            logarithmic_scale: false
+            entities:
+              - entity: sensor.shccf_lab_trotec_runtime_today
+                name: Runtime
+          - type: history-graph
+            title: Energy
+            hours_to_show: 24
+            logarithmic_scale: false
+            entities:
+              - entity: sensor.shccf_lab_trotec_energy_today
+                name: Energy
+          - type: history-graph
+            title: Humidity Exposure
+            hours_to_show: 24
+            logarithmic_scale: false
+            entities:
+              - entity: sensor.shccf_lab_pool_time_above_60_today
+                name: Time Above Limit
+          - type: history-graph
+            title: Indoor Humidity Stability
+            hours_to_show: 24
+            logarithmic_scale: false
+            entities:
+              - entity: sensor.shccf_lab_pool_humidity_minimum_24h
+                name: Minimum
+              - entity: sensor.shccf_lab_pool_humidity_mean_24h
+                name: Mean
+              - entity: sensor.shccf_lab_pool_humidity_maximum_24h
+                name: Maximum
+
+    cards: []
+
+  - title: Diagnostics
+    path: diagnostics
+    icon: mdi:stethoscope
+    type: sections
+    max_columns: 4
+
+    header:
+      card:
+        type: markdown
+        text_only: true
+        content: |
+          # Diagnostics
+          Evidence-based assessment of the current climate conditions
+      layout: start
+      badges_position: bottom
+      badges_wrap: wrap
+
+    badges:
+      - type: entity
+        entity: sensor.shcf_device_62e90919_dehumidification_demand
+        name: Dehumidification Demand
+        show_name: true
+        show_state: true
+        show_icon: true
+      - type: entity
+        entity: binary_sensor.shccf_lab_pool_humidity_above_60
+        name: Humidity Exposure
+        show_name: true
+        show_state: true
+        show_icon: true
+      - type: entity
+        entity: sensor.shcf_device_62e90919_operating_status_display
+        name: Controller Status
+        show_name: true
+        show_state: true
+        show_icon: false
+
+    sections:
+      - type: grid
+        column_span: 4
+        cards:
+          - type: heading
+            heading: Current Findings
+            heading_style: title
+            icon: mdi:magnify-expand
+
+          - type: entities
+            title: Primary Measurement Location
+            show_header_toggle: false
+            entities:
+              - entity: input_text.shccf_lab_primary_measurement_location
+                name: Location
+              - entity: sensor.shcf_klimasensor_humidity
+                name: Relative Humidity
+              - entity: sensor.shccf_lab_pool_absolute_humidity
+                name: Absolute Humidity
+              - entity: sensor.shccf_lab_pool_dew_point
+                name: Dew Point
+              - entity: sensor.shccf_lab_pool_humidity_mean_24h
+                name: 24-Hour Mean
+              - entity: sensor.shccf_lab_pool_time_above_60_today
+                name: Time Above Limit
+
+          - type: entities
+            title: Moisture Comparison
+            show_header_toggle: false
+            entities:
+              - entity: sensor.shccf_lab_fitness_room_minus_pool_absolute_humidity
+                name: Fitness Room minus Primary
+              - entity: sensor.shccf_lab_outdoor_south_west_minus_pool_absolute_humidity
+                name: Outdoor South-West minus Primary
+              - entity: sensor.shccf_lab_outdoor_north_east_minus_pool_absolute_humidity
+                name: Outdoor North-East minus Primary
+
+          - type: markdown
+            content: |
+              **Diagnostic interpretation**
+
+              Positive comparison values indicate that the comparison location
+              currently contains more water vapour than the primary measurement
+              location. Negative values indicate that it is absolutely drier.
+
+              These values indicate correlations and moisture gradients. They do
+              not prove a structural cause on their own.
+
+      - type: grid
+        column_span: 4
+        cards:
+          - type: heading
+            heading: Controller Diagnostics
+            heading_style: title
+            icon: mdi:state-machine
+
+          - type: entities
+            title: SHCCF Controller
+            show_header_toggle: false
+            entities:
+              - entity: input_select.shcf_device_62e90919_operating_mode
+                name: Operating Mode
+              - entity: sensor.shcf_device_62e90919_operating_status_display
+                name: Controller Status
+              - entity: sensor.shcf_device_62e90919_target_humidity
+                name: Target Humidity
+              - entity: sensor.shcf_device_62e90919_switch_on_threshold
+                name: Start Threshold
+              - entity: sensor.shcf_device_62e90919_dehumidification_demand
+                name: Dehumidification Demand
+              - entity: sensor.shccf_lab_trotec_runtime_today
+                name: Runtime
+              - entity: sensor.shccf_lab_trotec_energy_today
+                name: Energy
+
+          - type: history-graph
+            title: Controller Response
+            hours_to_show: 24
+            logarithmic_scale: false
+            entities:
+              - entity: sensor.shcf_klimasensor_humidity
+                name: Relative Humidity
+              - entity: sensor.shcf_device_62e90919_target_humidity
+                name: Target Humidity
+              - entity: sensor.shcf_device_62e90919_switch_on_threshold
+                name: Start Threshold
+              - entity: sensor.shcf_zwischenstecker_power
+                name: Power
+
+    cards: []
+
+  - title: Recommendations
+    path: recommendations
+    icon: mdi:lightbulb-on-outline
+    type: sections
+    max_columns: 4
+
+    header:
+      card:
+        type: markdown
+        text_only: true
+        content: |
+          # Recommendations
+          Suggested next steps based on the current experiment phase and measurements
+      layout: start
+      badges_position: bottom
+      badges_wrap: wrap
+
+    badges:
+      - type: entity
+        entity: input_select.shccf_lab_experiment_phase
+        name: Experiment Phase
+        show_name: true
+        show_state: true
+        show_icon: true
+      - type: entity
+        entity: sensor.shcf_device_62e90919_dehumidification_demand
+        name: Dehumidification Demand
+        show_name: true
+        show_state: true
+        show_icon: true
+      - type: entity
+        entity: sensor.shccf_lab_experiment_status
+        name: Experiment Status
+        show_name: true
+        show_state: true
+        show_icon: true
+
+    sections:
+      - type: grid
+        column_span: 4
+        cards:
+          - type: heading
+            heading: Current Recommendation
+            heading_style: title
+            icon: mdi:clipboard-check-outline
+
+          - type: conditional
+            conditions:
+              - entity: input_select.shccf_lab_experiment_phase
+                state: Preparation
+            card:
+              type: markdown
+              content: |
+                ## Complete the experiment setup
+
+                Define the primary measurement location, experiment goal,
+                expected outcome and suspected factors. Verify that all required
+                sensors are available before starting the experiment.
+
+          - type: conditional
+            conditions:
+              - entity: input_select.shccf_lab_experiment_phase
+                state: Initial Dehumidification
+            card:
+              type: markdown
+              content: |
+                ## Continue initial dehumidification
+
+                Keep the primary measurement location under controlled
+                dehumidification until relative and absolute humidity approach
+                a stable baseline.
+
+          - type: conditional
+            conditions:
+              - entity: input_select.shccf_lab_experiment_phase
+                state: Stabilization
+            card:
+              type: markdown
+              content: |
+                ## Wait for stabilization
+
+                Avoid changing doors, ventilation openings or heating conditions.
+                Observe the primary location until the climate trend becomes stable.
+
+          - type: conditional
+            conditions:
+              - entity: input_select.shccf_lab_experiment_phase
+                state: Building Investigation
+            card:
+              type: markdown
+              content: |
+                ## Investigate one factor at a time
+
+                Document the current investigation action and change only one
+                building condition. Observe the effect before applying the next
+                measure.
+
+          - type: conditional
+            conditions:
+              - entity: input_select.shccf_lab_experiment_phase
+                state: Final Observation
+            card:
+              type: markdown
+              content: |
+                ## Perform final observation
+
+                Keep conditions unchanged and observe whether the improvement is
+                sustained without introducing new interventions.
+
+          - type: conditional
+            conditions:
+              - entity: input_select.shccf_lab_experiment_phase
+                state: Completed
+            card:
+              type: markdown
+              content: |
+                ## Review the experiment
+
+                Compare the final climate conditions, duration, energy use and
+                recorded actions with the original goal and expected outcome.
+
+      - type: grid
+        column_span: 4
+        cards:
+          - type: heading
+            heading: Investigation Guidance
+            heading_style: title
+            icon: mdi:clipboard-search-outline
+
+          - type: entities
+            title: Current Context
+            show_header_toggle: false
+            entities:
+              - entity: input_text.shccf_lab_primary_measurement_location
+                name: Primary Measurement Location
+              - entity: input_text.shccf_lab_experiment_goal
+                name: Experiment Goal
+              - entity: input_text.shccf_lab_expected_outcome
+                name: Expected Outcome
+              - entity: input_text.shccf_lab_current_investigation_action
+                name: Current Investigation Action
+              - entity: sensor.shccf_lab_experiment_duration
+                name: Duration
+              - entity: sensor.shccf_lab_experiment_energy_used
+                name: Energy Used
+
+          - type: markdown
+            content: |
+              **Suggested investigation order**
+
+              1. Establish a stable baseline.
+              2. Compare adjacent and outdoor measurement locations.
+              3. Investigate suspected air paths.
+              4. Investigate the floor drain and inspection shaft.
+              5. Add the heating-room measurement location.
+              6. Add a ceiling measurement location if vertical stratification
+                 remains a plausible factor.
+              7. Finish with an unchanged observation period.
+
+    cards: []
+
+  - title: Experiment
+    path: experiment
+    icon: mdi:flask-outline
+    type: sections
+    max_columns: 4
+
+    header:
+      card:
+        type: markdown
+        text_only: true
+        content: |
+          # Experiment
+          Setup, lifecycle, investigation actions and operational log
+      layout: start
+      badges_position: bottom
+      badges_wrap: wrap
+
+    badges:
+      - type: entity
+        entity: sensor.shccf_lab_experiment_status
+        name: Status
+        show_name: true
+        show_state: true
+        show_icon: true
+
+      - type: entity
+        entity: input_select.shccf_lab_experiment_phase
+        name: Phase
+        show_name: true
+        show_state: true
+        show_icon: true
+
+      - type: entity
+        entity: input_text.shccf_lab_primary_measurement_location
+        name: Primary Location
+        show_name: true
+        show_state: true
+        show_icon: true
+
+      - type: entity
+        entity: sensor.shccf_lab_experiment_duration
+        name: Duration
+        show_name: true
+        show_state: true
+        show_icon: true
+
+      - type: entity
+        entity: sensor.shccf_lab_experiment_energy_used
+        name: Energy Used
+        show_name: true
+        show_state: true
+        show_icon: true
+
+    sections:
+      # -----------------------------------------------------------------------
+      # Experiment Setup
+      # -----------------------------------------------------------------------
+
+      - type: grid
+        column_span: 4
+        cards:
+          - type: heading
+            heading: Experiment Setup
+            heading_style: title
+            icon: mdi:form-textbox
+
+          - type: entities
+            title: Experiment Identity
+            show_header_toggle: false
+            entities:
+              - entity: input_text.shccf_lab_experiment_name
+                name: Experiment Name
+
+              - entity: input_text.shccf_lab_experiment_description
+                name: Description
+
+          - type: entities
+            title: Investigation Target
+            show_header_toggle: false
+            entities:
+              - entity: input_text.shccf_lab_primary_measurement_location
+                name: Primary Measurement Location
+
+              - entity: input_text.shccf_lab_primary_measurement_location_type
+                name: Location Type
+
+          - type: entities
+            title: Experiment Objectives
+            show_header_toggle: false
+            entities:
+              - entity: input_text.shccf_lab_experiment_goal
+                name: Experiment Goal
+
+              - entity: input_text.shccf_lab_expected_outcome
+                name: Expected Outcome
+
+      # -----------------------------------------------------------------------
+      # Experiment Lifecycle
+      # -----------------------------------------------------------------------
+
+      - type: grid
+        column_span: 4
+        cards:
+          - type: heading
+            heading: Experiment Lifecycle
+            heading_style: title
+            icon: mdi:timeline-check-outline
+
+          - type: tile
+            entity: input_select.shccf_lab_experiment_phase
+            name: Experiment Phase
+            vertical: false
+            features_position: inline
+            features:
+              - type: select-options
+
+          - type: button
+            entity: input_button.shccf_lab_start_experiment
+            name: Start Experiment
+            icon: mdi:play-circle-outline
+            show_state: false
+            tap_action:
+              action: perform-action
+              perform_action: input_button.press
+              target:
+                entity_id: input_button.shccf_lab_start_experiment
+
+          - type: button
+            entity: input_button.shccf_lab_finish_experiment
+            name: Finish Experiment
+            icon: mdi:stop-circle-outline
+            show_state: false
+            tap_action:
+              action: perform-action
+              perform_action: input_button.press
+              target:
+                entity_id: input_button.shccf_lab_finish_experiment
+            confirmation:
+              text: Finish the current experiment?
+
+          - type: entities
+            title: Experiment Status
+            show_header_toggle: false
+            entities:
+              - entity: sensor.shccf_lab_experiment_status
+                name: Status
+
+              - entity: input_datetime.shccf_lab_experiment_started
+                name: Started
+
+              - entity: input_datetime.shccf_lab_experiment_finished
+                name: Finished
+
+              - entity: sensor.shccf_lab_experiment_duration
+                name: Duration
+
+              - entity: sensor.shccf_lab_experiment_energy_used
+                name: Energy Used
+
+          - type: markdown
+            content: |
+              **Experiment phases**
+
+              1. Preparation
+              2. Initial Dehumidification
+              3. Stabilization
+              4. Building Investigation
+              5. Final Observation
+              6. Completed
+
+      # -----------------------------------------------------------------------
+      # Investigation and Controller
+      # -----------------------------------------------------------------------
+
+      - type: grid
+        column_span: 4
+        cards:
+          - type: heading
+            heading: Building Investigation
+            heading_style: title
+            icon: mdi:home-search-outline
+
+          - type: entities
+            title: Current Investigation
+            show_header_toggle: false
+            entities:
+              - entity: input_text.shccf_lab_current_investigation_action
+                name: Current Investigation Action
+
+          - type: tile
+            entity: input_select.shcf_device_62e90919_operating_mode
+            name: Dehumidifier Operating Mode
+            vertical: false
+            features_position: inline
+            features:
+              - type: select-options
+
+          - type: entities
+            title: Current Controller State
+            show_header_toggle: false
+            entities:
+              - entity: sensor.shcf_device_62e90919_operating_status_display
+                name: Controller Status
+
+              - entity: sensor.shcf_device_62e90919_target_humidity
+                name: Target Humidity
+
+              - entity: sensor.shcf_device_62e90919_switch_on_threshold
+                name: Start Threshold
+
+              - entity: sensor.shcf_device_62e90919_dehumidification_demand
+                name: Dehumidification Demand
+
+              - entity: sensor.shcf_zwischenstecker_power
+                name: Current Power
+
+          - type: markdown
+            content: |
+              During **Building Investigation**, document the current action and
+              change only one climate-related condition at a time. Allow enough
+              observation time before applying another measure.
+
+      # -----------------------------------------------------------------------
+      # Experiment Timeline
+      # -----------------------------------------------------------------------
+
+      - type: grid
+        column_span: 4
+        cards:
+          - type: heading
+            heading: Experiment and Operating Log
+            heading_style: title
+            icon: mdi:timeline-text-outline
+
+          - type: custom:timeline-card
+            title: Experiment Timeline
+            hours: 168
+            limit: 200
+            visible_events: 30
+            overflow: collapse
+            relative_time: false
+            show_date: true
+            show_names: true
+            show_states: true
+            show_icons: true
+            allow_multiline: true
+            force_multiline: false
+            card_layout: center
+            compact_layout: false
+            collapse_duplicates: true
+            collapse_duplicates_keep: latest
+            language: en-GB
+            refresh_interval: 60
+            entities:
+              - entity: sensor.shccf_lab_experiment_status
+                name: Experiment Status
+                icon: mdi:flask-outline
+
+              - entity: input_select.shccf_lab_experiment_phase
+                name: Experiment Phase
+                icon: mdi:flask-outline
+
+              - entity: input_text.shccf_lab_current_investigation_action
+                name: Investigation Action
+                icon: mdi:clipboard-text-clock-outline
+
+              - entity: input_select.shcf_device_62e90919_operating_mode
+                name: Operating Mode
+                icon: mdi:tune-variant
+
+              - entity: sensor.shcf_device_62e90919_operating_status
+                name: Controller Status
+                icon: mdi:air-humidifier
+
+              - entity: binary_sensor.shccf_lab_trotec_running
+                name: Dehumidifier
+                icon_map:
+                  "on": mdi:play-circle
+                  "off": mdi:stop-circle
+                state_map:
+                  "on": Running
+                  "off": Stopped
+
+              - entity: binary_sensor.shccf_lab_pool_humidity_above_60
+                name: Humidity Exposure
+                icon_map:
+                  "on": mdi:water-percent-alert
+                  "off": mdi:water-check
+                state_map:
+                  "on": Elevated
+                  "off": Normal
+
+      # -----------------------------------------------------------------------
+      # Experiment Climate History
+      # -----------------------------------------------------------------------
+
+      - type: grid
+        column_span: 4
+        cards:
+          - type: heading
+            heading: Experiment Climate History
+            heading_style: title
+            icon: mdi:chart-timeline-variant-shimmer
+
+          - type: history-graph
+            title: Indoor Climate
+            hours_to_show: 168
+            logarithmic_scale: false
+            entities:
+              - entity: sensor.shcf_klimasensor_temperature
+                name: Temperature
+
+              - entity: sensor.shcf_klimasensor_humidity
+                name: Relative Humidity
+
+              - entity: sensor.shccf_lab_pool_dew_point
+                name: Dew Point
+
+          - type: history-graph
+            title: Absolute Humidity
+            hours_to_show: 168
+            logarithmic_scale: false
+            entities:
+              - entity: sensor.shccf_lab_pool_absolute_humidity
+                name: Former Indoor Pool
+
+              - entity: sensor.shccf_lab_fitness_room_absolute_humidity
+                name: Fitness Room
+
+              - entity: sensor.shccf_lab_outdoor_south_west_absolute_humidity
+                name: Outdoor South-West
+
+              - entity: sensor.shccf_lab_outdoor_north_east_absolute_humidity
+                name: Outdoor North-East
+
+          - type: history-graph
+            title: Dehumidifier Power
+            hours_to_show: 168
+            logarithmic_scale: false
+            entities:
+              - entity: sensor.shcf_zwischenstecker_power
+                name: Power
+
+    cards: []
+
+  - title: Weather
+    path: weather
+    icon: mdi:weather-partly-cloudy
+    type: sections
+    max_columns: 4
+
+    header:
+      card:
+        type: markdown
+        text_only: true
+        content: |
+          # Weather
+          Outdoor conditions relevant to the former indoor pool
+      layout: start
+      badges_position: bottom
+      badges_wrap: wrap
+
+    sections:
+      - type: grid
+        column_span: 4
+        cards:
+          - type: heading
+            heading: Outdoor Climate
+            heading_style: title
+            icon: mdi:weather-cloudy
+          - type: entities
+            title: Outdoor South-West
+            show_header_toggle: false
+            entities:
+              - entity: sensor.gw1200a_outdoor_temperature
+                name: Temperature
+              - entity: sensor.gw1200a_humidity
+                name: Relative Humidity
+              - entity: sensor.shccf_lab_outdoor_south_west_dew_point
+                name: Dew Point
+              - entity: sensor.shccf_lab_outdoor_south_west_absolute_humidity
+                name: Absolute Humidity
+          - type: entities
+            title: Outdoor North-East
+            show_header_toggle: false
+            entities:
+              - entity: sensor.gw1200a_temperature_1
+                name: Temperature
+              - entity: sensor.gw1200a_humidity_1
+                name: Relative Humidity
+              - entity: sensor.shccf_lab_outdoor_north_east_dew_point
+                name: Dew Point
+              - entity: sensor.shccf_lab_outdoor_north_east_absolute_humidity
+                name: Absolute Humidity
+
+      - type: grid
+        column_span: 4
+        cards:
+          - type: heading
+            heading: Weather Conditions
+            heading_style: title
+            icon: mdi:weather-windy
+          - type: entities
+            title: Air Pressure
+            show_header_toggle: false
+            entities:
+              - entity: sensor.gw1200a_relative_pressure
+                name: Relative Pressure
+              - entity: sensor.gw1200a_absolute_pressure
+                name: Absolute Pressure
+          - type: entities
+            title: Wind
+            show_header_toggle: false
+            entities:
+              - entity: sensor.gw1200a_wind_speed
+                name: Wind Speed
+              - entity: sensor.gw1200a_wind_gust
+                name: Wind Gust
+              - entity: sensor.gw1200a_wind_direction
+                name: Wind Direction
+          - type: entities
+            title: Solar Conditions
+            show_header_toggle: false
+            entities:
+              - entity: sensor.gw1200a_solar_radiation
+                name: Solar Radiation
+          - type: entities
+            title: Rain
+            show_header_toggle: false
+            entities:
+              - entity: sensor.gw1200a_rain_rate
+                name: Rain Rate
+              - entity: sensor.gw1200a_daily_rain
+                name: Rain Today
+              - entity: sensor.gw1200a_weekly_rain
+                name: Rain This Week
+              - entity: sensor.gw1200a_monthly_rain
+                name: Rain This Month
+
+      - type: grid
+        column_span: 4
+        cards:
+          - type: heading
+            heading: Weather History
+            heading_style: title
+            icon: mdi:chart-areaspline
+          - type: history-graph
+            title: Outdoor Temperature
+            hours_to_show: 24
+            logarithmic_scale: false
+            entities:
+              - entity: sensor.gw1200a_outdoor_temperature
+                name: South-West
+              - entity: sensor.gw1200a_temperature_1
+                name: North-East
+          - type: history-graph
+            title: Outdoor Absolute Humidity
+            hours_to_show: 24
+            logarithmic_scale: false
+            entities:
+              - entity: sensor.shccf_lab_outdoor_south_west_absolute_humidity
+                name: South-West
+              - entity: sensor.shccf_lab_outdoor_north_east_absolute_humidity
+                name: North-East
+          - type: history-graph
+            title: Wind and Pressure
+            hours_to_show: 24
+            logarithmic_scale: false
+            entities:
+              - entity: sensor.gw1200a_wind_speed
+                name: Wind Speed
+              - entity: sensor.gw1200a_wind_gust
+                name: Wind Gust
+              - entity: sensor.gw1200a_relative_pressure
+                name: Relative Pressure
+          - type: history-graph
+            title: Solar Radiation
+            hours_to_show: 24
+            logarithmic_scale: false
+            entities:
+              - entity: sensor.gw1200a_solar_radiation
+                name: Solar Radiation
+          - type: history-graph
+            title: Rain
+            hours_to_show: 24
+            logarithmic_scale: false
+            entities:
+              - entity: sensor.gw1200a_rain_rate
+                name: Rain Rate
+              - entity: sensor.gw1200a_daily_rain
+                name: Rain Today
+              - entity: sensor.gw1200a_weekly_rain
+                name: Rain This Week
+              - entity: sensor.gw1200a_monthly_rain
+                name: Rain This Month
+
+    cards: []

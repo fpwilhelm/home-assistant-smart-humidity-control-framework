@@ -1,0 +1,13 @@
+# =============================================================================
+# SHCCF Analysis Framework
+# Experiment Module
+# Input Boolean Helpers
+# =============================================================================
+#
+# Boolean helpers describing the current experiment runtime state.
+#
+# =============================================================================
+
+shccf_lab_experiment_active:
+  name: SHCCF Lab Experiment Active
+  icon: mdi:flask-empty-outline

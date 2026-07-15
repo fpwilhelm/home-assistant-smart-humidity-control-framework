@@ -1,0 +1,21 @@
+# =============================================================================
+# SHCCF Analysis Framework
+# Analytics Module
+# =============================================================================
+#
+# Transforms measurements and operational history into statistical information.
+#
+# Responsibilities:
+#
+# - Daily runtime and energy analytics
+# - Humidity exposure analytics
+# - Rolling 24-hour statistics
+# - Weekly trends
+#
+# =============================================================================
+
+sensor: !include_dir_merge_list sensors
+
+template: !include_dir_merge_list templates
+
+utility_meter: !include utility_meter.yaml

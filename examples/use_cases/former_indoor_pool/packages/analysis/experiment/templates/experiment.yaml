@@ -1,0 +1,138 @@
+# =============================================================================
+# SHCCF Analysis Framework
+# Experiment Module
+# Template Sensors
+# =============================================================================
+#
+# Derived sensors describing the current experiment state.
+#
+# Responsibilities:
+#
+# - Experiment status
+# - Experiment duration
+# - Experiment energy consumption
+#
+# =============================================================================
+
+- sensor:
+
+    # -------------------------------------------------------------------------
+    # Experiment Status
+    # -------------------------------------------------------------------------
+
+    - name: SHCCF Lab Experiment Status
+      unique_id: shccf_lab_experiment_status
+      icon: mdi:flask-outline
+      state: >
+        {% if is_state('input_boolean.shccf_lab_experiment_active', 'on') %}
+          Active
+        {% elif is_state(
+          'input_select.shccf_lab_experiment_phase',
+          'Completed'
+        ) %}
+          Completed
+        {% else %}
+          Not Started
+        {% endif %}
+
+    # -------------------------------------------------------------------------
+    # Experiment Duration
+    # -------------------------------------------------------------------------
+
+    - name: SHCCF Lab Experiment Duration
+      unique_id: shccf_lab_experiment_duration
+      unit_of_measurement: "h"
+      state_class: measurement
+      icon: mdi:timer-outline
+      availability: >
+        {{
+          states('input_datetime.shccf_lab_experiment_started')
+            not in ['unknown', 'unavailable', '']
+        }}
+      state: >
+        {% set started =
+          as_timestamp(
+            states('input_datetime.shccf_lab_experiment_started')
+          )
+        %}
+
+        {% if is_state(
+          'input_boolean.shccf_lab_experiment_active',
+          'on'
+        ) %}
+          {% set finished = as_timestamp(now()) %}
+        {% else %}
+          {% set finished =
+            as_timestamp(
+              states('input_datetime.shccf_lab_experiment_finished')
+            )
+          %}
+        {% endif %}
+
+        {% if
+          started is number
+          and finished is number
+          and finished >= started
+        %}
+          {{ ((finished - started) / 3600) | round(2) }}
+        {% else %}
+          0
+        {% endif %}
+
+    # -------------------------------------------------------------------------
+    # Experiment Energy Used
+    # -------------------------------------------------------------------------
+
+    - name: SHCCF Lab Experiment Energy Used
+      unique_id: shccf_lab_experiment_energy_used
+      unit_of_measurement: "kWh"
+      device_class: energy
+      state_class: total
+      icon: mdi:lightning-bolt-outline
+      availability: >
+        {{
+          states('input_number.shccf_lab_experiment_energy_start')
+            | is_number
+          and (
+            (
+              is_state(
+                'input_boolean.shccf_lab_experiment_active',
+                'on'
+              )
+              and states('sensor.shcf_zwischenstecker_energy')
+                | is_number
+            )
+            or
+            (
+              is_state(
+                'input_boolean.shccf_lab_experiment_active',
+                'off'
+              )
+              and states(
+                'input_number.shccf_lab_experiment_energy_end'
+              ) | is_number
+            )
+          )
+        }}
+      state: >
+        {% set start =
+          states('input_number.shccf_lab_experiment_energy_start')
+            | float(0)
+        %}
+
+        {% if is_state(
+          'input_boolean.shccf_lab_experiment_active',
+          'on'
+        ) %}
+          {% set current =
+            states('sensor.shcf_zwischenstecker_energy')
+              | float(start)
+          %}
+        {% else %}
+          {% set current =
+            states('input_number.shccf_lab_experiment_energy_end')
+              | float(start)
+          %}
+        {% endif %}
+
+        {{ [current - start, 0] | max | round(3) }}

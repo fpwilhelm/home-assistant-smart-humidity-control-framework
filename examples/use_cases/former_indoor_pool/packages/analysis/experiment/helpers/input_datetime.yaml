@@ -1,0 +1,25 @@
+# =============================================================================
+# SHCCF Analysis Framework
+# Experiment Module
+# Input Datetime Helpers
+# =============================================================================
+#
+# Date and time helpers used to record the experiment lifecycle.
+#
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Experiment Runtime
+# -----------------------------------------------------------------------------
+
+shccf_lab_experiment_started:
+  name: SHCCF Lab Experiment Started
+  has_date: true
+  has_time: true
+  icon: mdi:calendar-start
+
+shccf_lab_experiment_finished:
+  name: SHCCF Lab Experiment Finished
+  has_date: true
+  has_time: true
+  icon: mdi:calendar-end

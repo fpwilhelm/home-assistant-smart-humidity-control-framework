@@ -1,0 +1,31 @@
+# =============================================================================
+# SHCCF Analysis Framework
+# Experiment Module
+# Input Number Helpers
+# =============================================================================
+#
+# Numeric helpers used for experiment accounting.
+#
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Experiment Energy Accounting
+# -----------------------------------------------------------------------------
+
+shccf_lab_experiment_energy_start:
+  name: SHCCF Lab Experiment Energy Start
+  min: 0
+  max: 100000
+  step: 0.001
+  unit_of_measurement: "kWh"
+  mode: box
+  icon: mdi:counter
+
+shccf_lab_experiment_energy_end:
+  name: SHCCF Lab Experiment Energy End
+  min: 0
+  max: 100000
+  step: 0.001
+  unit_of_measurement: "kWh"
+  mode: box
+  icon: mdi:counter

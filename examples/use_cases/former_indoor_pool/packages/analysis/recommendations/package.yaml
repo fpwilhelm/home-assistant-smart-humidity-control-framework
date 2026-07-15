@@ -1,0 +1,18 @@
+# =============================================================================
+# SHCCF Analysis Framework
+# Recommendations Module
+# =============================================================================
+#
+# Generates actionable recommendations based on analytics, diagnostics and
+# the current investigation state.
+#
+# Responsibilities:
+#
+# - Current recommendation
+# - Recommended investigation actions
+# - Climate improvement recommendations
+# - Experiment guidance
+#
+# =============================================================================
+
+template: !include_dir_merge_list templates

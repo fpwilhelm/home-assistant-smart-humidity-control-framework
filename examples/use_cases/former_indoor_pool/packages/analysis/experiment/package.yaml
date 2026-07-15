@@ -1,0 +1,23 @@
+# =============================================================================
+# SHCCF Analysis Framework
+# Experiment Module
+# =============================================================================
+#
+# Responsibilities:
+#
+# - Experiment setup
+# - Experiment lifecycle
+# - Investigation management
+# - Experiment energy accounting
+#
+# =============================================================================
+
+input_text: !include helpers/input_text.yaml
+input_select: !include helpers/input_select.yaml
+input_boolean: !include helpers/input_boolean.yaml
+input_button: !include helpers/input_button.yaml
+input_datetime: !include helpers/input_datetime.yaml
+input_number: !include helpers/input_number.yaml
+
+template: !include_dir_merge_list templates
+automation: !include_dir_merge_list automations

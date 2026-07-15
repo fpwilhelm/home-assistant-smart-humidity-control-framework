@@ -1,0 +1,519 @@
+# =============================================================================
+# SHCCF Climate Laboratory – Former Indoor Pool
+# Climate Analysis Package
+# =============================================================================
+#
+# Purpose:
+#   Experimental moisture-source analysis for the former indoor pool area.
+#
+# This package is a use-case implementation and is not part of the SHCF/SHCCF
+# core.
+#
+# Measurement locations:
+#   - Former indoor pool area
+#   - Adjoining fitness room
+#   - Outdoor south-west
+#   - Outdoor north-east
+#
+# Calculated values:
+#   - Dew point
+#   - Absolute humidity
+#   - Absolute-humidity differences relative to the former indoor pool
+#
+# =============================================================================
+
+input_select:
+  shccf_lab_experiment_phase:
+    name: SHCCF Climate Laboratory Experiment Phase
+    options:
+      - Dehumidification
+      - Stabilization
+      - Door Open
+      - Door Closed
+      - Ventilation Ducts Open
+      - Ventilation Ducts Sealed
+      - Observation
+    initial: Dehumidification
+    icon: mdi:flask-outline
+    
+template:
+  - sensor:
+
+      # =======================================================================
+      # Former Indoor Pool Area
+      # =======================================================================
+
+      - name: SHCCF Lab Pool Dew Point
+        unique_id: shccf_lab_pool_dew_point
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+        icon: mdi:thermometer-water
+        availability: >
+          {{
+            states('sensor.shcf_klimasensor_temperature') | is_number
+            and states('sensor.shcf_klimasensor_humidity') | is_number
+            and states('sensor.shcf_klimasensor_humidity') | float(0) > 0
+          }}
+        state: >
+          {% set temperature =
+            states('sensor.shcf_klimasensor_temperature') | float
+          %}
+          {% set humidity =
+            states('sensor.shcf_klimasensor_humidity') | float
+          %}
+
+          {% set a = 17.62 %}
+          {% set b = 243.12 %}
+          {% set gamma =
+            ((a * temperature) / (b + temperature))
+            + log(humidity / 100)
+          %}
+
+          {{ ((b * gamma) / (a - gamma)) | round(1) }}
+
+      - name: SHCCF Lab Pool Absolute Humidity
+        unique_id: shccf_lab_pool_absolute_humidity
+        unit_of_measurement: "g/m³"
+        state_class: measurement
+        icon: mdi:water
+        availability: >
+          {{
+            states('sensor.shcf_klimasensor_temperature') | is_number
+            and states('sensor.shcf_klimasensor_humidity') | is_number
+            and states('sensor.shcf_klimasensor_humidity') | float(0) > 0
+          }}
+        state: >
+          {% set temperature =
+            states('sensor.shcf_klimasensor_temperature') | float
+          %}
+          {% set humidity =
+            states('sensor.shcf_klimasensor_humidity') | float
+          %}
+
+          {% set exponent =
+            (17.62 * temperature) / (243.12 + temperature)
+          %}
+          {% set saturation_vapor_pressure =
+            6.112 * (2.718281828 ** exponent)
+          %}
+          {% set vapor_pressure =
+            (humidity / 100) * saturation_vapor_pressure
+          %}
+          {% set absolute_humidity =
+            216.7 * vapor_pressure / (273.15 + temperature)
+          %}
+
+          {{ absolute_humidity | round(2) }}
+
+      # =======================================================================
+      # Adjoining Fitness Room
+      # =======================================================================
+
+      - name: SHCCF Lab Fitness Room Dew Point
+        unique_id: shccf_lab_fitness_room_dew_point
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+        icon: mdi:thermometer-water
+        availability: >
+          {{
+            states('sensor.fitnessraum_klimasensor_temperature') | is_number
+            and states('sensor.fitnessraum_klimasensor_humidity') | is_number
+            and states('sensor.fitnessraum_klimasensor_humidity') | float(0) > 0
+          }}
+        state: >
+          {% set temperature =
+            states('sensor.fitnessraum_klimasensor_temperature') | float
+          %}
+          {% set humidity =
+            states('sensor.fitnessraum_klimasensor_humidity') | float
+          %}
+
+          {% set a = 17.62 %}
+          {% set b = 243.12 %}
+          {% set gamma =
+            ((a * temperature) / (b + temperature))
+            + log(humidity / 100)
+          %}
+
+          {{ ((b * gamma) / (a - gamma)) | round(1) }}
+
+      - name: SHCCF Lab Fitness Room Absolute Humidity
+        unique_id: shccf_lab_fitness_room_absolute_humidity
+        unit_of_measurement: "g/m³"
+        state_class: measurement
+        icon: mdi:water
+        availability: >
+          {{
+            states('sensor.fitnessraum_klimasensor_temperature') | is_number
+            and states('sensor.fitnessraum_klimasensor_humidity') | is_number
+            and states('sensor.fitnessraum_klimasensor_humidity') | float(0) > 0
+          }}
+        state: >
+          {% set temperature =
+            states('sensor.fitnessraum_klimasensor_temperature') | float
+          %}
+          {% set humidity =
+            states('sensor.fitnessraum_klimasensor_humidity') | float
+          %}
+
+          {% set exponent =
+            (17.62 * temperature) / (243.12 + temperature)
+          %}
+          {% set saturation_vapor_pressure =
+            6.112 * (2.718281828 ** exponent)
+          %}
+          {% set vapor_pressure =
+            (humidity / 100) * saturation_vapor_pressure
+          %}
+          {% set absolute_humidity =
+            216.7 * vapor_pressure / (273.15 + temperature)
+          %}
+
+          {{ absolute_humidity | round(2) }}
+
+      # =======================================================================
+      # Outdoor South-West
+      # =======================================================================
+
+      - name: SHCCF Lab Outdoor South-West Dew Point
+        unique_id: shccf_lab_outdoor_south_west_dew_point
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+        icon: mdi:thermometer-water
+        availability: >
+          {{
+            states('sensor.gw1200a_outdoor_temperature') | is_number
+            and states('sensor.gw1200a_humidity') | is_number
+            and states('sensor.gw1200a_humidity') | float(0) > 0
+          }}
+        state: >
+          {% set temperature =
+            states('sensor.gw1200a_outdoor_temperature') | float
+          %}
+          {% set humidity =
+            states('sensor.gw1200a_humidity') | float
+          %}
+
+          {% set a = 17.62 %}
+          {% set b = 243.12 %}
+          {% set gamma =
+            ((a * temperature) / (b + temperature))
+            + log(humidity / 100)
+          %}
+
+          {{ ((b * gamma) / (a - gamma)) | round(1) }}
+
+      - name: SHCCF Lab Outdoor South-West Absolute Humidity
+        unique_id: shccf_lab_outdoor_south_west_absolute_humidity
+        unit_of_measurement: "g/m³"
+        state_class: measurement
+        icon: mdi:water
+        availability: >
+          {{
+            states('sensor.gw1200a_outdoor_temperature') | is_number
+            and states('sensor.gw1200a_humidity') | is_number
+            and states('sensor.gw1200a_humidity') | float(0) > 0
+          }}
+        state: >
+          {% set temperature =
+            states('sensor.gw1200a_outdoor_temperature') | float
+          %}
+          {% set humidity =
+            states('sensor.gw1200a_humidity') | float
+          %}
+
+          {% set exponent =
+            (17.62 * temperature) / (243.12 + temperature)
+          %}
+          {% set saturation_vapor_pressure =
+            6.112 * (2.718281828 ** exponent)
+          %}
+          {% set vapor_pressure =
+            (humidity / 100) * saturation_vapor_pressure
+          %}
+          {% set absolute_humidity =
+            216.7 * vapor_pressure / (273.15 + temperature)
+          %}
+
+          {{ absolute_humidity | round(2) }}
+
+      # =======================================================================
+      # Outdoor North-East
+      # =======================================================================
+
+      - name: SHCCF Lab Outdoor North-East Dew Point
+        unique_id: shccf_lab_outdoor_north_east_dew_point
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+        icon: mdi:thermometer-water
+        availability: >
+          {{
+            states('sensor.gw1200a_temperature_1') | is_number
+            and states('sensor.gw1200a_humidity_1') | is_number
+            and states('sensor.gw1200a_humidity_1') | float(0) > 0
+          }}
+        state: >
+          {% set temperature =
+            states('sensor.gw1200a_temperature_1') | float
+          %}
+          {% set humidity =
+            states('sensor.gw1200a_humidity_1') | float
+          %}
+
+          {% set a = 17.62 %}
+          {% set b = 243.12 %}
+          {% set gamma =
+            ((a * temperature) / (b + temperature))
+            + log(humidity / 100)
+          %}
+
+          {{ ((b * gamma) / (a - gamma)) | round(1) }}
+
+      - name: SHCCF Lab Outdoor North-East Absolute Humidity
+        unique_id: shccf_lab_outdoor_north_east_absolute_humidity
+        unit_of_measurement: "g/m³"
+        state_class: measurement
+        icon: mdi:water
+        availability: >
+          {{
+            states('sensor.gw1200a_temperature_1') | is_number
+            and states('sensor.gw1200a_humidity_1') | is_number
+            and states('sensor.gw1200a_humidity_1') | float(0) > 0
+          }}
+        state: >
+          {% set temperature =
+            states('sensor.gw1200a_temperature_1') | float
+          %}
+          {% set humidity =
+            states('sensor.gw1200a_humidity_1') | float
+          %}
+
+          {% set exponent =
+            (17.62 * temperature) / (243.12 + temperature)
+          %}
+          {% set saturation_vapor_pressure =
+            6.112 * (2.718281828 ** exponent)
+          %}
+          {% set vapor_pressure =
+            (humidity / 100) * saturation_vapor_pressure
+          %}
+          {% set absolute_humidity =
+            216.7 * vapor_pressure / (273.15 + temperature)
+          %}
+
+          {{ absolute_humidity | round(2) }}
+
+      # =======================================================================
+      # Absolute-Humidity Differences
+      #
+      # Positive value:
+      #   comparison location contains more water vapor than the pool area.
+      #
+      # Negative value:
+      #   comparison location contains less water vapor than the pool area.
+      # =======================================================================
+
+      - name: SHCCF Lab Fitness Room Minus Pool Absolute Humidity
+        unique_id: shccf_lab_fitness_room_minus_pool_absolute_humidity
+        unit_of_measurement: "g/m³"
+        state_class: measurement
+        icon: mdi:delta
+        availability: >
+          {{
+            states('sensor.shccf_lab_fitness_room_absolute_humidity')
+              | is_number
+            and states('sensor.shccf_lab_pool_absolute_humidity')
+              | is_number
+          }}
+        state: >
+          {% set comparison =
+            states(
+              'sensor.shccf_lab_fitness_room_absolute_humidity'
+            ) | float
+          %}
+          {% set pool =
+            states(
+              'sensor.shccf_lab_pool_absolute_humidity'
+            ) | float
+          %}
+
+          {{ (comparison - pool) | round(2) }}
+
+      - name: SHCCF Lab Outdoor South-West Minus Pool Absolute Humidity
+        unique_id: shccf_lab_outdoor_south_west_minus_pool_absolute_humidity
+        unit_of_measurement: "g/m³"
+        state_class: measurement
+        icon: mdi:delta
+        availability: >
+          {{
+            states(
+              'sensor.shccf_lab_outdoor_south_west_absolute_humidity'
+            ) | is_number
+            and states('sensor.shccf_lab_pool_absolute_humidity')
+              | is_number
+          }}
+        state: >
+          {% set comparison =
+            states(
+              'sensor.shccf_lab_outdoor_south_west_absolute_humidity'
+            ) | float
+          %}
+          {% set pool =
+            states(
+              'sensor.shccf_lab_pool_absolute_humidity'
+            ) | float
+          %}
+
+          {{ (comparison - pool) | round(2) }}
+
+      - name: SHCCF Lab Outdoor North-East Minus Pool Absolute Humidity
+        unique_id: shccf_lab_outdoor_north_east_minus_pool_absolute_humidity
+        unit_of_measurement: "g/m³"
+        state_class: measurement
+        icon: mdi:delta
+        availability: >
+          {{
+            states(
+              'sensor.shccf_lab_outdoor_north_east_absolute_humidity'
+            ) | is_number
+            and states('sensor.shccf_lab_pool_absolute_humidity')
+              | is_number
+          }}
+        state: >
+          {% set comparison =
+            states(
+              'sensor.shccf_lab_outdoor_north_east_absolute_humidity'
+            ) | float
+          %}
+          {% set pool =
+            states(
+              'sensor.shccf_lab_pool_absolute_humidity'
+            ) | float
+          %}
+
+          {{ (comparison - pool) | round(2) }}
+  
+  - binary_sensor:
+    - name: SHCCF Lab Trotec Running
+      unique_id: shccf_lab_trotec_running
+      device_class: running
+      icon: mdi:engine
+      availability: >
+        {{
+          states('sensor.shcf_zwischenstecker_power') | is_number
+        }}
+      state: >
+        {{
+          states('sensor.shcf_zwischenstecker_power') | float(0) >= 100
+        }}
+
+    - name: SHCCF Lab Pool Humidity Above 60
+      unique_id: shccf_lab_pool_humidity_above_60
+      device_class: problem
+      icon: mdi:water-percent-alert
+      availability: >
+        {{
+          states('sensor.shcf_klimasensor_humidity') | is_number
+        }}
+      state: >
+        {{
+          states('sensor.shcf_klimasensor_humidity') | float(0) > 60
+        }}
+
+sensor:
+  # ===========================================================================
+  # Daily Runtime and Humidity Exposure
+  # ===========================================================================
+
+  - platform: history_stats
+    name: SHCCF Lab Trotec Runtime Today
+    unique_id: shccf_lab_trotec_runtime_today
+    entity_id: binary_sensor.shccf_lab_trotec_running
+    state: "on"
+    type: time
+    start: "{{ today_at() }}"
+    end: "{{ now() }}"
+
+  - platform: history_stats
+    name: SHCCF Lab Pool Time Above 60 Today
+    unique_id: shccf_lab_pool_time_above_60_today
+    entity_id: binary_sensor.shccf_lab_pool_humidity_above_60
+    state: "on"
+    type: time
+    start: "{{ today_at() }}"
+    end: "{{ now() }}"
+
+  # ===========================================================================
+  # Pool Relative Humidity – Rolling 24 Hours
+  # ===========================================================================
+
+  - platform: statistics
+    name: SHCCF Lab Pool Humidity Mean 24h
+    unique_id: shccf_lab_pool_humidity_mean_24h
+    entity_id: sensor.shcf_klimasensor_humidity
+    state_characteristic: average_step
+    max_age:
+      hours: 24
+    precision: 1
+
+  - platform: statistics
+    name: SHCCF Lab Pool Humidity Minimum 24h
+    unique_id: shccf_lab_pool_humidity_minimum_24h
+    entity_id: sensor.shcf_klimasensor_humidity
+    state_characteristic: value_min
+    max_age:
+      hours: 24
+    precision: 1
+
+  - platform: statistics
+    name: SHCCF Lab Pool Humidity Maximum 24h
+    unique_id: shccf_lab_pool_humidity_maximum_24h
+    entity_id: sensor.shcf_klimasensor_humidity
+    state_characteristic: value_max
+    max_age:
+      hours: 24
+    precision: 1
+
+  # ===========================================================================
+  # Pool Absolute Humidity – Rolling 24 Hours
+  # ===========================================================================
+
+  - platform: statistics
+    name: SHCCF Lab Pool Absolute Humidity Mean 24h
+    unique_id: shccf_lab_pool_absolute_humidity_mean_24h
+    entity_id: sensor.shccf_lab_pool_absolute_humidity
+    state_characteristic: average_step
+    max_age:
+      hours: 24
+    precision: 2
+
+  - platform: statistics
+    name: SHCCF Lab Pool Absolute Humidity Minimum 24h
+    unique_id: shccf_lab_pool_absolute_humidity_minimum_24h
+    entity_id: sensor.shccf_lab_pool_absolute_humidity
+    state_characteristic: value_min
+    max_age:
+      hours: 24
+    precision: 2
+
+  - platform: statistics
+    name: SHCCF Lab Pool Absolute Humidity Maximum 24h
+    unique_id: shccf_lab_pool_absolute_humidity_maximum_24h
+    entity_id: sensor.shccf_lab_pool_absolute_humidity
+    state_characteristic: value_max
+    max_age:
+      hours: 24
+    precision: 2
+
+utility_meter:
+  shccf_lab_trotec_energy_today:
+    name: SHCCF Lab Trotec Energy Today
+    unique_id: shccf_lab_trotec_energy_today
+    source: sensor.shcf_zwischenstecker_energy
+    cycle: daily
+    periodically_resetting: false
+    always_available: true

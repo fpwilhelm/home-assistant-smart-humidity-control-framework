@@ -1,0 +1,25 @@
+# =============================================================================
+# SHCCF Analysis Framework
+# Experiment Module
+# Input Select Helpers
+# =============================================================================
+#
+# Selection helpers defining the current experiment lifecycle.
+#
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Experiment Phase
+# -----------------------------------------------------------------------------
+
+shccf_lab_experiment_phase:
+  name: SHCCF Lab Experiment Phase
+  icon: mdi:flask-outline
+
+  options:
+    - Preparation
+    - Initial Dehumidification
+    - Stabilization
+    - Building Investigation
+    - Final Observation
+    - Completed

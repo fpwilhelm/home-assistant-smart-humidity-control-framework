@@ -1,0 +1,60 @@
+# =============================================================================
+# SHCCF Analysis Framework
+# Experiment Module
+# Input Text Helpers
+# =============================================================================
+#
+# Free-text metadata describing the experiment and its current investigation.
+#
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Experiment Identity
+# -----------------------------------------------------------------------------
+
+shccf_lab_experiment_name:
+  name: SHCCF Lab Experiment Name
+  max: 100
+  icon: mdi:flask-outline
+
+shccf_lab_experiment_description:
+  name: SHCCF Lab Experiment Description
+  max: 255
+  icon: mdi:text-box-outline
+
+# -----------------------------------------------------------------------------
+# Investigation Target
+# -----------------------------------------------------------------------------
+
+shccf_lab_primary_measurement_location:
+  name: SHCCF Lab Primary Measurement Location
+  max: 100
+  icon: mdi:map-marker-radius-outline
+
+shccf_lab_primary_measurement_location_type:
+  name: SHCCF Lab Primary Measurement Location Type
+  max: 100
+  icon: mdi:home-search-outline
+
+# -----------------------------------------------------------------------------
+# Experiment Objectives
+# -----------------------------------------------------------------------------
+
+shccf_lab_experiment_goal:
+  name: SHCCF Lab Experiment Goal
+  max: 255
+  icon: mdi:target
+
+shccf_lab_expected_outcome:
+  name: SHCCF Lab Expected Outcome
+  max: 255
+  icon: mdi:check-decagram-outline
+
+# -----------------------------------------------------------------------------
+# Current Investigation
+# -----------------------------------------------------------------------------
+
+shccf_lab_current_investigation_action:
+  name: SHCCF Lab Current Investigation Action
+  max: 255
+  icon: mdi:clipboard-text-clock-outline

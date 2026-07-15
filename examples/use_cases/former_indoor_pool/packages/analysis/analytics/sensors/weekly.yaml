@@ -1,0 +1,43 @@
+# =============================================================================
+# SHCCF Analysis Framework
+# Analytics Module
+# Weekly Analytics
+# =============================================================================
+#
+# Analytics for the current calendar week.
+#
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Dehumidifier Runtime This Week
+# -----------------------------------------------------------------------------
+
+- platform: history_stats
+  name: SHCCF Lab Dehumidifier Runtime This Week
+  unique_id: shccf_lab_dehumidifier_runtime_this_week
+  entity_id: binary_sensor.shccf_lab_trotec_running
+  state: "on"
+  type: time
+  start: >
+    {{
+      today_at()
+      - timedelta(days=now().weekday())
+    }}
+  end: "{{ now() }}"
+
+# -----------------------------------------------------------------------------
+# Humidity Exposure This Week
+# -----------------------------------------------------------------------------
+
+- platform: history_stats
+  name: SHCCF Lab Time Above Limit This Week
+  unique_id: shccf_lab_time_above_limit_this_week
+  entity_id: binary_sensor.shccf_lab_pool_humidity_above_60
+  state: "on"
+  type: time
+  start: >
+    {{
+      today_at()
+      - timedelta(days=now().weekday())
+    }}
+  end: "{{ now() }}"

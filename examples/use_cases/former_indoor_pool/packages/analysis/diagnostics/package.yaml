@@ -1,0 +1,19 @@
+# =============================================================================
+# SHCCF Analysis Framework
+# Diagnostics Module
+# =============================================================================
+#
+# Evaluates measurements, trends and investigation data to identify likely
+# causes of a disturbed indoor climate.
+#
+# Responsibilities:
+#
+# - Current findings
+# - Evidence evaluation
+# - Confidence assessment
+# - Investigation progress
+# - Climate and building diagnostics
+#
+# =============================================================================
+
+template: !include_dir_merge_list templates

@@ -13,4 +13,6 @@ __pycache__/
 .storage/
 
 # Local development files (nur Frank Wilhelm)
-.local/
+.local
+
+TODO_old.md

@@ -1,0 +1,17 @@
+# =============================================================================
+# SHCCF Analysis Framework
+# Analytics Module
+# Utility Meters
+# =============================================================================
+#
+# Energy consumption grouped by reporting period.
+#
+# =============================================================================
+
+shccf_lab_dehumidifier_energy_this_week:
+  name: SHCCF Lab Dehumidifier Energy This Week
+  unique_id: shccf_lab_dehumidifier_energy_this_week
+  source: sensor.shcf_zwischenstecker_energy
+  cycle: weekly
+  periodically_resetting: false
+  always_available: true

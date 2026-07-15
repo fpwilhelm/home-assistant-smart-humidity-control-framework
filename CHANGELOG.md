@@ -2,11 +2,102 @@
 
 All notable changes to the **Smart Humidity Control Framework (SHCF)** are documented in this file.
 
-The project follows the principles of [Keep a Changelog](https://keepachangelog.com/) and uses Semantic Versioning.
+The project follows the principles of **Keep a Changelog** and uses **Semantic Versioning**.
 
 ---
 
-## v0.2.0 (Development)
+## v0.3.0 (Development)
+
+### Architecture
+
+- Introduced the SHCCF Climate Laboratory as a dedicated analysis environment
+- Started the modular Analysis Framework architecture
+- Split the analysis into independent modules:
+  - Common
+  - Analytics
+  - Diagnostics
+  - Recommendations
+  - Experiment
+- Continued separating reusable framework components from use-case specific functionality
+- Improved overall package modularization
+
+### Experiment Module
+
+- Introduced the first Experiment Lifecycle
+- Added experiment phases
+- Added experiment status tracking
+- Added experiment duration calculation
+- Added experiment energy consumption calculation
+- Added experiment start and finish automations
+- Added experiment metadata helpers
+- Added experiment timeline
+- Added preparation for future experiment lifecycle extensions
+
+### Climate Laboratory Dashboard
+
+- Expanded the dashboard to seven dedicated views:
+  - Overview
+  - Measurements
+  - Analytics
+  - Diagnostics
+  - Recommendations
+  - Experiment
+  - Weather
+- Added Experiment Lifecycle section
+- Added Experiment Timeline
+- Added Building Investigation workflow
+- Added Weekly Trends
+- Improved controller visualization
+- Improved experiment visualization
+
+### Analytics
+
+- Introduced the Analytics module
+- Added weekly runtime statistics
+- Added weekly energy statistics
+- Added humidity exposure statistics
+- Added Utility Meter integration
+- Added rolling experiment statistics
+
+### Diagnostics
+
+- Introduced the Diagnostics module
+- Prepared climate diagnosis architecture
+- Added initial diagnostic dashboard
+- Prepared future root-cause analysis
+
+### Recommendations
+
+- Introduced the Recommendations module
+- Added recommendation dashboard
+- Prepared context-aware recommendation engine
+
+### Documentation
+
+- Added Experiment Lifecycle design documentation
+- Improved project architecture documentation
+- Continued documenting long-term framework architecture
+- Extended developer documentation
+- Continued glossary refinement
+
+### Design Decisions
+
+- Experiment start records only:
+  - Start timestamp
+  - Initial energy meter reading
+  - Current experiment phase
+  - Active state
+- Experiment completion records only:
+  - Finish timestamp
+  - Final energy meter reading
+  - Completed state
+- Planned "Adopt Existing Experiment"
+- Planned automatic retrieval of historical energy readings from Home Assistant Recorder/History
+- Planned experiment pause and resume lifecycle
+
+---
+
+## v0.2.0
 
 ### Architecture
 
@@ -103,7 +194,7 @@ Included:
 
 | Version | Description |
 |----------|-------------|
-| v0.3.0 | SHCF Instance Provisioning |
-| v0.4.0 | Multi-Instance Support |
-| v0.5.0 | Native Home Assistant Integration |
+| v0.4.0 | SHCF Instance Provisioning |
+| v0.5.0 | Multi-Instance Support |
+| v0.6.0 | Native Home Assistant Integration |
 | v1.0.0 | First Stable SHCF Release |

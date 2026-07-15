@@ -1,0 +1,17 @@
+# =============================================================================
+# SHCCF Analysis Framework
+# Common Module
+# =============================================================================
+#
+# Shared functionality used by multiple analysis domains.
+#
+# Responsibilities:
+#
+# - Measurement-location calculations
+# - Shared humidity calculations
+# - Reusable template sensors
+# - Common analysis values
+#
+# =============================================================================
+
+template: !include_dir_merge_list templates

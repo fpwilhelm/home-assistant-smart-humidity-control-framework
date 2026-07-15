@@ -1,0 +1,21 @@
+# =============================================================================
+# SHCCF Analysis Framework
+# Experiment Module
+# Input Button Helpers
+# =============================================================================
+#
+# Manual actions for starting, adopting and finishing an experiment.
+#
+# =============================================================================
+
+shccf_lab_start_experiment:
+  name: SHCCF Lab Start Experiment
+  icon: mdi:play-circle-outline
+
+shccf_lab_adopt_existing_experiment:
+  name: SHCCF Lab Adopt Existing Experiment
+  icon: mdi:history
+
+shccf_lab_finish_experiment:
+  name: SHCCF Lab Finish Experiment
+  icon: mdi:stop-circle-outline

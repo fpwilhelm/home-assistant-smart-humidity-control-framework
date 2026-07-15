@@ -1,0 +1,102 @@
+# =============================================================================
+# SHCCF Analysis Framework
+# Experiment Module
+# Automations
+# =============================================================================
+#
+# Notes:
+# - Experiment Finished is not written when an experiment starts.
+# - Adopt Existing Experiment will later use a history-aware SHCCF service.
+#
+# =============================================================================
+
+- id: shccf_lab_start_experiment
+  alias: SHCCF Lab Start Experiment
+  description: >
+    Starts a new experiment now and stores the current energy meter reading.
+  mode: single
+  trigger:
+    - platform: state
+      entity_id: input_button.shccf_lab_start_experiment
+  condition:
+    - condition: state
+      entity_id: input_boolean.shccf_lab_experiment_active
+      state: "off"
+    - condition: template
+      value_template: >
+        {{ states('sensor.shcf_zwischenstecker_energy') | is_number }}
+  variables:
+    current_energy: >
+      {{ states('sensor.shcf_zwischenstecker_energy') | float(0) }}
+    current_datetime: >
+      {{ now().strftime('%Y-%m-%d %H:%M:%S') }}
+  action:
+    - service: input_datetime.set_datetime
+      target:
+        entity_id: input_datetime.shccf_lab_experiment_started
+      data:
+        datetime: "{{ current_datetime }}"
+    - service: input_number.set_value
+      target:
+        entity_id: input_number.shccf_lab_experiment_energy_start
+      data:
+        value: "{{ current_energy }}"
+    - service: input_select.select_option
+      target:
+        entity_id: input_select.shccf_lab_experiment_phase
+      data:
+        option: Preparation
+    - service: input_text.set_value
+      target:
+        entity_id: input_text.shccf_lab_current_investigation_action
+      data:
+        value: Experiment started
+    - service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.shccf_lab_experiment_active
+
+- id: shccf_lab_finish_experiment
+  alias: SHCCF Lab Finish Experiment
+  description: >
+    Finishes the active experiment and stores its end time and final energy
+    meter reading.
+  mode: single
+  trigger:
+    - platform: state
+      entity_id: input_button.shccf_lab_finish_experiment
+  condition:
+    - condition: state
+      entity_id: input_boolean.shccf_lab_experiment_active
+      state: "on"
+    - condition: template
+      value_template: >
+        {{ states('sensor.shcf_zwischenstecker_energy') | is_number }}
+  variables:
+    current_energy: >
+      {{ states('sensor.shcf_zwischenstecker_energy') | float(0) }}
+    current_datetime: >
+      {{ now().strftime('%Y-%m-%d %H:%M:%S') }}
+  action:
+    - service: input_datetime.set_datetime
+      target:
+        entity_id: input_datetime.shccf_lab_experiment_finished
+      data:
+        datetime: "{{ current_datetime }}"
+    - service: input_number.set_value
+      target:
+        entity_id: input_number.shccf_lab_experiment_energy_end
+      data:
+        value: "{{ current_energy }}"
+    - service: input_select.select_option
+      target:
+        entity_id: input_select.shccf_lab_experiment_phase
+      data:
+        option: Completed
+    - service: input_text.set_value
+      target:
+        entity_id: input_text.shccf_lab_current_investigation_action
+      data:
+        value: Experiment completed
+    - service: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.shccf_lab_experiment_active
