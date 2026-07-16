@@ -96,13 +96,13 @@ template:
         unique_id: shcf_device_62e90919_current_humidity
         unit_of_measurement: "%"
         state: >
-          {{ states('sensor.shcf_klimasensor_humidity') | float(0) | round(1) }}
+          {{ states('sensor.trotec_ttk_171_eco_klimasensor_humidity') | float(0) | round(1) }}
 
       - name: SHCF device_62e90919 Current Temperature
         unique_id: shcf_device_62e90919_current_temperature
         unit_of_measurement: "°C"
         state: >
-          {{ states('sensor.shcf_klimasensor_temperature') | float(0) | round(1) }}
+          {{ states('sensor.trotec_ttk_171_eco_klimasensor_temperature') | float(0) | round(1) }}
 
       - name: SHCF device_62e90919 Target Humidity
         unique_id: shcf_device_62e90919_target_humidity
@@ -211,7 +211,7 @@ template:
         unit_of_measurement: "%"
         state: >
           {% set current =
-            states('sensor.shcf_klimasensor_humidity') | float(0)
+            states('sensor.trotec_ttk_171_eco_klimasensor_humidity') | float(0)
           %}
           {% set target =
             states('sensor.shcf_device_62e90919_target_humidity') | float(60)
@@ -223,10 +223,10 @@ template:
         unit_of_measurement: "°C"
         state: >
           {% set temperature =
-            states('sensor.shcf_klimasensor_temperature') | float(0)
+            states('sensor.trotec_ttk_171_eco_klimasensor_temperature') | float(0)
           %}
           {% set humidity =
-            states('sensor.shcf_klimasensor_humidity') | float(0)
+            states('sensor.trotec_ttk_171_eco_klimasensor_humidity') | float(0)
           %}
           {{
             (
@@ -237,7 +237,7 @@ template:
       - name: SHCF device_62e90919 Dehumidification Demand
         unique_id: shcf_device_62e90919_dehumidification_demand
         state: >
-          {% set humidity = states('sensor.shcf_klimasensor_humidity') | float(0) %}
+          {% set humidity = states('sensor.trotec_ttk_171_eco_klimasensor_humidity') | float(0) %}
           {% set target = states('sensor.shcf_device_62e90919_target_humidity') | float(60) %}
           {% set threshold = states('sensor.shcf_device_62e90919_switch_on_threshold') | float(65) %}
           {% if humidity <= target %}
@@ -252,7 +252,7 @@ template:
         unique_id: shcf_device_62e90919_operating_status
         state: >
           {% set mode = states('input_select.shcf_device_62e90919_operating_mode') %}
-          {% set switch_state = states('switch.shcf_zwischenstecker') %}
+          {% set switch_state = states('switch.trotec_ttk_171_eco_zwischenstecker') %}
           {% if mode == 'Off' %}
             Off
           {% elif mode == 'Continuous Operation' %}
@@ -429,7 +429,7 @@ automation:
             sequence:
               - service: switch.turn_off
                 target:
-                  entity_id: switch.shcf_zwischenstecker
+                  entity_id: switch.trotec_ttk_171_eco_zwischenstecker
 
               - service: input_select.select_option
                 target:
@@ -461,7 +461,7 @@ automation:
 
     trigger:
       - platform: state
-        entity_id: sensor.shcf_klimasensor_humidity
+        entity_id: sensor.trotec_ttk_171_eco_klimasensor_humidity
 
     condition:
       - condition: state
@@ -525,7 +525,7 @@ automation:
 
               - service: switch.turn_off
                 target:
-                  entity_id: switch.shcf_zwischenstecker
+                  entity_id: switch.trotec_ttk_171_eco_zwischenstecker
 
               - service: input_select.select_option
                 target:
@@ -551,7 +551,7 @@ automation:
 
       - platform: state
         entity_id:
-          - sensor.shcf_klimasensor_humidity
+          - sensor.trotec_ttk_171_eco_klimasensor_humidity
           - sensor.shcf_device_62e90919_target_humidity
           - sensor.shcf_device_62e90919_switch_on_threshold
           - input_select.shcf_device_62e90919_operating_mode
@@ -569,7 +569,7 @@ automation:
         ) }}
 
       humidity: >
-        {{ states('sensor.shcf_klimasensor_humidity') | float(999) }}
+        {{ states('sensor.trotec_ttk_171_eco_klimasensor_humidity') | float(999) }}
 
       target: >
         {{ states(
@@ -614,7 +614,7 @@ automation:
             sequence:
               - service: switch.turn_off
                 target:
-                  entity_id: switch.shcf_zwischenstecker
+                  entity_id: switch.trotec_ttk_171_eco_zwischenstecker
 
           # Continuous Operation always switches the device on.
           - conditions:
@@ -624,7 +624,7 @@ automation:
             sequence:
               - service: switch.turn_on
                 target:
-                  entity_id: switch.shcf_zwischenstecker
+                  entity_id: switch.trotec_ttk_171_eco_zwischenstecker
 
           # Timed Operation runs while the timer is active.
           - conditions:
@@ -635,7 +635,7 @@ automation:
             sequence:
               - service: switch.turn_on
                 target:
-                  entity_id: switch.shcf_zwischenstecker
+                  entity_id: switch.trotec_ttk_171_eco_zwischenstecker
 
           # Safety fallback:
           # do not leave the device running if Timed Operation has no active timer.
@@ -647,7 +647,7 @@ automation:
             sequence:
               - service: switch.turn_off
                 target:
-                  entity_id: switch.shcf_zwischenstecker
+                  entity_id: switch.trotec_ttk_171_eco_zwischenstecker
 
           # When Automatic is selected, or its target changes, start immediately
           # if humidity is above the new target. This deliberately bypasses the
@@ -661,7 +661,7 @@ automation:
             sequence:
               - service: switch.turn_on
                 target:
-                  entity_id: switch.shcf_zwischenstecker
+                  entity_id: switch.trotec_ttk_171_eco_zwischenstecker
 
           # Normal Automatic switch-on condition.
           - conditions:
@@ -672,7 +672,7 @@ automation:
             sequence:
               - service: switch.turn_on
                 target:
-                  entity_id: switch.shcf_zwischenstecker
+                  entity_id: switch.trotec_ttk_171_eco_zwischenstecker
 
           # Normal Automatic switch-off condition.
           - conditions:
@@ -683,4 +683,4 @@ automation:
             sequence:
               - service: switch.turn_off
                 target:
-                  entity_id: switch.shcf_zwischenstecker
+                  entity_id: switch.trotec_ttk_171_eco_zwischenstecker

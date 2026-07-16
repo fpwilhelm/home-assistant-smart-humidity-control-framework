@@ -11,7 +11,7 @@
 shccf_lab_dehumidifier_energy_this_week:
   name: SHCCF Lab Dehumidifier Energy This Week
   unique_id: shccf_lab_dehumidifier_energy_this_week
-  source: sensor.shcf_zwischenstecker_energy
+  source: sensor.trotec_ttk_171_eco_zwischenstecker_energy
   cycle: weekly
   periodically_resetting: false
   always_available: true

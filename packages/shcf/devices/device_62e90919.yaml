@@ -16,12 +16,12 @@ device:
   name: Trotec TTK 171 ECO
 
 entities:
-  switching_device: switch.shcf_zwischenstecker
-  humidity_sensor: sensor.shcf_klimasensor_humidity
-  temperature_sensor: sensor.shcf_klimasensor_temperature
-  power_sensor: sensor.shcf_zwischenstecker_power
-  energy_sensor: sensor.shcf_zwischenstecker_energy
-  battery_sensor: sensor.shcf_klimasensor_battery
+  switching_device: switch.trotec_ttk_171_eco_zwischenstecker
+  humidity_sensor: sensor.trotec_ttk_171_eco_klimasensor_humidity
+  temperature_sensor: sensor.trotec_ttk_171_eco_klimasensor_temperature
+  power_sensor: sensor.trotec_ttk_171_eco_zwischenstecker_power
+  energy_sensor: sensor.trotec_ttk_171_eco_zwischenstecker_energy
+  battery_sensor: sensor.trotec_ttk_171_eco_klimasensor_battery
 
 capabilities:
   power_measurement: true

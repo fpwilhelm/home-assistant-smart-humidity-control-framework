@@ -103,7 +103,7 @@ sections:
         heading: Local Climate Conditions
 
       - type: custom:gauge-card-pro
-        entity: sensor.shcf_klimasensor_humidity
+        entity: sensor.trotec_ttk_171_eco_klimasensor_humidity
         min: 0
         max: 100
         needle: true
@@ -165,7 +165,7 @@ sections:
 
       - type: history-graph
         entities:
-          - sensor.shcf_klimasensor_humidity
+          - sensor.trotec_ttk_171_eco_klimasensor_humidity
         hours_to_show: 24
         show_names: false
         logarithmic_scale: false
@@ -173,7 +173,7 @@ sections:
 
       - type: statistics-graph
         entities:
-          - sensor.shcf_klimasensor_temperature
+          - sensor.trotec_ttk_171_eco_klimasensor_temperature
         days_to_show: 3
         period: 5minute
         chart_type: line
@@ -189,7 +189,7 @@ sections:
         heading: Power and Energy
 
       - type: custom:gauge-card-pro
-        entity: sensor.shcf_zwischenstecker_power
+        entity: sensor.trotec_ttk_171_eco_zwischenstecker_power
         min: 0
         max: 800
         needle: true
@@ -222,7 +222,7 @@ sections:
 
       - type: statistics-graph
         entities:
-          - sensor.shcf_zwischenstecker_power
+          - sensor.trotec_ttk_171_eco_zwischenstecker_power
         days_to_show: 1
         period: 5minute
         chart_type: line
@@ -231,7 +231,7 @@ sections:
 
       - type: statistics-graph
         entities:
-          - sensor.shcf_zwischenstecker_energy
+          - sensor.trotec_ttk_171_eco_zwischenstecker_energy
         days_to_show: 7
         period: hour
         chart_type: line
@@ -251,7 +251,7 @@ badges:
     show_name: true
     show_state: true
     show_icon: true
-    entity: sensor.shcf_klimasensor_humidity
+    entity: sensor.trotec_ttk_171_eco_klimasensor_humidity
     name: Current
 
   - type: entity
@@ -286,7 +286,7 @@ badges:
     show_name: true
     show_state: true
     show_icon: true
-    entity: sensor.shcf_klimasensor_temperature
+    entity: sensor.trotec_ttk_171_eco_klimasensor_temperature
     name: Temperature
 
   - type: entity
@@ -307,21 +307,21 @@ badges:
     show_name: true
     show_state: true
     show_icon: true
-    entity: sensor.shcf_zwischenstecker_power
+    entity: sensor.trotec_ttk_171_eco_zwischenstecker_power
     name: Power
 
   - type: entity
     show_name: true
     show_state: true
     show_icon: true
-    entity: sensor.shcf_zwischenstecker_energy
+    entity: sensor.trotec_ttk_171_eco_zwischenstecker_energy
     name: Energy
 
   - type: entity
     show_name: false
     show_state: true
     show_icon: true
-    entity: sensor.shcf_klimasensor_battery
+    entity: sensor.trotec_ttk_171_eco_klimasensor_battery
 
 header:
   card:

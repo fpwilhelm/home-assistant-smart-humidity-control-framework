@@ -37,16 +37,16 @@ template:
         icon: mdi:thermometer-water
         availability: >
           {{
-            states('sensor.shcf_klimasensor_temperature') | is_number
-            and states('sensor.shcf_klimasensor_humidity') | is_number
-            and states('sensor.shcf_klimasensor_humidity') | float(0) > 0
+            states('sensor.trotec_ttk_171_eco_klimasensor_temperature') | is_number
+            and states('sensor.trotec_ttk_171_eco_klimasensor_humidity') | is_number
+            and states('sensor.trotec_ttk_171_eco_klimasensor_humidity') | float(0) > 0
           }}
         state: >
           {% set temperature =
-            states('sensor.shcf_klimasensor_temperature') | float
+            states('sensor.trotec_ttk_171_eco_klimasensor_temperature') | float
           %}
           {% set humidity =
-            states('sensor.shcf_klimasensor_humidity') | float
+            states('sensor.trotec_ttk_171_eco_klimasensor_humidity') | float
           %}
 
           {% set a = 17.62 %}
@@ -65,16 +65,16 @@ template:
         icon: mdi:water
         availability: >
           {{
-            states('sensor.shcf_klimasensor_temperature') | is_number
-            and states('sensor.shcf_klimasensor_humidity') | is_number
-            and states('sensor.shcf_klimasensor_humidity') | float(0) > 0
+            states('sensor.trotec_ttk_171_eco_klimasensor_temperature') | is_number
+            and states('sensor.trotec_ttk_171_eco_klimasensor_humidity') | is_number
+            and states('sensor.trotec_ttk_171_eco_klimasensor_humidity') | float(0) > 0
           }}
         state: >
           {% set temperature =
-            states('sensor.shcf_klimasensor_temperature') | float
+            states('sensor.trotec_ttk_171_eco_klimasensor_temperature') | float
           %}
           {% set humidity =
-            states('sensor.shcf_klimasensor_humidity') | float
+            states('sensor.trotec_ttk_171_eco_klimasensor_humidity') | float
           %}
 
           {% set exponent =
@@ -390,11 +390,11 @@ template:
       icon: mdi:engine
       availability: >
         {{
-          states('sensor.shcf_zwischenstecker_power') | is_number
+          states('sensor.trotec_ttk_171_eco_zwischenstecker_power') | is_number
         }}
       state: >
         {{
-          states('sensor.shcf_zwischenstecker_power') | float(0) >= 100
+          states('sensor.trotec_ttk_171_eco_zwischenstecker_power') | float(0) >= 100
         }}
 
     - name: SHCCF Lab Pool Humidity Above 60
@@ -403,11 +403,11 @@ template:
       icon: mdi:water-percent-alert
       availability: >
         {{
-          states('sensor.shcf_klimasensor_humidity') | is_number
+          states('sensor.trotec_ttk_171_eco_klimasensor_humidity') | is_number
         }}
       state: >
         {{
-          states('sensor.shcf_klimasensor_humidity') | float(0) > 60
+          states('sensor.trotec_ttk_171_eco_klimasensor_humidity') | float(0) > 60
         }}
 
 sensor:
@@ -440,7 +440,7 @@ sensor:
   - platform: statistics
     name: SHCCF Lab Pool Humidity Mean 24h
     unique_id: shccf_lab_pool_humidity_mean_24h
-    entity_id: sensor.shcf_klimasensor_humidity
+    entity_id: sensor.trotec_ttk_171_eco_klimasensor_humidity
     state_characteristic: average_step
     max_age:
       hours: 24
@@ -449,7 +449,7 @@ sensor:
   - platform: statistics
     name: SHCCF Lab Pool Humidity Minimum 24h
     unique_id: shccf_lab_pool_humidity_minimum_24h
-    entity_id: sensor.shcf_klimasensor_humidity
+    entity_id: sensor.trotec_ttk_171_eco_klimasensor_humidity
     state_characteristic: value_min
     max_age:
       hours: 24
@@ -458,7 +458,7 @@ sensor:
   - platform: statistics
     name: SHCCF Lab Pool Humidity Maximum 24h
     unique_id: shccf_lab_pool_humidity_maximum_24h
-    entity_id: sensor.shcf_klimasensor_humidity
+    entity_id: sensor.trotec_ttk_171_eco_klimasensor_humidity
     state_characteristic: value_max
     max_age:
       hours: 24
@@ -499,7 +499,7 @@ utility_meter:
   shccf_lab_trotec_energy_today:
     name: SHCCF Lab Trotec Energy Today
     unique_id: shccf_lab_trotec_energy_today
-    source: sensor.shcf_zwischenstecker_energy
+    source: sensor.trotec_ttk_171_eco_zwischenstecker_energy
     cycle: daily
     periodically_resetting: false
     always_available: true

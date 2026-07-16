@@ -24,10 +24,10 @@
       state: "off"
     - condition: template
       value_template: >
-        {{ states('sensor.shcf_zwischenstecker_energy') | is_number }}
+        {{ states('sensor.trotec_ttk_171_eco_zwischenstecker_energy') | is_number }}
   variables:
     current_energy: >
-      {{ states('sensor.shcf_zwischenstecker_energy') | float(0) }}
+      {{ states('sensor.trotec_ttk_171_eco_zwischenstecker_energy') | float(0) }}
     current_datetime: >
       {{ now().strftime('%Y-%m-%d %H:%M:%S') }}
   action:
@@ -70,10 +70,10 @@
       state: "on"
     - condition: template
       value_template: >
-        {{ states('sensor.shcf_zwischenstecker_energy') | is_number }}
+        {{ states('sensor.trotec_ttk_171_eco_zwischenstecker_energy') | is_number }}
   variables:
     current_energy: >
-      {{ states('sensor.shcf_zwischenstecker_energy') | float(0) }}
+      {{ states('sensor.trotec_ttk_171_eco_zwischenstecker_energy') | float(0) }}
     current_datetime: >
       {{ now().strftime('%Y-%m-%d %H:%M:%S') }}
   action:

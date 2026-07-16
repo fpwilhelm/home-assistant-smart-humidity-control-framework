@@ -33,13 +33,13 @@ views:
         show_state: true
         show_icon: true
       - type: entity
-        entity: sensor.shcf_klimasensor_temperature
+        entity: sensor.trotec_ttk_171_eco_klimasensor_temperature
         name: Temperature
         show_name: true
         show_state: true
         show_icon: true
       - type: entity
-        entity: sensor.shcf_klimasensor_humidity
+        entity: sensor.trotec_ttk_171_eco_klimasensor_humidity
         name: Humidity
         show_name: true
         show_state: true
@@ -76,9 +76,9 @@ views:
             title: Former Indoor Pool
             show_header_toggle: false
             entities:
-              - entity: sensor.shcf_klimasensor_temperature
+              - entity: sensor.trotec_ttk_171_eco_klimasensor_temperature
                 name: Temperature
-              - entity: sensor.shcf_klimasensor_humidity
+              - entity: sensor.trotec_ttk_171_eco_klimasensor_humidity
                 name: Relative Humidity
               - entity: sensor.shccf_lab_pool_dew_point
                 name: Dew Point
@@ -171,7 +171,7 @@ views:
             hours_to_show: 24
             logarithmic_scale: false
             entities:
-              - entity: sensor.shcf_klimasensor_humidity
+              - entity: sensor.trotec_ttk_171_eco_klimasensor_humidity
                 name: Indoor Humidity
               - entity: sensor.shcf_device_62e90919_target_humidity
                 name: Target
@@ -197,7 +197,7 @@ views:
             hours_to_show: 24
             logarithmic_scale: false
             entities:
-              - entity: sensor.shcf_zwischenstecker_power
+              - entity: sensor.trotec_ttk_171_eco_zwischenstecker_power
                 name: Power
 
       - type: grid
@@ -311,9 +311,9 @@ views:
             title: Former Indoor Pool
             show_header_toggle: false
             entities:
-              - entity: sensor.shcf_klimasensor_temperature
+              - entity: sensor.trotec_ttk_171_eco_klimasensor_temperature
                 name: Temperature
-              - entity: sensor.shcf_klimasensor_humidity
+              - entity: sensor.trotec_ttk_171_eco_klimasensor_humidity
                 name: Relative Humidity
               - entity: sensor.shccf_lab_pool_dew_point
                 name: Dew Point
@@ -399,7 +399,7 @@ views:
             hours_to_show: 24
             logarithmic_scale: false
             entities:
-              - entity: sensor.shcf_klimasensor_temperature
+              - entity: sensor.trotec_ttk_171_eco_klimasensor_temperature
                 name: Former Indoor Pool
               - entity: sensor.fitnessraum_klimasensor_temperature
                 name: Fitness Room
@@ -413,7 +413,7 @@ views:
             hours_to_show: 24
             logarithmic_scale: false
             entities:
-              - entity: sensor.shcf_klimasensor_humidity
+              - entity: sensor.trotec_ttk_171_eco_klimasensor_humidity
                 name: Former Indoor Pool
               - entity: sensor.fitnessraum_klimasensor_humidity
                 name: Fitness Room
@@ -520,9 +520,9 @@ views:
                 name: Runtime
               - entity: sensor.shccf_lab_trotec_energy_today
                 name: Energy
-              - entity: sensor.shcf_zwischenstecker_power
+              - entity: sensor.trotec_ttk_171_eco_zwischenstecker_power
                 name: Current Power
-              - entity: sensor.shcf_zwischenstecker_energy
+              - entity: sensor.trotec_ttk_171_eco_zwischenstecker_energy
                 name: Total Energy
 
           - type: entities
@@ -696,7 +696,7 @@ views:
             entities:
               - entity: input_text.shccf_lab_primary_measurement_location
                 name: Location
-              - entity: sensor.shcf_klimasensor_humidity
+              - entity: sensor.trotec_ttk_171_eco_klimasensor_humidity
                 name: Relative Humidity
               - entity: sensor.shccf_lab_pool_absolute_humidity
                 name: Absolute Humidity
@@ -761,13 +761,13 @@ views:
             hours_to_show: 24
             logarithmic_scale: false
             entities:
-              - entity: sensor.shcf_klimasensor_humidity
+              - entity: sensor.trotec_ttk_171_eco_klimasensor_humidity
                 name: Relative Humidity
               - entity: sensor.shcf_device_62e90919_target_humidity
                 name: Target Humidity
               - entity: sensor.shcf_device_62e90919_switch_on_threshold
                 name: Start Threshold
-              - entity: sensor.shcf_zwischenstecker_power
+              - entity: sensor.trotec_ttk_171_eco_zwischenstecker_power
                 name: Power
 
     cards: []
@@ -1146,7 +1146,7 @@ views:
               - entity: sensor.shcf_device_62e90919_dehumidification_demand
                 name: Dehumidification Demand
 
-              - entity: sensor.shcf_zwischenstecker_power
+              - entity: sensor.trotec_ttk_171_eco_zwischenstecker_power
                 name: Current Power
 
           - type: markdown
@@ -1242,10 +1242,10 @@ views:
             hours_to_show: 168
             logarithmic_scale: false
             entities:
-              - entity: sensor.shcf_klimasensor_temperature
+              - entity: sensor.trotec_ttk_171_eco_klimasensor_temperature
                 name: Temperature
 
-              - entity: sensor.shcf_klimasensor_humidity
+              - entity: sensor.trotec_ttk_171_eco_klimasensor_humidity
                 name: Relative Humidity
 
               - entity: sensor.shccf_lab_pool_dew_point
@@ -1273,7 +1273,7 @@ views:
             hours_to_show: 168
             logarithmic_scale: false
             entities:
-              - entity: sensor.shcf_zwischenstecker_power
+              - entity: sensor.trotec_ttk_171_eco_zwischenstecker_power
                 name: Power
 
     cards: []
